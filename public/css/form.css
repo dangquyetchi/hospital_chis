@@ -1,0 +1,39 @@
+/* CSS cho form chỉnh sửa danh mục */
+.form-edit-category {
+    max-width: 600px;
+    margin: 0 auto; /* Căn giữa form */
+    padding: 20px;
+    background-color: #f9f9f9; /* Màu nền nhẹ */
+    border-radius: 8px; /* Bo tròn góc */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+}
+
+.form-edit-category .form-group {
+    margin-bottom: 15px;
+}
+
+.form-edit-category label {
+    font-weight: bold;
+    color: #333;
+}
+
+.form-edit-category input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-edit-category .btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.form-edit-category .btn-info:hover {
+    background-color: #138496;
+    border-color: #138496;
+}

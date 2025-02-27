@@ -1,0 +1,89 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\Session; 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+
+session_start();
+
+class ClinicController extends Controller
+{
+    public function authLogin(){
+        $admin_id  = Session::get('admin_id');
+        if($admin_id){
+            return Redirect::to('dashboard');
+        }else{
+            return Redirect::to('admin')->send();
+        }
+    }
+    public function addClinic(){
+        $this->authLogin();
+
+        $services = DB::table('services')->orderBy('id', 'desc')->get();
+        $rooms = DB::table('rooms')->orderBy('id', 'desc')->get();
+        $doctors = DB::table('doctors')->orderBy('id', 'desc')->get();
+        return view('admin.addClinic')->with(compact('services', 'rooms', 'doctors'));
+
+    }
+    public function listClinic(){
+        $this->authLogin();
+        $list_clinic = DB::table('medical_records') 
+        ->leftJoin('rooms', 'medical_records.room_id', '=', 'rooms.id')
+        ->select('medical_records.*', 'rooms.name as room_name') 
+        ->get(); 
+        return view('admin.listclinic')->with('list_clinic', $list_clinic); 
+    }
+
+    public function saveClinic(Request $request){
+        $this->authLogin();
+
+            $latestPatient = DB::table('patients')->orderBy('id', 'desc')->first();
+
+            if ($latestPatient) {
+                $latestId = intval(substr($latestPatient->patient_id, 2)); // Cắt bỏ "BN"
+                $newId = 'BN' . str_pad($latestId + 1, 2, '0', STR_PAD_LEFT); // Tăng lên 1
+            } else {
+                $newId = 'BN01'; 
+            }
+        $data = [
+            'patient_name' => $request->patient_name,
+            'examination_date' => $request->examination_date,
+            'diagnosis' => $request->diagnosis,
+            'price_exam' => $request->price_exam,
+            'room_id' => $request->room_id, 
+            'doctor_id' => $request->doctor_id,
+            'status' => 0,
+            'payment_status' => 0, 
+        ];
+
+        DB::table('medical_records')->insert($data);
+        Session::put('message', 'Thêm giấy khám bệnh thành công');
+        return Redirect::to('add-clinic');
+
+    }
+    // public function active_category($category_update_id){
+    //     $this->authLogin();
+
+    //     DB::table('tbl_category_product')
+    //         ->where('category_id', $category_update_id)
+    //         ->update(['category_status' => 0]);
+    //         Session::put('message', 'thay doi trang thai thanh cong');
+    //         return Redirect::to('list-category');
+    // }
+
+    // public function unactive_category($category_update_id){
+    //     $this->authLogin();
+
+    //     DB::table('tbl_category_product')
+    //     ->where('category_id', $category_update_id)
+    //     ->update(['category_status' => 1]);
+    //     Session::put('message', 'thay doi trang thai thanh cong');
+    //     return Redirect::to('list-category');
+    // }
+    
+}
