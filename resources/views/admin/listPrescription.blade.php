@@ -58,7 +58,7 @@
                       <a onclick="return confirm('Xác nhận xóa?')" href="{{ url('/delete-prescription/' . $prescription->id) }}" class="btn btn-sm btn-danger">Xóa</a>
                       <a href="{{ url('/detail-prescription/' . $prescription->id) }}">
                         <i class="fa-solid fa-circle-info" style="font-size: 20px;"></i>
-                    </a>
+                      </a>
                     
                   </td>
               </tr>

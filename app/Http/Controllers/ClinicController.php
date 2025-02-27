@@ -96,6 +96,23 @@ class ClinicController extends Controller
         Session::put('message', 'xóa giấy khám thành công');
         return Redirect::to('list-clinic');
     }
+
+    public function printClinic($id)
+    {
+        $clinic = DB::table('medical_records')
+            ->join('rooms', 'medical_records.room_id', '=', 'rooms.id')
+            ->select('medical_records.*', 'rooms.name as room_name')
+            ->where('medical_records.id', $id)
+            ->first();
+
+        if (!$clinic) {
+            return redirect()->back()->with('error', 'Giấy khám bệnh không tồn tại!');
+        }
+        if ($clinic->payment_status == 0) {
+            return redirect()->back()->with('error', 'Vui lòng cập nhật thanh toán trước khi in');
+        }
+        return view('admin.printClinic', compact('clinic'));
+    }
     // public function active_category($category_update_id){
     //     $this->authLogin();
 

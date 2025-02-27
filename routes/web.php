@@ -46,6 +46,8 @@ Route::post('/save-clinic', [ClinicController::class, 'saveClinic']);
 Route::get('/edit-clinic/{clinic_id}', [ClinicController::class, 'editClinic']);
 Route::post('/update-clinic/{clinic_id}', [ClinicController::class, 'updateClinic']);
 Route::get('/delete-clinic/{clinic_id}', [ClinicController::class, 'deleteClinic']);
+Route::get('/print-clinic/{clinic_id}', [ClinicController::class, 'printClinic']);
+
 
 //Rooms
 Route::get('/add-room', [RoomController::class, 'addRoom']);

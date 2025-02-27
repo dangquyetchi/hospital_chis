@@ -83,6 +83,9 @@
                   <td>
                       <a href="{{ url('/edit-clinic/' . $record->id) }}" class="btn btn-sm btn-info">Sửa</a>
                       <a onclick="return confirm('Xác nhận xóa?')" href="{{ url('/delete-clinic/' . $record->id) }}" class="btn btn-sm btn-danger">Xóa</a>
+                      <a href="{{ url('/print-clinic/' . $record->id) }}">
+                        <i class="fa-solid fa-print" style="font-size: 20px;"></i>
+                    </a>                    
                   </td>
               </tr>
             @endforeach
