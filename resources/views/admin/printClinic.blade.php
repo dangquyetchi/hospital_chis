@@ -11,17 +11,30 @@
         .text-center{
             text-align: center
         }
+        .info {
+        margin-bottom: 20px;
+        }
+        .info img {
+            width: 100px;
+            height: auto;
+            border-radius: 50%;
+        }
+        .name_hospital {
+            font-style: italic;
+            font-size: 25px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="main">
         <div class="print-container">
             <div class="info">
-                <div class="logo_hospital">
-                    <img src="" alt="">
-                </div>
+                <img src="{{ asset('images/nenlaptop_chis.jpg') }}" alt="Logo Bệnh Viện">
                 <div class="name_hospital">Hospital - Chis</div>
             </div>
+            
             <h2 class="text-center">Thông Tin Giấy Khám Bệnh</h2>
             <p><strong>Mã:</strong> {{ $clinic->id }}</p>
             <p><strong>Tên bệnh nhân:</strong> {{ $clinic->patient_name }}</p>
