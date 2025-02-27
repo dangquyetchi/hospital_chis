@@ -43,9 +43,9 @@ Route::get('/logout', [AdminController::class, 'logout']);
 Route::get('/add-clinic', [ClinicController::class, 'addClinic']);
 Route::get('/list-clinic', [ClinicController::class, 'listClinic']);
 Route::post('/save-clinic', [ClinicController::class, 'saveClinic']);
-Route::get('/edit-category-product/{category_update_id}', [ClinicController::class, 'editCategory']);
-Route::post('/update-category-product/{category_update_id}', [ClinicController::class, 'updateCategory']);
-Route::get('/delete-category-product/{category_update_id}', [ClinicController::class, 'deleteCategory']);
+Route::get('/edit-clinic/{clinic_id}', [ClinicController::class, 'editClinic']);
+Route::post('/update-clinic/{clinic_id}', [ClinicController::class, 'updateClinic']);
+Route::get('/delete-clinic/{clinic_id}', [ClinicController::class, 'deleteClinic']);
 
 //Rooms
 Route::get('/add-room', [RoomController::class, 'addRoom']);

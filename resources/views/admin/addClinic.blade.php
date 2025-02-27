@@ -15,8 +15,18 @@
                 <form role="form" action="{{ url('/save-clinic') }}" method="POST">
                     @csrf
                     <div class="form-group">
-                        <label>Tên bệnh nhân</label>
+                        <label>Họ và Tên</label>
                         <input type="text" name="patient_name" class="form-control" placeholder="Nhập tên bệnh nhân" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Giới tính</label>
+                        <select name="patient_gender" class="form-control" required>
+                            <option value="">Chọn giới tính</option>
+                            <option value="Nam">Nam</option>
+                            <option value="Nữ">Nữ</option>
+                            <option value="Khác">Khác</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -25,7 +35,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Giá</label>
+                        <label>Giá khám</label>
                         <input type="number" name="price_exam" class="form-control" placeholder="Nhập giá" required>
                     </div>
 

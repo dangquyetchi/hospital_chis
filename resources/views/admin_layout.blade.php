@@ -79,20 +79,38 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="leftside-navigation">
             <ul class="sidebar-menu" id="nav-accordion">
                 <li>
-                    <a class="active" href="{{url('/dashboard')}}">
+                    <a href="{{url('/dashboard')}}" class="{{ Request::is('dashboard') ? 'active' : '' }}">
                         <i class="fa fa-dashboard"></i>
                         <span>Tổng quan</span>
                     </a>
                 </li>
-                <li><a href="{{ url('/list-clinic')}}">Giấy khám bệnh</a></li>
-                <li><a href="{{ url('/list-room')}}">Phiếu dịch vụ</a></li>
-                <li><a href="{{ url('/list-service')}}">Dịch vụ khám</a></li>
-                <li><a href="{{ url('/list-room')}}">Phòng khám</a></li>
-                <li><a href="{{ url('/list-medicine')}}">Thuốc</a></li>
-                <li><a href="{{ url('/list-prescription')}}">Đơn thuốc</a></li>
-                <li><a href="{{ url('/list-doctor')}}">Bác sĩ</a></li>
-                <li><a href="{{ url('/list-patient')}}">Bệnh nhân</a></li>
-                <li><a href="{{ url('/list-bhyt')}}">Thẻ BHYT</a></li>
+                <li>
+                    <a href="{{ url('/list-clinic') }}" class="{{ Request::is('list-clinic') ? 'active' : '' }}">Giấy khám bệnh</a>
+                </li>
+                <li>
+                    <a href="{{ url('/list-room')}}"  class="{{ Request::is('list-room') ? 'active' : '' }}">Phiếu dịch vụ</a>
+                </li>
+                <li>
+                    <a href="{{ url('/list-service')}}"  class="{{ Request::is('list-service') ? 'active' : '' }}">Dịch vụ khám</a>
+                </li>
+                <li>
+                    <a href="{{ url('/list-room')}}" class="{{ Request::is('list-room') ? 'active' : '' }}">Phòng khám</a>
+                </li>
+                <li>
+                    <a href="{{ url('/list-medicine')}}" class="{{ Request::is('list-medicine') ? 'active' : '' }}">Kho thuốc</a>
+                </li>
+                <li>
+                    <a href="{{ url('/list-prescription')}}" class="{{ Request::is('list-prescription') ? 'active' : '' }}">Đơn thuốc</a>
+                </li>
+                <li>
+                    <a href="{{ url('/list-doctor')}}" class="{{ Request::is('list-doctor') ? 'active' : '' }}">Bác sĩ</a>
+                </li>
+                <li>
+                    <a href="{{ url('/list-patient')}}" class="{{ Request::is('list-patient') ? 'active' : '' }}">Bệnh nhân</a>
+                </li>
+                <li>
+                    <a href="{{ url('/list-bhyt')}}" class="{{ Request::is('list-bhyt') ? 'active' : '' }}">Thẻ BHYT</a>
+                </li>
 
                 <li class="sub-menu">
                     <a href="javascript:;">

@@ -3,7 +3,7 @@
 <div class="table-agile-info">
     <div class="panel panel-default">
       <div class="panel-heading">
-        Danh sách thuốc
+        Danh sách kho thuốc
       </div>
       @if(Session::has('message'))
       <div class="alert alert-success">

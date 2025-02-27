@@ -5,14 +5,18 @@
       <div class="panel-heading">
         Danh sách bệnh nhân
       </div>
+        @if(Session::has('message'))
+        <div class="alert alert-success">
+            {{ Session::get('message') }}
+        </div>
+        {{ Session::put('message', null) }}
+      @endif
+      @if(Session::has('error'))
+          <div class="alert alert-danger">
+              {{ Session::get('error') }}
+          </div>
+      @endif
       <div class="row w3-res-tb">
-        <?php
-        $message = Session::get('message');
-        if($message){
-            echo '<span class="text-bold">'.$message. '</span>';
-            Session::put('message', null);
-        } 
-        ?>
         <div class="col-sm-5 m-b-xs">
           <a href="{{ url('/add-patient')}}" class="btn btn-primary">Thêm bệnh nhân</a>             
         </div>

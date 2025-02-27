@@ -5,16 +5,20 @@
       <div class="panel-heading">
         Danh sách giấy khám bệnh
       </div>
+        @if(Session::has('message'))
+          <div class="alert alert-success">
+              {{ Session::get('message') }}
+          </div>
+          {{ Session::put('message', null) }}
+        @endif
+        @if(Session::has('error'))
+            <div class="alert alert-danger">
+                {{ Session::get('error') }}
+            </div>
+        @endif
       <div class="row w3-res-tb">
-        <?php
-        $message = Session::get('message');
-        if($message){
-            echo '<span class="text-bold">'.$message. '</span>';
-            Session::put('message', null);
-        } 
-        ?>
         <div class="col-sm-5 m-b-xs">
-          <a href="{{ url('/add-clinic')}}">Thêm giấy khám</a>             
+          <a href="{{ url('/add-clinic')}}" class="btn btn-primary" >Thêm giấy khám</a>             
         </div>
         <div class="col-sm-4">
         </div>
@@ -39,6 +43,7 @@
               <th>STT</th>
               {{-- <th>Mã</th> --}}
               <th>Tên bệnh nhân</th>
+              <th>Giới tính</th>
               <th>Triệu trứng</th>
               <th>Phòng khám</th>
               <th>Ngày khám</th>
@@ -56,6 +61,7 @@
                   <td>{{ $loop->iteration }}</td>
                   {{-- <td>{{ $record->id }}</td> --}}
                   <td>{{ $record->patient_name }}</td>
+                  <td>{{ $record->gender }}</td>
                   <td>{{ $record->diagnosis }}</td>
                   <td>{{ $record->room_name ?? 'Chưa có' }}</td>
                   <td>{{ $record->examination_date }}</td>
@@ -75,8 +81,8 @@
                       @endif
                   </td>
                   <td>
-                      <a href="{{ url('/edit-medical-record/' . $record->id) }}" class="btn btn-sm btn-info">Sửa</a>
-                      <a onclick="return confirm('Xác nhận xóa?')" href="{{ url('/delete-medical-record/' . $record->id) }}" class="btn btn-sm btn-danger">Xóa</a>
+                      <a href="{{ url('/edit-clinic/' . $record->id) }}" class="btn btn-sm btn-info">Sửa</a>
+                      <a onclick="return confirm('Xác nhận xóa?')" href="{{ url('/delete-clinic/' . $record->id) }}" class="btn btn-sm btn-danger">Xóa</a>
                   </td>
               </tr>
             @endforeach

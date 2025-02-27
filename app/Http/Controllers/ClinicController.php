@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Symfony\Component\CssSelector\Node\FunctionNode;
 
 session_start();
 
@@ -52,6 +53,7 @@ class ClinicController extends Controller
             }
         $data = [
             'patient_name' => $request->patient_name,
+            'patient_gender' => $request->patient_gender,
             'examination_date' => $request->examination_date,
             'diagnosis' => $request->diagnosis,
             'price_exam' => $request->price_exam,
@@ -65,6 +67,34 @@ class ClinicController extends Controller
         Session::put('message', 'Thêm giấy khám bệnh thành công');
         return Redirect::to('add-clinic');
 
+    }
+
+    public function editClinic($clinic_id) {
+        $this->authLogin();
+        $edit_clinic = DB::table('medical_records')->where('id', $clinic_id)->first();
+        return view('admin.editclinic', compact('edit_clinic'));
+    }
+
+    public function updateClinic(Request $request, $clinic_id) {
+        $this->authLogin();
+        $data = [
+            'patient_name' => $request->patient_name,
+            'gender' => $request->patient_gender,
+            'examination_date' => $request->examination_date,
+            'price_exam' => $request->price_exam,
+            'diagnosis' => $request->diagnosis,
+        ];
+
+        DB::table('medical_records')->where('id', $clinic_id)->update($data);
+        Session::put('message', 'Cập nhật giấy khám bệnh thành công');
+        return Redirect::to('list-clinic');
+    }
+
+    public function deleteClinic($clinic_id) {
+        $this->authLogin();
+        $del_clinic = DB::table('medical_records')->where('id', $clinic_id)->delete();
+        Session::put('message', 'xóa giấy khám thành công');
+        return Redirect::to('list-clinic');
     }
     // public function active_category($category_update_id){
     //     $this->authLogin();
