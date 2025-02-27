@@ -39,21 +39,20 @@ class ClinicController extends Controller
         ->get(); 
         return view('admin.listclinic')->with('list_clinic', $list_clinic); 
     }
-
     public function saveClinic(Request $request){
         $this->authLogin();
 
-            $latestPatient = DB::table('patients')->orderBy('id', 'desc')->first();
+            // $latestPatient = DB::table('patients')->orderBy('id', 'desc')->first();
 
-            if ($latestPatient) {
-                $latestId = intval(substr($latestPatient->patient_id, 2)); // Cắt bỏ "BN"
-                $newId = 'BN' . str_pad($latestId + 1, 2, '0', STR_PAD_LEFT); // Tăng lên 1
-            } else {
-                $newId = 'BN01'; 
-            }
+            // if ($latestPatient) {
+            //     $latestId = intval(substr($latestPatient->patient_id, 2)); // Cắt bỏ "BN"
+            //     $newId = 'BN' . str_pad($latestId + 1, 2, '0', STR_PAD_LEFT); // Tăng lên 1
+            // } else {
+            //     $newId = 'BN01';    
+            // }
         $data = [
             'patient_name' => $request->patient_name,
-            'patient_gender' => $request->patient_gender,
+            'gender' => $request->patient_gender,
             'examination_date' => $request->examination_date,
             'diagnosis' => $request->diagnosis,
             'price_exam' => $request->price_exam,
@@ -65,16 +64,14 @@ class ClinicController extends Controller
 
         DB::table('medical_records')->insert($data);
         Session::put('message', 'Thêm giấy khám bệnh thành công');
-        return Redirect::to('add-clinic');
+        return Redirect::to('list-clinic');
 
     }
-
     public function editClinic($clinic_id) {
         $this->authLogin();
         $edit_clinic = DB::table('medical_records')->where('id', $clinic_id)->first();
         return view('admin.editclinic', compact('edit_clinic'));
     }
-
     public function updateClinic(Request $request, $clinic_id) {
         $this->authLogin();
         $data = [
@@ -89,14 +86,12 @@ class ClinicController extends Controller
         Session::put('message', 'Cập nhật giấy khám bệnh thành công');
         return Redirect::to('list-clinic');
     }
-
     public function deleteClinic($clinic_id) {
         $this->authLogin();
         $del_clinic = DB::table('medical_records')->where('id', $clinic_id)->delete();
         Session::put('message', 'xóa giấy khám thành công');
         return Redirect::to('list-clinic');
     }
-
     public function printClinic($id)
     {
         $clinic = DB::table('medical_records')
@@ -113,6 +108,20 @@ class ClinicController extends Controller
         }
         return view('admin.printClinic', compact('clinic'));
     }
+    public function updatePaymentStatus($clinic_id, $status) {
+        $this->authLogin();
+        
+        DB::table('medical_records')
+            ->where('id', $clinic_id)
+            ->update(['payment_status' => $status]);
+    
+        Session::put('message', 'Cập nhật trạng thái thành công');
+        return Redirect::to('list-clinic');
+    }
+
+
+
+
     // public function active_category($category_update_id){
     //     $this->authLogin();
 

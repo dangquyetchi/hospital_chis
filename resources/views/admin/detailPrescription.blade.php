@@ -67,7 +67,7 @@
                     <td>{{ $pm->price }}</td>
                     <td>
                         <a href="javascript:void(0);" onclick="editMedicine({{ $pm->id }})" class="btn btn-sm btn-info">Sửa</a>
-                        <a onclick="return confirm('Xác nhận xóa?')" href="{{ url('/delete-prescription-detail/' . $pm->id) }}" class="btn btn-sm btn-danger">Xóa</a>
+                        <a href="javascript:void(0);" onclick="confirmDelete({{ $pm->id }})" class="btn btn-sm btn-danger">Xóa</a>
                     </td>
                 </tr>
             @endforeach
@@ -86,6 +86,22 @@
             document.getElementById('usage_instruction').value = data.usage_instruction;
         })
         .catch(error => console.error('Lỗi khi đổ dữ liệu:', error));
-}
+    }
+    function confirmDelete(id) {
+        Swal.fire({
+            title: "Bạn có chắc chắn muốn xóa?",
+            text: "Hành động này không thể hoàn tác!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Xóa ngay!",
+            cancelButtonText: "Hủy",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/delete-prescription-detail/" + id;
+            }
+        });
+    }
 </script>
 @endsection

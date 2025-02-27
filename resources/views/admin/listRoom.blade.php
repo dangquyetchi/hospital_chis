@@ -45,7 +45,7 @@
                   <td>{{ $room->name }}</td>
                   <td>
                       <a href="{{ url('/edit-room/' . $room->id) }}" class="btn btn-sm btn-info">Sửa</a>
-                      <a onclick="return confirm('Xác nhận xóa?')" href="{{ url('/delete-room/' . $room->id) }}" class="btn btn-sm btn-danger">Xóa</a>
+                      <a href="javascript:void(0);" onclick="confirmDelete({{ $room->id }})" class="btn btn-sm btn-danger">Xóa</a>
                   </td>
               </tr>
             @endforeach
@@ -64,4 +64,22 @@
       </footer>
     </div>
   </div>
+  <script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: "Bạn có chắc chắn muốn xóa?",
+            text: "Hành động này không thể hoàn tác!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Xóa ngay!",
+            cancelButtonText: "Hủy",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/delete-room/" + id;
+            }
+        });
+    }
+  </script>
 @endsection

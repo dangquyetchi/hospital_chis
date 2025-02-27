@@ -98,6 +98,7 @@ class PatientController extends Controller
         Session::put('message', 'Cập nhật bệnh nhân thành công');
         return Redirect::to('list-patient');
     }
+    //cập nhật trạng thái bệnh nhân ra viện hay chưa
     public function deletePatient($patient_id) {
         $this->authLogin();
         DB::table('patients')->where('id', $patient_id)->delete();
@@ -122,7 +123,10 @@ class PatientController extends Controller
 
         DB::table('patients')
         ->where('id', $patient_update_id)
-        ->update(['status' => 1]);
+        ->update([
+            'status' => 1,
+            'date_out' => null
+        ]);
         Session::put('message', 'Cập nhật trạng thái thành công');
         return Redirect::to('list-patient');
     }

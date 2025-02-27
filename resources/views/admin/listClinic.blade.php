@@ -1,5 +1,24 @@
 @extends('admin_layout')
 @section('admin_content')
+<style>
+  .popup-container {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup {
+    background: white;
+    padding: 80px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+</style>
 <div class="table-agile-info">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -35,11 +54,11 @@
         <table class="table table-striped b-t b-light">
           <thead>
             <tr>
-              <th style="width:20px;">
+              {{-- <th style="width:20px;">
                 <label class="i-checks m-b-none">
                   <input type="checkbox"><i></i>
                 </label>
-              </th>
+              </th> --}}
               <th>STT</th>
               {{-- <th>Mã</th> --}}
               <th>Tên bệnh nhân</th>
@@ -57,7 +76,7 @@
           <tbody>
             @foreach ($list_clinic as $key => $record)
               <tr>
-                  <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
+                  {{-- <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td> --}}
                   <td>{{ $loop->iteration }}</td>
                   {{-- <td>{{ $record->id }}</td> --}}
                   <td>{{ $record->patient_name }}</td>
@@ -74,19 +93,27 @@
                       @endif
                   </td>
                   <td>
-                      @if($record->payment_status == 0)
-                          <span class="badge bg-danger">Chưa thanh toán</span>
-                      @else
-                          <span class="badge bg-primary">Đã thanh toán</span>
-                      @endif
-                  </td>
-                  <td>
-                      <a href="{{ url('/edit-clinic/' . $record->id) }}" class="btn btn-sm btn-info">Sửa</a>
-                      <a onclick="return confirm('Xác nhận xóa?')" href="{{ url('/delete-clinic/' . $record->id) }}" class="btn btn-sm btn-danger">Xóa</a>
-                      <a href="{{ url('/print-clinic/' . $record->id) }}">
-                        <i class="fa-solid fa-print" style="font-size: 20px;"></i>
-                    </a>                    
-                  </td>
+                    @if($record->payment_status == 0)
+                        <a href="javascript:void(0);" 
+                           class="badge bg-danger" 
+                           onclick="confirmPaymentPopup({{ $record->id }}, 1)">
+                            Chưa thanh toán
+                        </a>
+                    @else
+                        <a href="javascript:void(0);" 
+                           class="badge bg-primary" 
+                           onclick="confirmPaymentPopup({{ $record->id }}, 0)">
+                            Đã thanh toán
+                        </a>
+                    @endif
+                </td>
+                <td>
+                    <a href="{{ url('/edit-clinic/' . $record->id) }}" class="btn btn-sm btn-info">Sửa</a>
+                    <a href="javascript:void(0);" onclick="confirmDelete({{ $record->id }})" class="btn btn-sm btn-danger">Xóa</a>
+                    <a href="{{ url('/print-clinic/' . $record->id) }}">
+                      <i class="fa-solid fa-print" style="font-size: 20px;"></i>
+                  </a>                    
+                </td>
               </tr>
             @endforeach
 
@@ -114,4 +141,49 @@
       </footer>
     </div>
   </div>
+</div>
+<div id="confirmPopup" class="popup-container">
+  <div class="popup">
+      <p id="popupMessage"></p>
+      <button class="btn btn-primary" onclick="proceedPayment()">Xác nhận</button>
+      <button class="btn btn-danger" onclick="closePopup()">Hủy</button>
+  </div>
+</div>
+
 @endsection
+  <script>
+    let currentClinicId, currentStatus;
+    function confirmPaymentPopup(clinicId, newStatus) {
+        currentClinicId = clinicId;
+        currentStatus = newStatus;
+        let message = newStatus === 1 
+            ? "Bạn có chắc muốn xác nhận đã thanh toán không?" 
+            : "Bạn có chắc muốn hủy trạng thái thanh toán không?";
+
+        document.getElementById("popupMessage").innerText = message;
+        document.getElementById("confirmPopup").style.display = "flex";
+    }
+    function proceedPayment() {
+        window.location.href = "/clinic/payment/" + currentClinicId + "/" + currentStatus;
+    }
+    function closePopup() { 
+        document.getElementById("confirmPopup").style.display = "none";
+    }
+
+    function confirmDelete(id) {
+        Swal.fire({
+            title: "Bạn có chắc chắn muốn xóa?",
+            text: "Hành động này không thể hoàn tác!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Xóa ngay!",
+            cancelButtonText: "Hủy",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/delete-clinic/" + id;
+            }
+        });
+    }
+</script>
