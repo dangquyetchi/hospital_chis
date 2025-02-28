@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 <head>
-<title> My Shop </title>
+<title> Hospital - Chis </title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Visitors Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
@@ -27,12 +27,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div class="log-w3">
 <div class="w3layouts-main">
 	
-	@if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-	@endif
-
+	@if(Session::has('message'))
+          <div class="alert alert-success">
+              {{ Session::get('message') }}
+          </div>
+          {{ Session::put('message', null) }}
+        @endif
+        @if(Session::has('error'))
+            <div class="alert alert-danger">
+                {{ Session::get('error') }}
+            </div>
+        @endif
 	<h2>Đăng nhập</h2>
 		<form action="{{ url('admin-dashboard')}}" method="post">
 			{{ csrf_field() }}

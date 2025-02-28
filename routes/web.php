@@ -5,13 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BHYTController;
-use App\Http\Controllers\BrandProduct;
 use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\DetailController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PrescriptionController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ServiceController;
 
@@ -31,14 +29,18 @@ use App\Http\Controllers\ServiceController;
 // });
 // Route::get('/', [HomeController::class, 'index']);
 // Route::get('/home', [HomeController::class, 'index']);
-        
 //admin
-Route::get('/admin', [AdminController::class, 'index']);
-Route::get('/dashboard', [AdminController::class, 'show_dashboard']);
+use App\Http\Controllers\AuthController;
+
+
+Route::get('/admin', [AdminController::class, 'index'])->name('login');
+
 // dang nhap
 Route::post('/admin-dashboard', [AdminController::class, 'dashboard']);
 // dang xuat 
 Route::get('/logout', [AdminController::class, 'logout']);
+// trang chu
+Route::get('/dashboard', [AdminController::class, 'show_dashboard'])->middleware('auth');
 //Clinic
 Route::get('/add-clinic', [ClinicController::class, 'addClinic']);
 Route::get('/list-clinic', [ClinicController::class, 'listClinic']);
@@ -113,14 +115,3 @@ Route::get('/list-bhyt', [BHYTController::class, 'listBhyt']);
 Route::get('/edit-bhyt/{bhyt_id}', [BHYTController::class, 'editBhyt']);
 Route::post('/update-bhyt/{bhyt_id}', [BHYTController::class, 'updateBhyt']);
 Route::get('/delete-bhyt/{bhyt_id}', [BHYTController::class, 'deleteBhyt']);
-
-// // product
-// Route::get('/add-product', [ProductController::class, 'addProduct']);
-// Route::get('/list-product', [ProductController::class, 'listProduct']);
-// Route::post('/save-product', [ProductController::class, 'saveProduct']);
-// Route::get('/edit-product/{product_id}', [ProductController::class, 'editProduct']);
-// Route::get('/delete-product/{product_id}', [ProductController::class, 'deleteProduct']);
-// Route::post('/update-product/{product_id}', [ProductController::class, 'updateProduct']);
-// // an hien danh muc
-// Route::get('/active-product/{product_id}', [ProductController::class, 'active_Product']);
-// Route::get('/unactive-product/{product_id}', [ProductController::class, 'unactive_Product']);

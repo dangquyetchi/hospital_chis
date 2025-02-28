@@ -46,7 +46,7 @@ class DoctorController extends Controller
         ];
         DB::table('doctors')->insert($data);
         Session::put('message', 'Thêm bác sĩ thành công');
-        return Redirect::to('add-doctor');
+        return Redirect::to('list-doctor');
     }
 
     public function editDoctor($doctor_id) {

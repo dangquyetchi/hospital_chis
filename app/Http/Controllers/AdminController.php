@@ -33,17 +33,12 @@ class AdminController extends Controller {
         $email = $request->input('admin_email');
         $password = $request->input('admin_password');
 
-        // Truy vấn để lấy admin dựa trên email
         $admin = DB::table('users')->where('email', $email)->first();
-        
-        // Kiểm tra xem admin có tồn tại và mật khẩu có khớp không
         if ($admin && Hash::check($password, $admin->password)) {
-            // Đăng nhập thành công
             Session::put('admin_id', $admin->id);
             Session::put('admin_role', $admin->role);
             return view('admin.dashboard');
         } else {
-            // Đăng nhập thất bại, quay lại trang đăng nhập với thông báo lỗi
             return redirect()->back()->with('error', 'Email hoặc mật khẩu không chính xác!');
         }
     }
@@ -51,9 +46,7 @@ class AdminController extends Controller {
     public function logout()
     {
         $this->authLogin();
-        // Xóa session liên quan đến người dùng
         Auth::logout();
-        // Chuyển hướng về trang đăng nhập với thông báo
         return redirect('/admin')->with('success', 'Đăng xuất thành công!');
     }
     
