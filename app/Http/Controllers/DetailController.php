@@ -20,56 +20,6 @@ class DetailController extends Controller
         }
     }
 
-    public function saveDetailPrescription(Request $request)
-    {
-        $medicine = DB::table('medicines')->where('id', $request->input('medicine_id'))->first();
-        if (!$medicine) {
-            return redirect()->back()->with('error', 'Thuốc không tồn tại!');
-        }
-
-        $quantity_prescription = $request->input('quantity');
-        $id = $request->input('id');
-        $old_quantity = 0;
-        if ($id) {
-            $old_record = DB::table('prescription_medicines')->where('id', $id)->first();
-            if ($old_record) {
-                $old_quantity = $old_record->quantity;
-            }
-        }
-
-        $available_quantity = $medicine->quantity + $old_quantity;
-        if ($quantity_prescription > $available_quantity) {
-            return redirect()->back()->with('error', 'Số lượng thuốc trong kho không đủ!');
-        }
-
-        $price = $quantity_prescription * $medicine->sale_price;
-        if ($id) {
-            DB::table('medicines')->where('id', $old_record->medicine_id)
-                ->increment('quantity', $old_quantity);
-            // Cập nhật đơn thuốc
-            DB::table('prescription_medicines')->where('id', $id)->update([
-                'medicine_id' => $request->input('medicine_id'),
-                'quantity' => $quantity_prescription,
-                'usage_instruction' => $request->input('usage_instruction'),
-                'medicine_unit' => $medicine->medicine_unit, 
-                'price' => $price, 
-            ]);
-        } else {
-            // Thêm mới đơn thuốc
-            DB::table('prescription_medicines')->insert([
-                'prescription_id' => $request->input('prescription_id'),
-                'medicine_id' => $request->input('medicine_id'),
-                'quantity' => $quantity_prescription,
-                'usage_instruction' => $request->input('usage_instruction'),
-                'medicine_unit' => $medicine->medicine_unit, 
-                'price' => $price, 
-            ]);
-        }
-        DB::table('medicines')->where('id', $request->input('medicine_id'))
-            ->decrement('quantity', $quantity_prescription);
-        return redirect()->back()->with('message', $id ? 'Cập nhật thành công!' : 'Thêm mới thành công!');
-    }
-
     public function editPrescriptionDetail($id){
         $detail = DB::table('prescription_medicines')
         ->join('medicines', 'prescription_medicines.medicine_id', '=', 'medicines.id')
@@ -91,5 +41,68 @@ class DetailController extends Controller
         }
         return redirect()->back()->with('error', 'Không tìm thấy thuốc cần xóa!');
     }
+
+    public function saveDetailPrescription(Request $request)
+    {
+        $medicine = DB::table('medicines')->where('id', $request->input('medicine_id'))->first();
+        if (!$medicine) {
+            return redirect()->back()->with('error', 'Thuốc không tồn tại!');
+        }
+        $quantity_prescription = $request->input('quantity');
+        $id = $request->input('id');
+        $prescription_id = $request->input('prescription_id');
+        $old_quantity = 0;
+        
+        if ($id) {
+            $old_record = DB::table('prescription_medicines')->where('id', $id)->first();
+            if ($old_record) {
+                $old_quantity = $old_record->quantity;
+            }
+        }
+
+        $available_quantity = $medicine->quantity + $old_quantity;
+        if ($quantity_prescription > $available_quantity) {
+            return redirect()->back()->with('error', 'Số lượng thuốc trong kho không đủ!');
+        }
+
+        $price = $quantity_prescription * $medicine->sale_price;
+
+        if ($id) {
+            DB::table('medicines')->where('id', $old_record->medicine_id)
+                ->increment('quantity', $old_quantity);
+            // update
+            DB::table('prescription_medicines')->where('id', $id)->update([
+                'medicine_id' => $request->input('medicine_id'),
+                'quantity' => $quantity_prescription,
+                'usage_instruction' => $request->input('usage_instruction'),
+                'medicine_unit' => $medicine->medicine_unit,
+                'price' => $price,
+            ]);
+        } else {
+            // Create
+            DB::table('prescription_medicines')->insert([
+                'prescription_id' => $prescription_id,
+                'medicine_id' => $request->input('medicine_id'),
+                'quantity' => $quantity_prescription,
+                'usage_instruction' => $request->input('usage_instruction'),
+                'medicine_unit' => $medicine->medicine_unit,
+                'price' => $price,
+            ]);
+        }
+
+        DB::table('medicines')->where('id', $request->input('medicine_id'))
+            ->decrement('quantity', $quantity_prescription);
+
+        // total_medicine
+        $total_medicine = DB::table('prescription_medicines')
+            ->where('prescription_id', $prescription_id)
+            ->sum('price');
+
+        DB::table('prescriptions')->where('id', $prescription_id)
+            ->update(['total_medicine' => $total_medicine]);
+
+        return redirect()->back()->with('message', $id ? 'Cập nhật thành công!' : 'Thêm mới thành công!');
+    }
+
     
 }

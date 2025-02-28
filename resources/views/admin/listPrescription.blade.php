@@ -6,13 +6,17 @@
         Danh sách đơn thuốc
       </div>
       <div class="row w3-res-tb">
-        <?php
-        $message = Session::get('message');
-        if($message){
-            echo '<span class="text-bold">'.$message. '</span>';
-            Session::put('message', null);
-        } 
-        ?>
+          @if(Session::has('message'))
+          <div class="alert alert-success">
+              {{ Session::get('message') }}
+          </div>
+          {{ Session::put('message', null) }}
+          @endif
+          @if(Session::has('error'))
+              <div class="alert alert-danger">
+                  {{ Session::get('error') }}
+              </div>
+          @endif
         <div class="col-sm-5 m-b-xs">
           <a href="{{ url('/add-prescription')}}" class="btn btn-primary">Thêm đơn thuốc</a>             
         </div>
@@ -35,6 +39,7 @@
               <th>Tên bệnh nhân</th>
               <th>Ngày sinh</th>
               <th>Bác sĩ theo dõi</th>
+              <th>Tổng tiền</th>
               <th>Trạng thái</th>
               <th>Hành động</th>
             </tr>
@@ -46,6 +51,7 @@
                   <td>{{ $prescription->patient_name }}</td>
                   <td>{{ $prescription->patient_date }}</td>
                   <td>{{ $prescription->doctor_name }}</td>
+                  <td>{{ number_format($prescription->total_medicine) }} VNĐ</td>
                   <td>
                     @if ($prescription->status == 0)
                       <span class="badge bg-warning">Chưa thanh toán</span>

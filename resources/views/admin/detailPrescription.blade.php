@@ -64,7 +64,7 @@
                     <td>{{ $pm->quantity }}</td>
                     <td>{{ $pm->medicine_unit }}</td>
                     <td>{{ $pm->usage_instruction }}</td>
-                    <td>{{ $pm->price }}</td>
+                    <td>{{ number_format($pm->price) }} VNĐ</td>
                     <td>
                         <a href="javascript:void(0);" onclick="editMedicine({{ $pm->id }})" class="btn btn-sm btn-info">Sửa</a>
                         <a href="javascript:void(0);" onclick="confirmDelete({{ $pm->id }})" class="btn btn-sm btn-danger">Xóa</a>

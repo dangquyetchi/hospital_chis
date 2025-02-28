@@ -84,7 +84,7 @@
                   <td>{{ $record->diagnosis }}</td>
                   <td>{{ $record->room_name ?? 'Chưa có' }}</td>
                   <td>{{ $record->examination_date }}</td>
-                  <td>{{ $record->price_exam }}</td>
+                  <td>{{ number_format($record->price_exam) }} VNĐ</td>
                   <td>
                       @if($record->status == 0)
                           <span class="badge bg-warning">Chưa khám</span>

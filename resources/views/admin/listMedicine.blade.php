@@ -54,8 +54,8 @@
                   <td>{{ $medicine->code }}</td>
                   <td>{{ $medicine->name }}</td>
                   <td>{{ $medicine->type }}</td>
-                  <td>{{ $medicine->price }} $</td>
-                  <td>{{ $medicine->sale_price }} $</td>
+                  <td>{{ number_format($medicine->price) }} VNĐ</td>
+                  <td>{{ number_format($medicine->sale_price) }} VNĐ</td>
                   <td>{{ $medicine->quantity }}</td>
                   <td>{{ $medicine->medicine_unit }}</td>
                   <td>{{ $medicine->description }}</td>
