@@ -6,7 +6,7 @@
         <div class="col-md-6">
             <div class="card shadow-lg">
                 <div class="card-header bg-primary text-white text-center">
-                    <h4>Cập nhật thông tin bệnh nhân</h4>
+                    <h3>Cập nhật thông tin bệnh nhân</h3>
                 </div>
                 <div class="card-body">
                     @if(Session::has('message'))
@@ -33,7 +33,9 @@
 
                         <div class="mb-3">
                             <label for="birth_date" class="form-label">Ngày sinh</label>
-                            <input type="date" value="{{ $edit_patient->birth_date }}" name="patient_birth" class="form-control" id="birth_date">
+                            <input type="date" value="{{ $edit_patient->birth_date }}" name="patient_birth" class="form-control" id="patient_birth"
+                            oninput="validateDate_birth()">
+                            <small id="patient_birth_error" class="text-danger d-block mt-1"></small>
                         </div>
                         
                         <div class="mb-3">
@@ -46,7 +48,7 @@
                         </div>  
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-success">Cập nhật</button>
+                            <button type="submit" class="btn btn-success" id="submitBtn" >Cập nhật</button>
                         </div>
                     </form>
                 </div>
@@ -54,5 +56,32 @@
         </div>
     </div>
 </div>
-
 @endsection
+<script>
+    function getFormattedDate() {
+    let today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth() + 1; 
+    let yyyy = today.getFullYear();
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+    return yyyy + '-' + mm + '-' + dd;
+    }
+
+    function validateDate_birth() {
+        let patient_birth = document.getElementById("patient_birth").value;
+        let today = getFormattedDate();
+        let errorElement = document.getElementById("patient_birth_error");
+        let submitButton = document.getElementById("submitBtn");
+
+        if (patient_birth > today) {
+            errorElement.innerText = "Ngày sinh không được lớn hơn ngày hiện tại.";
+            submitButton.disabled = true;
+            return false;
+        }
+
+        errorElement.innerText = "";
+        submitButton.disabled = false;
+        return true;
+    }
+</script>

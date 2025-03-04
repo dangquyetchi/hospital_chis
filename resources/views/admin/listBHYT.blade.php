@@ -46,7 +46,7 @@
               <tr>
                   <td>{{ $loop->iteration }}</td>
                   <td>{{ $bhyt->card_number }}</td>
-                  <td>{{ $bhyt->bhyt_name}}</td>
+                  <td>{{ $bhyt->patient_name}}</td>
                   <td>{{ $bhyt->issue_date }}</td>
                   <td>{{ $bhyt->expiry_date }}</td>
                   <td>{{ $bhyt->insurance_type }}</td>

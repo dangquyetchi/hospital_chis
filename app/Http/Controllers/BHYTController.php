@@ -22,10 +22,7 @@ class BHYTController extends Controller
 
     public function listBhyt() {
         $this->authLogin();
-        $list_bhyt = DB::table('health_insurances')
-        ->leftJoin('patients', 'health_insurances.patient_id', '=', 'patients.id')
-        ->select('health_insurances.*', 'patients.name as bhyt_name') 
-        ->get();
+        $list_bhyt = DB::table('health_insurances')->get();
         return view ('admin.listbhyt')->with('list_bhyt', $list_bhyt);
     }
 

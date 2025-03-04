@@ -35,9 +35,14 @@ class PatientController extends Controller
         $request->validate([
             'card_number' => ['nullable', 'regex:/^[1-3][0-9]{14}$/'],
             'expiry_date' => ['nullable', 'date', 'after_or_equal:today'],
+            'issue_date' => ['nullable', 'date', 'before_or_equal:today', 'before:expiry_date'],
+            'date_in' => ['date', 'before_or_equal:today'],
         ], [
             'card_number.regex' => 'Số thẻ BHYT phải có đúng 15 số và bắt đầu bằng 1, 2 hoặc 3.',
             'expiry_date.after_or_equal' => 'Ngày hết hạn phải lớn hơn hoặc bằng hôm nay.',
+            'issue_date.before_or_equal' => 'Ngày cấp phải nhỏ hơn hoặc bằng hôm nay.',
+            'date_in.before_or_equal' => 'Ngày nhập viện phải nhỏ hơn hoặc bằng hôm nay.',
+            'issue_date.before' => 'Ngày cấp phải nhỏ hơn ngày hết hạn.',
         ]);
         // bảng patients
         $patient_id = DB::table('patients')->insertGetId([
@@ -66,12 +71,13 @@ class PatientController extends Controller
             // bảng health_insurances
             DB::table('health_insurances')->insert([
                 'patient_id' => $patient_id,
+                'patient_name' => $request->patient_name,
                 'card_number' => $request->card_number,
                 'issue_date' => $request->issue_date,
                 'expiry_date' => $request->expiry_date,
                 'insurance_type' => $request->insurance_type,
                 'coverage_rate' => $coverage_rate,
-                'status' => 1, 
+                'status' =>  $status, 
                 
             ]);
         }
@@ -90,21 +96,22 @@ class PatientController extends Controller
             'gender' => $request->patient_gender,
             'birth_date' => $request->patient_birth,
             'address' => $request->patient_address,
-           
             'status' => 1,
         ];
-
         DB::table('patients')->where('id', $patient_id)->update($data);
+        DB::table('health_insurances')->where('patient_id', $patient_id)->update([
+            'patient_name' => $request->patient_name,
+        ]);
         Session::put('message', 'Cập nhật bệnh nhân thành công');
         return Redirect::to('list-patient');
     }
-    //cập nhật trạng thái bệnh nhân ra viện hay chưa
     public function deletePatient($patient_id) {
         $this->authLogin();
         DB::table('patients')->where('id', $patient_id)->delete();
         Session::put('message', 'xóa bệnh nhân thành công');
         return Redirect::to('list-patient');
     }
+    //cập nhật trạng thái bệnh nhân ra viện hay chưa
     public function outPatient($patient_update_id){
         $this->authLogin();
     
