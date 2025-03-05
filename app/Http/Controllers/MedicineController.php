@@ -61,6 +61,13 @@ class MedicineController extends Controller
 
     public function updateMedicine(Request $request, $medicine_id){
         $this->authLogin();
+        $exists = DB::table('medicines')
+            ->where('code', $request->medicine_code)
+            ->where('id', '!=', $medicine_id) 
+            ->exists();
+        if ($exists) {
+            return redirect()->back()->withErrors(['medicine_code' => 'Mã thuốc đã tồn tại trong hệ thống.']);
+        }
         $data = [
             'code' => $request->medicine_code,
             'name' => $request->medicine_name,
@@ -81,5 +88,14 @@ class MedicineController extends Controller
         DB::table('medicines')->where('id', $medicine_id)->delete();
         Session::put('message', 'Xóa thuốc thành công');
         return Redirect::to('list-medicine');
+    }
+
+    public function searchMedicine(Request $request){
+        $this->authLogin();
+        $keyword = $request->input('keyword');
+        $search_medicine = DB::table('medicines')
+        ->where('name', 'like', '%'.$keyword.'%')
+        ->orWhere('code', 'like', '%'.$keyword.'%')->get();
+        return view('admin.listmedicine')->with('list_medicine', $search_medicine);
     }
 }

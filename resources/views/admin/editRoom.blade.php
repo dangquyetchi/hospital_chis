@@ -10,10 +10,15 @@
                 </div>
                 <div class="card-body">
                     @if(Session::has('message'))
-                        <div class="alert alert-success">
-                            {{ Session::get('message') }}
+                    <div class="alert alert-success">
+                        {{ Session::get('message') }}
+                    </div>
+                    {{ Session::put('message', null) }}
+                    @endif
+                    @if(Session::has('error'))
+                        <div class="alert alert-danger">
+                            {{ Session::get('error') }}
                         </div>
-                        {{ Session::put('message', null) }}
                     @endif
 
                     @foreach ($edit_room as $edit_value)

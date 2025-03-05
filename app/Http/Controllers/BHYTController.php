@@ -49,11 +49,24 @@ class BHYTController extends Controller
         Session::put('message', 'Cập nhật thông tin thành công');
         return Redirect::to('list-bhyt');
     }
-    
 
-    public function deleteBhyt($bhyt_id){
+    public function deleteBhyt($bhyt_id)
+    {
         $this->authLogin();
         DB::table('health_insurances')->where('id', $bhyt_id)->delete();
         return Redirect::to('list-bhyt');
     }
+
+    public function searchBHYT(Request $request) 
+    {
+        $keyword = $request->input('keyword');
+
+        $list_bhyt = DB::table('health_insurances')
+                        ->where('card_number', 'LIKE', "%$keyword%")
+                        ->orWhere('patient_name', 'LIKE', "%$keyword%")
+                        ->get();
+
+        return view('admin.listbhyt', compact('list_bhyt'));
+    }
+    
 }

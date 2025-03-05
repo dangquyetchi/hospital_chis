@@ -147,5 +147,15 @@ class PatientController extends Controller
         Session::put('message', 'Cập nhật trạng thái thành công');
         return Redirect::to('list-patient');
     }
-
+    // tìm kiếm bệnh nhân
+    public function searchPatient(Request $request) 
+    {
+       $this->authLogin();
+        $keyword = $request->input('keyword');
+        $list_patient = DB::table('patients')
+                        ->where('name', 'LIKE', "%$keyword%")
+                        ->orWhere('id', 'LIKE', "%$keyword%")
+                        ->get();
+        return view('admin.listpatient', compact('list_patient'));
+    }
 }

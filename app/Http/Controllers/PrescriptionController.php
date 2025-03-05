@@ -108,4 +108,19 @@ class PrescriptionController extends Controller
         return Redirect::to('list-prescription');
     }
 
+    public function searchPrescription(Request $request) {
+        $this->authLogin();
+        $search = $request->search;
+        $prescriptions = DB::table('prescriptions')
+            ->leftJoin('doctors', 'prescriptions.doctor_id', '=', 'doctors.id')
+            ->leftJoin('patients', 'prescriptions.patient_id', '=', 'patients.id')
+            ->select('prescriptions.*',
+                'doctors.name as doctor_name',
+                'patients.name as patient_name',
+                'patients.birth_date as patient_date')
+            ->where('patients.name', 'like', '%' . $search . '%')
+            ->get();
+        return view('admin.listprescription')->with('list_prescription', $prescriptions);
+    }
+
 }

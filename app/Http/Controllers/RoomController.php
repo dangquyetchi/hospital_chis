@@ -33,6 +33,10 @@ class RoomController extends Controller
 
     public function saveRoom(Request $request) {
         $this->authLogin();
+        $exist = DB::table('rooms')->where('code', $request->room_code)->first();
+        if ($exist) {
+            return Redirect::back()->with('error', 'Mã phòng đã tồn tại!');
+        }
         $data = [
             'code' => $request->room_code,
             'name' => $request->room_name,
@@ -50,6 +54,12 @@ class RoomController extends Controller
 
     public function updateRoom(Request $request, $room_id){
         $this->authLogin();
+        $exist = DB::table('rooms')
+        ->where('code', $request->room_code)
+        ->where('id', '!=', $room_id)->first();
+        if ($exist) {
+            return Redirect::back()->with('error', 'Mã phòng đã tồn tại!');
+        }
         $data = [
             'code' => $request->room_code,
             'name' => $request->room_name,
@@ -64,5 +74,15 @@ class RoomController extends Controller
         DB::table('rooms')->where('id', $room_id)->delete();
         Session::put('message', 'Xóa phòng thành công');
         return Redirect::to('list-room');
+    }
+
+    public function searchRoom(Request $request){
+        $this->authLogin();
+        $keywords = $request->input('keyword');
+        $search_room = DB::table('rooms')
+        ->where('name', 'like', '%' . $keywords . '%')
+        ->orWhere('code', 'like', '%' . $keywords . '%')
+        ->get();
+        return view('admin.listroom')->with('list_room', $search_room);
     }
 }

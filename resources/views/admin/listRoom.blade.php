@@ -6,25 +6,31 @@
         Danh sách phòng khám
       </div>
       <div class="row w3-res-tb">
-        <?php
-        $message = Session::get('message');
-        if($message){
-            echo '<span class="text-bold">'.$message. '</span>';
-            Session::put('message', null);
-        } 
-        ?>
+        @if(Session::has('message'))
+        <div class="alert alert-success">
+            {{ Session::get('message') }}
+        </div>
+        {{ Session::put('message', null) }}
+        @endif
+        @if(Session::has('error'))
+            <div class="alert alert-danger">
+                {{ Session::get('error') }}
+            </div>
+        @endif
         <div class="col-sm-5 m-b-xs">
           <a href="{{ url('/add-room')}}" class="btn btn-primary">Thêm phòng</a>             
         </div>
         <div class="col-sm-4">  
         </div>
-        <div class="col-sm-3">            
-          <div class="input-group">
-            <input type="text" class="input-sm form-control" placeholder="Tìm kiếm phòng">
-            <span class="input-group-btn">
-              <button class="btn btn-sm btn-default" type="button">Tìm kiếm</button>
-            </span>
-          </div>
+        <div class="col-sm-3">
+          <form action="{{ url('/search-room') }}" method="GET">
+            <div class="input-group">
+                <input type="text" name="keyword" class="input-sm form-control" placeholder="Tìm kiếm theo tên">
+                <span class="input-group-btn">
+                    <button class="btn btn-sm btn-default" type="submit">Tìm kiếm</button>
+                </span>
+            </div>
+          </form>
         </div>
       </div>
       <div class="table-responsive">

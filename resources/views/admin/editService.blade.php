@@ -10,10 +10,15 @@
                 </div>
                 <div class="card-body">
                     @if(Session::has('message'))
-                        <div class="alert alert-success">
-                            {{ Session::get('message') }}
+                    <div class="alert alert-success">
+                        {{ Session::get('message') }}
+                    </div>
+                    {{ Session::put('message', null) }}
+                    @endif
+                    @if(Session::has('error'))
+                        <div class="alert alert-danger">
+                            {{ Session::get('error') }}
                         </div>
-                        {{ Session::put('message', null) }}
                     @endif
 
                     @foreach ($edit_service as $edit_value)
@@ -29,7 +34,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="Nameservice" class="form-label">giá</label>
-                            <input type="text" value="{{ $edit_value->name }}" name="service_name" class="form-control" id="Nameservice">
+                            <input type="text" value="{{ $edit_value->price }}" name="service_name" class="form-control" id="Nameservice">
                         </div>
                         <div class="text-center">
                             <button type="submit" class="btn btn-success">Cập nhật</button>

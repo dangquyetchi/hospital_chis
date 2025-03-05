@@ -33,6 +33,10 @@ class ServiceController extends Controller
 
     public function saveService(Request $request){
         $this->authLogin();
+        $exist_service = DB::table('services')->where('code', $request->service_code)->first();
+        if ($exist_service) {
+            return Redirect::back()->with('error', 'Mã dịch vụ đã tồn tại!');
+        }
         $data = array();
         $data['code'] = $request->service_code;
         $data['name'] = $request->service_name;
@@ -51,6 +55,13 @@ class ServiceController extends Controller
 
     public function updateService(Request $request, $service_id){
         $this->authLogin();
+        $exist_service = DB::table('services')
+        ->where('code', $request->service_code)
+        ->where('id', '!=', $service_id) 
+        ->exists();
+        if ($exist_service) {
+            return Redirect::back()->with('error', 'Mã dịch vụ đã tồn tại!');
+        }
         $data = [
             'code' => $request->service_code,
             'name' => $request->service_name,
@@ -66,5 +77,15 @@ class ServiceController extends Controller
         DB::table('services')->where('id', $service_id)->delete();
         Session::put('message', 'Xóa dịch vụ thành công');
         return Redirect::to('list-service');
+    }
+
+    public function searchService(Request $request){
+        $this->authLogin();
+        $keywords = $request->input('keyword');
+        $search_service = DB::table('services')
+        ->where('name', 'like', '%'.$keywords.'%')
+        ->orWhere('code', 'like', '%'.$keywords.'%')
+        ->get();
+        return view('admin.listservice')->with('list_service', $search_service);
     }
 }

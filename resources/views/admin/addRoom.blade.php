@@ -7,8 +7,15 @@
             Thêm phòng khám
         </header>
         @if(Session::has('message'))
-            <span class="text-bold">{{ Session::get('message') }}</span>
-            {{ Session::put('message', null) }}
+        <div class="alert alert-success">
+            {{ Session::get('message') }}
+        </div>
+        {{ Session::put('message', null) }}
+        @endif
+        @if(Session::has('error'))
+            <div class="alert alert-danger">
+                {{ Session::get('error') }}
+            </div>
         @endif
         <div class="panel-body">
             <div class="position-center">

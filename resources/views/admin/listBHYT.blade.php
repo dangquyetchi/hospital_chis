@@ -19,12 +19,14 @@
           @endif
         
         <div class="col-sm-3">
-          <div class="input-group">
-            <input type="text" class="input-sm form-control" placeholder="Tìm kiếm BHYT ">
-            <span class="input-group-btn">
-              <button class="btn btn-sm btn-default" type="button">Tìm kiếm</button>
-            </span>
-          </div>
+          <form action="{{ url('/search-bhyt') }}" method="GET">
+            <div class="input-group">
+                <input type="text" name="keyword" class="input-sm form-control" placeholder="Tìm kiếm theo mã thẻ hoặc tên">
+                <span class="input-group-btn">
+                    <button class="btn btn-sm btn-default" type="submit">Tìm kiếm</button>
+                </span>
+            </div>
+          </form>
         </div>
       </div>
       <div class="table-responsive">
@@ -32,7 +34,7 @@
           <thead>
             <tr>
               <th>STT</th>
-              <th>Mã số</th>
+              <th>Mã thẻ</th>
               <th>Họ và Tên</th>
               <th>Ngày cấp</th>
               <th>Ngày hết hạn</th>

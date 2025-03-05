@@ -23,12 +23,14 @@
         <div class="col-sm-4">
         </div>
         <div class="col-sm-3">
-          <div class="input-group">
-            <input type="text" class="input-sm form-control" placeholder="Tìm kiếm bệnh nhân">
-            <span class="input-group-btn">
-              <button class="btn btn-sm btn-default" type="button">Tìm kiếm</button>
-            </span>
-          </div>
+          <form action="{{ url('/search-patient') }}" method="GET">
+            <div class="input-group">
+                <input type="text" name="keyword" class="input-sm form-control" placeholder="Tìm kiếm theo tên">
+                <span class="input-group-btn">
+                    <button class="btn btn-sm btn-default" type="submit">Tìm kiếm</button>
+                </span>
+            </div>
+          </form>
         </div>
       </div>
       <div class="table-responsive">

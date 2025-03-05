@@ -19,12 +19,14 @@
         <div class="col-sm-4">
         </div>
         <div class="col-sm-3">
-          <div class="input-group">
-            <input type="text" class="input-sm form-control" placeholder="Tìm kiếm dịch vụ khám">
-            <span class="input-group-btn">
-              <button class="btn btn-sm btn-default" type="button">Tìm kiếm</button>
-            </span>
-          </div>
+          <form action="{{ url('/search-service') }}" method="GET">
+            <div class="input-group">
+                <input type="text" name="keyword" class="input-sm form-control" placeholder="Tìm kiếm theo tên">
+                <span class="input-group-btn">
+                    <button class="btn btn-sm btn-default" type="submit">Tìm kiếm</button>
+                </span>
+            </div>
+          </form>
         </div>
       </div>
       <div class="table-responsive">
@@ -44,7 +46,7 @@
                   <td>{{ $loop->iteration }}</td>
                   <td>{{ $service->code }}</td>
                   <td>{{ $service->name }}</td>
-                  <td>{{ $service->price }}</td>
+                  <td>{{ number_format($service->price) }} VNĐ</td>
                   <td>
                       <a href="{{ url('/edit-service/' . $service->id) }}" class="btn btn-sm btn-info">Sửa</a>
                       <a href="javascript:void(0);" onclick="confirmDelete({{ $service->id }})" class="btn btn-sm btn-danger">Xóa</a>

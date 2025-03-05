@@ -60,6 +60,7 @@ Route::post('/save-room', [RoomController::class, 'saveRoom']);
 Route::get('/edit-room/{room_id}', [RoomController::class, 'editRoom']);
 Route::post('/update-room/{room_id}', [RoomController::class, 'updateRoom']);
 Route::get('/delete-room/{room_id}', [RoomController::class, 'deleteRoom']);
+Route::get('/search-room', [RoomController::class, 'searchRoom']);
 
 //service
 Route::get('/add-service', [ServiceController::class, 'addService']);
@@ -68,6 +69,7 @@ Route::post('/save-service', [ServiceController::class, 'saveService']);
 Route::get('/edit-service/{service_id}', [ServiceController::class, 'editService']);
 Route::get('/delete-service/{service_id}', [ServiceController::class, 'deleteService']);
 Route::post('/update-service/{service_id}', [ServiceController::class, 'updateService']);
+Route::get('/search-service', [ServiceController::class, 'searchService']);
 
 //medicine
 Route::get('/add-medicine', [MedicineController::class, 'addMedicine']);
@@ -76,6 +78,8 @@ Route::post('/save-medicine', [MedicineController::class, 'saveMedicine']);
 Route::get('/edit-medicine/{medicine_id}', [MedicineController::class, 'editMedicine']);
 Route::get('/delete-medicine/{medicine_id}', [MedicineController::class, 'deleteMedicine']);
 Route::post('/update-medicine/{medicine_id}', [MedicineController::class, 'updateMedicine']);
+Route::get('/search-medicine', [MedicineController::class, 'searchMedicine']);
+
 
 // prescription
 Route::get('/add-prescription', [PrescriptionController::class, 'addPrescription']);
@@ -84,6 +88,7 @@ Route::post('/save-prescription', [PrescriptionController::class, 'savePrescript
 Route::get('/edit-prescription/{precription_id}', [PrescriptionController::class, 'editPrescription']);
 Route::post('/update-prescription/{precription_id}', [PrescriptionController::class, 'updatePrescription']);
 Route::get('/delete-prescription/{precription_id}', [PrescriptionController::class, 'deletePrescription']);
+Route::get('/search-prescription', [PrescriptionController::class, 'searchPrescription']);
 
 //detail_prescription
 Route::get('/detail-prescription/{id}', [PrescriptionController::class, 'detailPrescription'])
@@ -99,6 +104,7 @@ Route::post('/save-doctor', [DoctorController::class, 'saveDoctor']);
 Route::get('/edit-doctor/{doctor_id}', [DoctorController::class, 'editDoctor']);
 Route::post('/update-doctor/{doctor_id}', [DoctorController::class, 'updateDoctor']);
 Route::get('/delete-doctor/{doctor_id}', [DoctorController::class, 'deleteDoctor']);
+Route::get('/search-doctor', [DoctorController::class, 'searchDoctor']);
 
 //patient
 Route::get('/add-patient', [PatientController::class, 'addPatient']);
@@ -110,6 +116,8 @@ Route::get('/delete-patient/{patient_id}', [PatientController::class, 'deletePat
 // statusPatient
 Route::get('/out-patient/{patient_id}', [PatientController::class, 'outPatient']);
 Route::get('/in-patient/{patient_id}', [PatientController::class, 'inPatient']);
+Route::get('/search-patient', [PatientController::class, 'searchPatient']);
+
 
 //bhyt
 Route::get('/list-bhyt', [BHYTController::class, 'listBhyt']);
@@ -117,3 +125,4 @@ Route::get('/list-bhyt', [BHYTController::class, 'listBhyt']);
 Route::get('/edit-bhyt/{bhyt_id}', [BHYTController::class, 'editBhyt']);
 Route::post('/update-bhyt/{bhyt_id}', [BHYTController::class, 'updateBhyt']);
 Route::get('/delete-bhyt/{bhyt_id}', [BHYTController::class, 'deleteBhyt']);
+Route::get('/search-bhyt', [BHYTController::class, 'searchBHYT']);
