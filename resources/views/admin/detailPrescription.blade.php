@@ -3,25 +3,27 @@
 @section('admin_content')
 <div class="container">
     <h2 class="text-center">Quản lý chi tiết đơn thuốc</h2>
-        @if(Session::has('message'))
-        <div class="alert alert-success">
-            {{ Session::get('message') }}
+    
+    @if(Session::has('message'))
+    <div class="alert alert-success">
+        {{ Session::get('message') }}
+    </div>
+    {{ Session::put('message', null) }}
+    @endif
+    @if(Session::has('error'))
+        <div class="alert alert-danger">
+            {{ Session::get('error') }}
         </div>
-        {{ Session::put('message', null) }}
-        @endif
-        @if(Session::has('error'))
-            <div class="alert alert-danger">
-                {{ Session::get('error') }}
-            </div>
-        @endif
+    @endif
 
     <form action="{{ url('/save-detailprescription/'.$prescriptions->id) }}" method="POST">
         @csrf
         <input type="hidden" name="prescription_id" value="{{ $prescriptions->id }}">
         <input type="hidden" name="id" id="edit_id">
+        
         <div class="form-group">
             <label>Thuốc</label>
-            <select name="medicine_id" id="medicine_id" class="form-control" required>
+            <select name="medicine_id" id="medicine_id" class="form-control select2" required>
                 <option value="">Chọn thuốc</option>
                 @foreach($medicines as $medicine)
                     <option value="{{ $medicine->id }}">{{ $medicine->name }}</option>
@@ -58,7 +60,6 @@
         <tbody>
             @foreach($details as $key => $pm)
                 <tr>
-                    {{-- <td>{{ $pm->prescription_id }}</td> --}}
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $pm->medicine_name }}</td>
                     <td>{{ $pm->quantity }}</td>
@@ -75,18 +76,31 @@
     </table>
 </div>
 
+<!-- Thêm jQuery và Select2 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
 <script>
+    $(document).ready(function() {
+        $('#medicine_id').select2({
+            placeholder: "Chọn thuốc",
+            allowClear: true
+        });
+    });
+
     function editMedicine(id) {
-    fetch(`/edit-prescription-detail/${id}`)
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('edit_id').value = data.id; // Thêm ID
-            document.getElementById('medicine_id').value = data.medicine_id;
-            document.getElementById('quantity').value = data.quantity;
-            document.getElementById('usage_instruction').value = data.usage_instruction;
-        })
-        .catch(error => console.error('Lỗi khi đổ dữ liệu:', error));
+        fetch(`/edit-prescription-detail/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                $('#edit_id').val(data.id);
+                $('#medicine_id').val(data.medicine_id).trigger('change');
+                $('#quantity').val(data.quantity);
+                $('#usage_instruction').val(data.usage_instruction);
+            })
+            .catch(error => console.error('Lỗi khi đổ dữ liệu:', error));
     }
+
     function confirmDelete(id) {
         Swal.fire({
             title: "Bạn có chắc chắn muốn xóa?",

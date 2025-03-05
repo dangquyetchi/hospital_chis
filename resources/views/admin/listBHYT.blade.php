@@ -6,18 +6,18 @@
         Danh sách BHYT
       </div>
       <div class="row w3-res-tb">
-        <?php
-        $message = Session::get('message');
-        if($message){
-            echo '<span class="text-bold">'.$message. '</span>';
-            Session::put('message', null);
-        } 
-        ?>
-        {{-- <div class="col-sm-5 m-b-xs">
-          <a href="{{ url('/add-bhyt')}}" class="btn btn-primary">Thêm bảo hiểm</a>             
-        </div> --}}
-        {{-- <div class="col-sm-4">
-        </div> --}}
+          @if(Session::has('message'))
+          <div class="alert alert-success">
+              {{ Session::get('message') }}
+          </div>
+          {{ Session::put('message', null) }}
+          @endif
+          @if(Session::has('error'))
+              <div class="alert alert-danger">
+                  {{ Session::get('error') }}
+              </div>
+          @endif
+        
         <div class="col-sm-3">
           <div class="input-group">
             <input type="text" class="input-sm form-control" placeholder="Tìm kiếm BHYT ">

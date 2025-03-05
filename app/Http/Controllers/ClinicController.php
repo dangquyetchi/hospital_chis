@@ -119,27 +119,36 @@ class ClinicController extends Controller
         return Redirect::to('list-clinic');
     }
 
+    public function searchClinic(Request $request)
+{
+    $query = $request->input('query');
+    $searchType = $request->input('search_type'); // Lấy giá trị của loại tìm kiếm
+
+    $list_clinic = DB::table('medical_records')
+        ->join('rooms', 'medical_records.room_id', '=', 'rooms.id')
+        ->select('medical_records.*', 'rooms.name as room_name');
+
+    // Kiểm tra search_type để tìm đúng cột
+    if ($searchType == "patient_name") {
+        $list_clinic->where('medical_records.patient_name', 'LIKE', "%$query%");
+    } elseif ($searchType == "gender") {
+        $list_clinic->where('medical_records.gender', 'LIKE', "%$query%");
+    } elseif ($searchType == "diagnosis") {
+        $list_clinic->where('medical_records.diagnosis', 'LIKE', "%$query%");
+    } elseif ($searchType == "room_name") {
+        $list_clinic->where('rooms.name', 'LIKE', "%$query%");
+    } elseif ($searchType == "examination_date") {
+        $list_clinic->where('medical_records.examination_date', 'LIKE', "%$query%");
+    } elseif ($searchType == "status") {
+        $list_clinic->where('medical_records.status', $query);
+    } elseif ($searchType == "payment_status") {
+        $list_clinic->where('medical_records.payment_status', $query);
+    }
+
+    $list_clinic = $list_clinic->get();
+
+    return view('admin.listclinic', compact('list_clinic'));
+}
 
 
-
-    // public function active_category($category_update_id){
-    //     $this->authLogin();
-
-    //     DB::table('tbl_category_product')
-    //         ->where('category_id', $category_update_id)
-    //         ->update(['category_status' => 0]);
-    //         Session::put('message', 'thay doi trang thai thanh cong');
-    //         return Redirect::to('list-category');
-    // }
-
-    // public function unactive_category($category_update_id){
-    //     $this->authLogin();
-
-    //     DB::table('tbl_category_product')
-    //     ->where('category_id', $category_update_id)
-    //     ->update(['category_status' => 1]);
-    //     Session::put('message', 'thay doi trang thai thanh cong');
-    //     return Redirect::to('list-category');
-    // }
-    
 }

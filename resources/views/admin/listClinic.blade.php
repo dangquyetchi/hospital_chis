@@ -39,16 +39,21 @@
         <div class="col-sm-5 m-b-xs">
           <a href="{{ url('/add-clinic')}}" class="btn btn-primary" >Thêm giấy khám</a>             
         </div>
-        <div class="col-sm-4">
-        </div>
         <div class="col-sm-3">
-          <div class="input-group">
-            <input type="text" class="input-sm form-control" placeholder="Search">
-            <span class="input-group-btn">
-              <button class="btn btn-sm btn-default" type="button">Tìm kiếm</button>
-            </span>
-          </div>
         </div>
+        <form action="/search-clinic" method="GET">
+          <input type="text"  id="queryInput"  name="query" placeholder="Nhập từ khóa">
+          <select name="search_type" id="searchType" onchange="changeInputType()">
+              <option value="patient_name">Tên bệnh nhân</option>
+              <option value="gender">Giới tính</option>
+              <option value="diagnosis">Chẩn đoán</option>
+              <option value="room_name">Phòng khám</option>
+              <option value="examination_date">Ngày khám</option>
+              <option value="status">Trạng thái</option>
+              <option value="payment_status">Thanh toán</option>
+          </select>
+          <button type="submit">Tìm kiếm</button>
+        </form>
       </div>
       <div class="table-responsive">
         <table class="table table-striped b-t b-light">
@@ -187,3 +192,39 @@
         });
     }
 </script>
+
+<script>
+  function changeInputType() {
+      let searchType = document.getElementById("searchType").value;
+      let queryInput = document.getElementById("queryInput");
+  
+      // Xóa input cũ
+      queryInput.outerHTML = '';
+  
+      // Tạo input mới
+      let newInput;
+      if (searchType === "gender") {
+          newInput = `<select id="queryInput" name="query">
+                          <option value="Nam">Nam</option>
+                          <option value="Nữ">Nữ</option>
+                      </select>`;
+      } else if (searchType === "examination_date") {
+          newInput = `<input type="date" id="queryInput" name="query">`;
+      } else if (searchType === "status") {
+          newInput = `<select id="queryInput" name="query">
+                          <option value="1">Đã khám</option>
+                          <option value="0">Chưa khám</option>
+                      </select>`;
+      } else if (searchType === "payment_status") {
+          newInput = `<select id="queryInput" name="query">
+                          <option value="1">Đã thanh toán</option>
+                          <option value="0">Chưa thanh toán</option>
+                      </select>`;
+      } else {
+          newInput = `<input type="text" id="queryInput" name="query" placeholder="Nhập từ khóa">`;
+      }
+  
+      // Thêm input mới vào form
+      document.querySelector("form").insertAdjacentHTML("afterbegin", newInput);
+  }
+  </script>

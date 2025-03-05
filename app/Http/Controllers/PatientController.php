@@ -44,6 +44,16 @@ class PatientController extends Controller
             'date_in.before_or_equal' => 'Ngày nhập viện phải nhỏ hơn hoặc bằng hôm nay.',
             'issue_date.before' => 'Ngày cấp phải nhỏ hơn ngày hết hạn.',
         ]);
+         // Kiểm tra số thẻ BHYT đã tồn tại chưa
+        if ($request->card_number) {
+            $exists = DB::table('health_insurances')
+                        ->where('card_number', $request->card_number)
+                        ->exists();
+            
+            if ($exists) {
+                return redirect()->back()->withInput()->withErrors(['card_number' => 'Số thẻ BHYT này đã tồn tại.']);
+            }
+        }
         // bảng patients
         $patient_id = DB::table('patients')->insertGetId([
             'name' => $request->patient_name,

@@ -34,16 +34,22 @@ class BHYTController extends Controller
 
     public function updateBhyt(Request $request, $bhyt_id) {
         $this->authLogin();
-        $data = [
+        $exists = DB::table('health_insurances')
+            ->where('card_number', $request->card_number)
+            ->where('id', '!=', $bhyt_id) 
+            ->exists();
+        if ($exists) {
+            return redirect()->back()->withErrors(['card_number' => 'Số thẻ BHYT này đã tồn tại trong hệ thống.']);
+        }
+        DB::table('health_insurances')->where('id', $bhyt_id)->update([
             'card_number' => $request->card_number,
             'issue_date' => $request->issue_date,
             'expiry_date' => $request->expiry_date,
-        ];
-
-        DB::table('health_insurances')->where('id', $bhyt_id)->update($data);
+        ]);
         Session::put('message', 'Cập nhật thông tin thành công');
         return Redirect::to('list-bhyt');
     }
+    
 
     public function deleteBhyt($bhyt_id){
         $this->authLogin();
