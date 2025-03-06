@@ -117,7 +117,7 @@
                     <a href="javascript:void(0);" onclick="confirmDelete({{ $record->id }})" class="btn btn-sm btn-danger">Xóa</a>
                     <a href="{{ url('/print-clinic/' . $record->id) }}">
                       <i class="fa-solid fa-print" style="font-size: 20px;"></i>
-                  </a>                    
+                    </a>                    
                 </td>
               </tr>
             @endforeach

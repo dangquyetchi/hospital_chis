@@ -43,8 +43,7 @@
 
         <button type="submit" class="btn btn-primary">Lưu</button>
     </form>
-
-    <h3 class="mt-4">Danh sách chi tiết đơn thuốc</h3>
+    <h3 style="padding-top: 10px" class="mt-4">Danh sách chi tiết đơn thuốc</h3>
     <table class="table table-bordered" style="background-color: white;">
         <thead>
             <tr>

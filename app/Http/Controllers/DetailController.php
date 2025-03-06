@@ -104,5 +104,19 @@ class DetailController extends Controller
         return redirect()->back()->with('message', $id ? 'Cập nhật thành công!' : 'Thêm mới thành công!');
     }
 
-    
+    // public function printPrescription($id): mixed
+    // {
+    //     $prescription = DB::table('prescriptions')->where('id', $id)->first();
+
+    //     // dd($prescription);
+    //     $details = DB::table('prescription_medicines')
+    //                 ->where('prescription_id', $id)
+    //                 ->get();
+        
+    //     if (!$prescription) {
+    //         return redirect()->back()->with('error', 'Không tìm thấy đơn thuốc!');
+    //     }
+    //     $pdf = PDF::loadView('admin.printprescription', compact('x', 'details'));
+    //     return $pdf->stream('don-thuoc.pdf'); 
+    // }
 }

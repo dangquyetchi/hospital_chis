@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Pagination\Paginator;
 
 
 class ServiceController extends Controller
@@ -22,7 +23,8 @@ class ServiceController extends Controller
 
     public function listService(){
         $this->authLogin();
-        $list_service = DB::table('services')->get(); 
+        Paginator::useBootstrap();
+        $list_service = DB::table('services')->paginate(5); 
         return view('admin.listservice')->with('list_service', $list_service); 
     }
 
@@ -88,4 +90,5 @@ class ServiceController extends Controller
         ->get();
         return view('admin.listservice')->with('list_service', $search_service);
     }
+    
 }

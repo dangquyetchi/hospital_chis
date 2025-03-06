@@ -34,7 +34,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="Nameservice" class="form-label">giá</label>
-                            <input type="text" value="{{ $edit_value->price }}" name="service_name" class="form-control" id="Nameservice">
+                            <input type="text" value="{{ $edit_value->price }}" name="service_price" class="form-control" id="Nameservice">
                         </div>
                         <div class="text-center">
                             <button type="submit" class="btn btn-success">Cập nhật</button>

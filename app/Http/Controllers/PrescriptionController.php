@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class PrescriptionController extends Controller
 
@@ -121,6 +123,29 @@ class PrescriptionController extends Controller
             ->where('patients.name', 'like', '%' . $search . '%')
             ->get();
         return view('admin.listprescription')->with('list_prescription', $prescriptions);
+    }
+    public function printPrescription($id): mixed
+    {
+        $prescription = DB::table('prescriptions')->where('id', $id)->first();
+
+        $pres = DB::table('prescriptions')
+        ->join('doctors', 'prescriptions.doctor_id', '=', 'doctors.id')
+        ->join('patients', 'prescriptions.patient_id', '=', 'patients.id')
+        ->where('prescriptions.id', $id)
+        ->select('prescriptions.*', 'doctors.name as doctor_name', 'patients.name as patient_name')
+        ->first();
+
+        $details = DB::table('prescription_medicines')
+        ->join('medicines', 'prescription_medicines.medicine_id', '=', 'medicines.id')
+        ->where('prescription_medicines.prescription_id', $id)
+        ->select('prescription_medicines.*', 'medicines.name as medicine_name')
+        ->get();
+        
+        if (!$prescription) {
+            return redirect()->back()->with('error', 'Không tìm thấy đơn thuốc!');
+        }
+        $pdf = PDF::loadView('admin.printprescription', compact( 'details', 'pres'));
+        return $pdf->stream('don-thuoc.pdf'); 
     }
 
 }

@@ -96,6 +96,7 @@ Route::get('/detail-prescription/{id}', [PrescriptionController::class, 'detailP
 Route::post('/save-detailprescription/{id}', [DetailController::class, 'saveDetailPrescription']);
 Route::get('/edit-prescription-detail/{id}', [DetailController::class, 'editPrescriptionDetail']);
 Route::get('/delete-prescription-detail/{id}', [DetailController::class, 'deletePrescriptionDetail']);
+Route::get('/print-prescription/{id}', [PrescriptionController::class, 'printPrescription']);
 
 //doctor
 Route::get('/add-doctor', [DoctorController::class, 'addDoctor']);

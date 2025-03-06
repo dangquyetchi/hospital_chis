@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="table-responsive">
-        <table class="table table-striped b-t b-light">
+        <table class="table table-striped b-t b-light ">
           <thead>
             <tr>
               <th>STT</th>
@@ -57,14 +57,14 @@
         </table>
       </div>
       <footer class="panel-footer">
-        {{-- <div class="row">
+        <div class="row">
           <div class="col-sm-5 text-center">
-            <small class="text-muted inline m-t-sm m-b-sm">Hiển thị {{ $list_room->count() }} phòng</small>
+            <small class="text-muted inline m-t-sm m-b-sm">Hiển thị {{ $list_service->count() }} phòng</small>
           </div>
-          {{-- <div class="col-sm-7 text-right text-center-xs">                
-            {{ $list_room->links() }}
+          <div class="col-sm-7 text-right text-center-xs" style="font-size: 10px;  padding: 3px 8px;">                
+            {{ $list_service->links() }}
           </div>
-        </div> --}}
+        </div>
       </footer>
     </div>
   </div>

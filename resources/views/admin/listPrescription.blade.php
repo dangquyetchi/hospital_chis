@@ -67,7 +67,9 @@
                       <a href="{{ url('/detail-prescription/' . $prescription->id) }}">
                         <i class="fa-solid fa-circle-info" style="font-size: 20px;"></i>
                       </a>
-                    
+                      <a href="{{ url('/print-prescription/' . $prescription->id) }}">
+                        <i class="fa-solid fa-print" style="font-size: 20px;"></i>
+                      </a> 
                   </td>
               </tr>
             @endforeach
