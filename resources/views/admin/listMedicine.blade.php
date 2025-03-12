@@ -46,6 +46,7 @@
               <th>Số lượng</th>
               <th>Đơn vị</th>
               <th>Mô tả</th>
+              <th>Ngày nhập</th>
               <th>Hành động</th>
             </tr>
           </thead>
@@ -61,6 +62,7 @@
                   <td>{{ $medicine->quantity }}</td>
                   <td>{{ $medicine->medicine_unit }}</td>
                   <td>{{ $medicine->description }}</td>
+                  <td>{{ date('d-m-Y', strtotime($medicine->created_at)) }}</td>
                   <td>
                       <a href="{{ url('/edit-medicine/' . $medicine->id) }}" class="btn btn-sm btn-info">Sửa</a>
                       <a href="javascript:void(0);" onclick="confirmDelete({{ $medicine->id }})" class="btn btn-sm btn-danger">Xóa</a>

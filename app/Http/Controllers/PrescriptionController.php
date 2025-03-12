@@ -59,16 +59,17 @@ class PrescriptionController extends Controller
     }
 
     public function savePrescription(Request $request) {
+        $this->authLogin();
         $prescription = DB::table('prescriptions')->where('patient_id', $request->name_id)->first();
         if($prescription) {
             return redirect()->back()->with('error', 'Bệnh nhân đã có đơn thuốc!');
         }
-        $this->authLogin();
         $data = [
             'doctor_id' => $request->doctor_room,
             'patient_id' => $request->name_id,
             'total_medicine' => 0,
             'status' => 0,
+            'created_at' => date('Y-m-d H:i:s'),
         ];
         DB::table('prescriptions')->insert($data);
         Session::put('message', 'Thêm đơn thuốc thành công');
@@ -138,7 +139,8 @@ class PrescriptionController extends Controller
         $details = DB::table('prescription_medicines')
         ->join('medicines', 'prescription_medicines.medicine_id', '=', 'medicines.id')
         ->where('prescription_medicines.prescription_id', $id)
-        ->select('prescription_medicines.*', 'medicines.name as medicine_name')
+        ->select('prescription_medicines.*',
+                            'medicines.name as medicine_name')
         ->get();
         
         if (!$prescription) {

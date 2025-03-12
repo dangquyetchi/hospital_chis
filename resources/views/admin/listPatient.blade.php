@@ -55,11 +55,11 @@
                   <td>{{ $loop->iteration }}</td>
                   <td>{{ $patient->name }}</td>
                   <td>{{ $patient->gender }}</td>
-                  <td>{{ $patient->birth_date }}</td>
+                  <td>{{ date('d-m-Y', strtotime($patient->birth_date))}}</td>
                   <td>{{ $patient->address }}</td>
                   <td>{{ $patient->patient_condition }}</td>
-                  <td>{{ $patient->date_in }}</td>
-                  <td>{{ $patient->date_out ?? "Chưa ra viện" }}</td>
+                  <td>{{ date('d-m-Y', strtotime($patient->date_in)) }}</td>
+                  <td>{{ date('d-m-Y', strtotime($patient->date_out)) }}</td>
                   <td>
                     <span class="text-ellipsis">
                         @if($patient->status == 1)

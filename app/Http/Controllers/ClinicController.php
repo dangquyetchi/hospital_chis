@@ -36,7 +36,7 @@ class ClinicController extends Controller
         $list_clinic = DB::table('medical_records') 
         ->leftJoin('rooms', 'medical_records.room_id', '=', 'rooms.id')
         ->select('medical_records.*', 'rooms.name as room_name') 
-        ->get(); 
+        ->paginate(5); 
         return view('admin.listclinic')->with('list_clinic', $list_clinic); 
     }
     public function saveClinic(Request $request){

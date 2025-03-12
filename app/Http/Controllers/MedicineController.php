@@ -47,6 +47,7 @@ class MedicineController extends Controller
             'quantity' => $request->medicine_quantity,
             'medicine_unit' => $request->medicine_unit,
             'description' => $request->medicine_description,
+            'created_at' => date('Y-m-d H:i:s'),
         ];
         DB::table('medicines')->insert($data);
         Session::put('message', 'Thêm thuốc thành công');

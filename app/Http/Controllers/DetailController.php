@@ -104,19 +104,51 @@ class DetailController extends Controller
         return redirect()->back()->with('message', $id ? 'Cập nhật thành công!' : 'Thêm mới thành công!');
     }
 
-    // public function printPrescription($id): mixed
-    // {
-    //     $prescription = DB::table('prescriptions')->where('id', $id)->first();
+    public function saveDetailRecordService(Request $request) {
+        $this->authLogin();
+        $id = $request->input('id');
+        $service_record_id = $request->input('service_record_id');
+        $data = [
+            'service_id' => $request->service_id,
+            'room_id' => $request->room_id,
+        ];
+    
+        if ($id) { 
+            // Nếu có ID -> Cập nhật
+            DB::table('service_detail')->where('id', $id)->update($data);
+            $message = 'Cập nhật thành công!';
+        } else { 
+            // Nếu không có ID -> Thêm mới
+            DB::table('service_detail')->insert([
+                'service_record_id' => $service_record_id,  
+                'service_id' => $request->service_id,
+                'room_id' => $request->room_id,
+            ]);
+            $message = 'Thêm mới thành công!';
+        }
+    
+        Session::put('message', $message);
+        return redirect()->back()->with('message', $message);
+    }
+    
 
-    //     // dd($prescription);
-    //     $details = DB::table('prescription_medicines')
-    //                 ->where('prescription_id', $id)
-    //                 ->get();
-        
-    //     if (!$prescription) {
-    //         return redirect()->back()->with('error', 'Không tìm thấy đơn thuốc!');
-    //     }
-    //     $pdf = PDF::loadView('admin.printprescription', compact('x', 'details'));
-    //     return $pdf->stream('don-thuoc.pdf'); 
-    // }
+    public function editDetailRecordService($id){
+        $detail = DB::table('service_detail')
+        ->join('services', 'service_detail.service_id', '=', 'services.id')
+        ->join('rooms', 'service_detail.room_id', '=', 'rooms.id')
+        ->where('service_detail.id', $id)
+        ->select('service_detail.*', 'services.name as service_name', 'rooms.name as room_name')
+        ->first();
+        return response()->json($detail);
+    }
+
+    public function deleteDetailRecordService($id) {
+        $this->authLogin();
+        $service_detail = DB::table('service_detail')->where('id', $id)->first();
+        if ($service_detail) {
+            DB::table('service_detail')->where('id', $id)->delete();
+            return redirect()->back()->with('message', 'Xóa chi tiết dịch vụ thành công');
+        }
+        return redirect()->back()->with('error', 'Không tìm thấy chi tiết dịch vụ cần xóa!');
+    }
 }

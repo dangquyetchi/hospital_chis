@@ -7,7 +7,7 @@
     <style>
         body { font-family: DejaVu Sans, sans-serif; }
         .container { width: 100%; margin: auto; }
-        .header { text-align: center; margin-bottom: 20px; }
+        .header { margin-bottom: 20px; }
         .table { width: 100%; border-collapse: collapse; }
         .table, .table th, .table td { border: 1px solid black; }
         .table th, .table td { padding: 8px; text-align: left; }
@@ -17,15 +17,16 @@
 
 <div class="container">
     <div class="header">
-        <h2>Bệnh viện XYZ</h2>
-        <p>Địa chỉ: 123 Đường ABC, TP.HCM</p>
-        <p>SĐT: 0987 654 321</p>
+        <h2>Bệnh viện Hospital Chis</h2>
+        <p>Địa chỉ: 41A Đ. Phú Diễn, Phú Diễn, Bắc Từ Liêm, Hà Nội</p>
+        <p>SĐT: 0000000000</p>
         <hr>
         <h3>ĐƠN THUỐC</h3>
     </div>
 
     <p><strong>Bệnh nhân:</strong> {{ $pres->patient_name }}</p>
     <p><strong>Bác sĩ:</strong> {{ $pres->doctor_name }}</p>
+    <p><strong>Ngày tạo:</strong>{{ date('d-m-Y', strtotime( $pres->created_at))}}</p>
 
     <h4>Danh sách thuốc:</h4>
     <table class="table">

@@ -49,8 +49,8 @@
                   <td>{{ $loop->iteration }}</td>
                   <td>{{ $bhyt->card_number }}</td>
                   <td>{{ $bhyt->patient_name}}</td>
-                  <td>{{ $bhyt->issue_date }}</td>
-                  <td>{{ $bhyt->expiry_date }}</td>
+                  <td>{{ date('d-m-Y', strtotime($bhyt->issue_date))}}</td>
+                  <td>{{ date('d-m-Y', strtotime($bhyt->expiry_date))}}</td>
                   <td>{{ $bhyt->insurance_type }}</td>
                   <td>
                     @if($bhyt->status == 1)

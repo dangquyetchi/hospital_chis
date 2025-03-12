@@ -12,6 +12,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ServiceRecordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,7 +53,6 @@ Route::get('/print-clinic/{clinic_id}', [ClinicController::class, 'printClinic']
 Route::get('/clinic/payment/{clinic_id}/{status}', [ClinicController::class, 'updatePaymentStatus']);
 Route::get('/search-clinic', [ClinicController::class, 'searchClinic']);
 
-
 //Rooms
 Route::get('/add-room', [RoomController::class, 'addRoom']);
 Route::get('/list-room', [RoomController::class, 'listRoom']);
@@ -70,6 +70,20 @@ Route::get('/edit-service/{service_id}', [ServiceController::class, 'editService
 Route::get('/delete-service/{service_id}', [ServiceController::class, 'deleteService']);
 Route::post('/update-service/{service_id}', [ServiceController::class, 'updateService']);
 Route::get('/search-service', [ServiceController::class, 'searchService']);
+//RecordService
+Route::get('/list-record-service', [ServiceRecordController::class, 'listRecordService']);
+Route::get('/add-record-service', [ServiceRecordController::class, 'addServiceRecord']);
+Route::post('/save-record-service', [ServiceRecordController::class, 'saveServiceRecord']);
+Route::get('/edit-record-service/{service_record_id}', [ServiceRecordController::class, 'editServiceRecord']);
+Route::post('/update-record-service/{service_record_id}', [ServiceRecordController::class, 'updateServiceRecord']);
+Route::get('/delete-record-service/{service_record_id}', [ServiceRecordController::class, 'deleteServiceRecord']);
+    Route::get('/detail-record-service/{id}', [ServiceRecordController::class, 'detailService'])
+    ->name('record_service.detail');
+    Route::post('/save-detailservice/{id}', [DetailController::class, 'saveDetailRecordService']);
+    Route::get('/edit-service-detail/{id}', [DetailController::class, 'editDetailRecordService']);
+    Route::get('/delete-service-detail/{id}', [DetailController::class, 'deleteDetailRecordService']);
+    Route::get('/print-service/{id}', [ServiceRecordController::class, 'printService']);
+
 
 //medicine
 Route::get('/add-medicine', [MedicineController::class, 'addMedicine']);
@@ -79,7 +93,6 @@ Route::get('/edit-medicine/{medicine_id}', [MedicineController::class, 'editMedi
 Route::get('/delete-medicine/{medicine_id}', [MedicineController::class, 'deleteMedicine']);
 Route::post('/update-medicine/{medicine_id}', [MedicineController::class, 'updateMedicine']);
 Route::get('/search-medicine', [MedicineController::class, 'searchMedicine']);
-
 
 // prescription
 Route::get('/add-prescription', [PrescriptionController::class, 'addPrescription']);
@@ -118,7 +131,6 @@ Route::get('/delete-patient/{patient_id}', [PatientController::class, 'deletePat
 Route::get('/out-patient/{patient_id}', [PatientController::class, 'outPatient']);
 Route::get('/in-patient/{patient_id}', [PatientController::class, 'inPatient']);
 Route::get('/search-patient', [PatientController::class, 'searchPatient']);
-
 
 //bhyt
 Route::get('/list-bhyt', [BHYTController::class, 'listBhyt']);

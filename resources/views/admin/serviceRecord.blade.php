@@ -3,7 +3,7 @@
 <div class="table-agile-info">
     <div class="panel panel-default">
       <div class="panel-heading">
-        Danh sách đơn thuốc
+        Danh sách phiếu
       </div>
       <div class="row w3-res-tb">
           @if(Session::has('message'))
@@ -18,12 +18,12 @@
               </div>
           @endif
         <div class="col-sm-5 m-b-xs">
-          <a href="{{ url('/add-prescription')}}" class="btn btn-primary">Thêm đơn thuốc</a>             
+          <a href="{{ url('/add-record-service')}}" class="btn btn-primary">Thêm phiếu dịch vụ</a>             
         </div>
         <div class="col-sm-4">
         </div>
         <div class="col-sm-3">
-          <form action="{{ url('/search-prescription') }}" method="GET">
+          <form action="{{ url('/search-service-record') }}" method="GET">
             <div class="input-group">
                 <input type="text" name="keyword" class="input-sm form-control" placeholder="Tìm kiếm theo tên">
                 <span class="input-group-btn">
@@ -40,36 +40,44 @@
               <th>STT</th>
               <th>Tên bệnh nhân</th>
               <th>Ngày sinh</th>
-              <th>Bác sĩ theo dõi</th>
-              <th>Tổng tiền</th>
+              <th>Bác sĩ chỉ định</th>
+              <th>Phòng khám</th>
+              <th>Giá tiền</th>
               <th>Trạng thái</th>
-              <th>Ngày tạo</th>
+              <th>Ngày tạo phiếu</th>
               <th>Hành động</th>
             </tr>
           </thead>
           <tbody>
-            @foreach ($list_prescription as $key => $prescription)
+            @foreach ($list_record_service as $key => $service)
               <tr>
                   <td >{{ $loop->iteration }}</td>
-                  <td>{{ $prescription->patient_name }}</td>
-                  <td>{{ $prescription->patient_date }}</td>
-                  <td>{{ $prescription->doctor_name }}</td>
-                  <td>{{ number_format($prescription->total_medicine) }} VNĐ</td>
+                  <td>{{ $service->patient_name }}</td>
+                  <td>{{ $service->patient_date }}</td>
+                  <td>{{ $service->doctor_name }}</td>
+                  <td>{{ $service->room_name }}</td>
+                  <td> 
+                    @if ($service->price == 0)
+                      <span>Chưa có dịch vụ khám</span>
+                    @else
+                      {{ number_format($service->price) }} VNĐ
+                    @endif
+                  </td>
                   <td>
-                    @if ($prescription->status == 0)
+                    @if ($service->payment_status == 0)
                       <span class="badge bg-warning">Chưa thanh toán</span>
                     @else
                       <span class="badge bg-success">Đã thanh toán</span>
                     @endif
                   </td>
-                  <td>{{  date('d-m-Y', strtotime($prescription->created_at))  }}</td>
+                  <td>{{ date('d-m-Y', strtotime($service->created_at))}}</td>
                   <td>
-                      <a href="{{ url('/edit-prescription/' . $prescription->id) }}" class="btn btn-sm btn-info">Sửa</a>
-                      <a href="javascript:void(0);" onclick="confirmDelete({{ $prescription->id }})" class="btn btn-sm btn-danger">Xóa</a>
-                      <a href="{{ url('/detail-prescription/' . $prescription->id) }}">
+                      <a href="{{ url('/edit-record-service/' . $service->id) }}" class="btn btn-sm btn-info">Sửa</a>
+                      <a href="javascript:void(0);" onclick="confirmDelete({{ $service->id }})" class="btn btn-sm btn-danger">Xóa</a>
+                      <a href="{{ url('/detail-record-service/' . $service->id) }}">
                         <i class="fa-solid fa-circle-info" style="font-size: 20px;"></i>
                       </a>
-                      <a href="{{ url('/print-prescription/' . $prescription->id) }}">
+                      <a href="{{ url('/print-service/' . $service->id) }}">
                         <i class="fa-solid fa-print" style="font-size: 20px;"></i>
                       </a> 
                   </td>
@@ -95,7 +103,7 @@
             cancelButtonText: "Hủy",
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "/delete-prescription/" + id;
+                window.location.href = "/delete-record-service/" + id;
             }
         });
     }

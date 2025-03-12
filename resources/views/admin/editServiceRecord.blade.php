@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card shadow-lg">
                 <div class="card-header bg-primary text-white text-center">
-                    <h4>Cập nhật Đơn Thuốc</h4>
+                    <h4>Cập nhật phiếu</h4>
                 </div>
                 <div class="card-body">
                     @if(Session::has('message'))
@@ -16,7 +16,7 @@
                         {{ Session::put('message', null) }}
                     @endif
 
-                    <form action="{{ url('/update-prescription/'.$edit_prescription->id) }}" method="POST">
+                    <form action="{{ url('/update-record-service/'.$edit_service_record->id) }}" method="POST">
                         @csrf
 
                         <div class="mb-3">
@@ -25,7 +25,7 @@
                                 <option value="">Chọn bệnh nhân</option>
                                 @foreach($patients as $patient)
                                     <option value="{{ $patient->id }}" 
-                                        {{ $patient->id == $edit_prescription->patient_id ? 'selected' : '' }}
+                                        {{ $patient->id == $edit_service_record->patient_id ? 'selected' : '' }}
                                         data-birth="{{ $patient->birth_date }}">
                                         {{ $patient->name }}
                                     </option>
@@ -36,7 +36,7 @@
                         <div class="mb-3">
                             <label>Ngày sinh</label>
                             <input type="date" name="patient_date" id="patient_date" class="form-control" 
-                                value="{{ old('patient_date', $edit_prescription->birth_date ?? '') }}" required>
+                                value="{{ old('patient_date', $edit_service_record->birth_date ?? '') }}" required>
                         </div>
 
                         <script>
@@ -48,13 +48,26 @@
                         </script>
 
                         <div class="mb-3">
-                            <label>Bác sĩ phụ trách</label>
+                            <label>Bác sĩ chỉ định</label>
                             <select name="doctor_id" class="form-control" required>
                                 <option value="">Chọn bác sĩ</option>
                                 @foreach($doctors as $doctor)
                                     <option value="{{ $doctor->id }}" 
-                                        {{ $doctor->id == $edit_prescription->doctor_id ? 'selected' : '' }}>
+                                        {{ $doctor->id == $edit_service_record->doctor_id ? 'selected' : '' }}>
                                         {{ $doctor->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Phòng khám</label>
+                            <select name="room_id" class="form-control" required>
+                                <option value="">Chọn bác sĩ</option>
+                                @foreach($rooms as $room)
+                                    <option value="{{ $room->id }}" 
+                                        {{ $room->id == $edit_service_record->room_id ? 'selected' : '' }}>
+                                        {{ $room->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -62,7 +75,7 @@
 
                         <div class="text-center">
                             <button type="submit" class="btn btn-success">Cập nhật</button>
-                            <a href="{{ url('/list-prescription') }}" class="btn btn-secondary">Quay lại</a>
+                            <a href="{{ url('/list-record-service') }}" class="btn btn-secondary">Quay lại</a>
                         </div>
                     </form>
                 </div>

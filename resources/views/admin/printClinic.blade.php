@@ -38,7 +38,7 @@
             <h2 class="text-center">Thông Tin Giấy Khám Bệnh</h2>
             <p><strong>Mã:</strong> {{ $clinic->id }}</p>
             <p><strong>Tên bệnh nhân:</strong> {{ $clinic->patient_name }}</p>
-            <p><strong>Ngày khám:</strong> {{ $clinic->examination_date }}</p>
+            <p><strong>Ngày khám:</strong> {{date('d-m-Y', strtotime($clinic->examination_date))}}</p>
             <p><strong>Phòng khám:</strong> {{ $clinic->room_name }}</p>
             <p><strong>Triệu chứng ban đầu:</strong> {{ $clinic->diagnosis }}</p>
     
