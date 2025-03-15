@@ -59,7 +59,13 @@
                   <td>{{ $medicine->type }}</td>
                   <td>{{ number_format($medicine->price) }} VNĐ</td>
                   <td>{{ number_format($medicine->sale_price) }} VNĐ</td>
-                  <td>{{ $medicine->quantity }}</td>
+                  <td>
+                      @if ($medicine->quantity > 0)
+                          {{ $medicine->quantity }}
+                      @else
+                          <span class="text-danger">Hết hàng</span>
+                      @endif
+                  </td>
                   <td>{{ $medicine->medicine_unit }}</td>
                   <td>{{ $medicine->description }}</td>
                   <td>{{ date('d-m-Y', strtotime($medicine->created_at)) }}</td>

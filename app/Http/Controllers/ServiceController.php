@@ -87,7 +87,7 @@ class ServiceController extends Controller
         $search_service = DB::table('services')
         ->where('name', 'like', '%'.$keywords.'%')
         ->orWhere('code', 'like', '%'.$keywords.'%')
-        ->get();
+        ->paginate(5);
         return view('admin.listservice')->with('list_service', $search_service);
     }
     

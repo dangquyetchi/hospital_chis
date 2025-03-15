@@ -145,7 +145,7 @@ class ClinicController extends Controller
             $list_clinic->where('medical_records.payment_status', $query);
         }
 
-        $list_clinic = $list_clinic->get();
+        $list_clinic = $list_clinic->paginate(5);
 
         return view('admin.listclinic', compact('list_clinic'));
     }

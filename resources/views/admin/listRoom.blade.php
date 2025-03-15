@@ -40,6 +40,7 @@
               <th>STT</th>
               <th>Mã Phòng</th>
               <th>Tên Phòng</th>
+              <th>Loại phòng</th>
               <th>Hành động</th>
             </tr>
           </thead>
@@ -49,6 +50,25 @@
                   <td>{{ $loop->iteration }}</td>
                   <td>{{ $room->code }}</td>
                   <td>{{ $room->name }}</td>
+                  <td>
+                    @switch($room->room_type)
+                      @case(1)
+                          <span class="text-primary">Phòng khám</span>
+                          @break
+                      @case(2)
+                          <span class="text-danger">Phòng bệnh loại 1</span>
+                          @break
+                      @case(3)
+                          <span class="text-danger">Phòng vip</span>
+                          @break
+                      @case(4)
+                          <span class="text-danger">Phòng chức năng</span>
+                          @break
+                      @default
+                          <span class="text-secondary">Loại phòng chưa xác định</span>
+                  @endswitch
+ 
+                  </td>
                   <td>
                       <a href="{{ url('/edit-room/' . $room->id) }}" class="btn btn-sm btn-info">Sửa</a>
                       <a href="javascript:void(0);" onclick="confirmDelete({{ $room->id }})" class="btn btn-sm btn-danger">Xóa</a>
@@ -63,10 +83,11 @@
           <div class="col-sm-5 text-center">
             <small class="text-muted inline m-t-sm m-b-sm">Hiển thị {{ $list_room->count() }} phòng</small>
           </div>
-          {{-- <div class="col-sm-7 text-right text-center-xs">                
-            {{ $list_room->links() }}
-          </div> --}}
-        </div>
+          <div class="col-sm-7 text-right text-center-xs" style="font-size: 10px;  padding: 3px 8px;">                
+            <div class="pagination">
+              {{ $list_room->links('pagination::bootstrap-4') }}
+            </div>           
+          </div>
       </footer>
     </div>
   </div>

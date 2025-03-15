@@ -134,7 +134,7 @@
           <div class="col-sm-7 text-right text-center-xs" style="font-size: 10px;  padding: 3px 8px;">                
             <div class="pagination">
               {{ $list_clinic->links('pagination::bootstrap-4') }}
-          </div>           
+            </div>           
           </div>
         </div>
       </footer>

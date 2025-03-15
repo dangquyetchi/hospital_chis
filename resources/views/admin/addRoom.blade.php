@@ -31,6 +31,16 @@
                         <input type="text" name="room_name" class="form-control" placeholder="Nhập tên phòng" required>
                     </div>
 
+                    <div class="form-group">
+                        <label>Loại phòng</label>
+                        <select name="room_type" class="form-control input-sm m-bot15">
+                            <option value="1">Phòng khám</option>
+                            <option value="2">Phòng bệnh loại 1</option>
+                            <option value="3">Phòng vip</option>
+                            <option value="4">Phòng chức năng</option>
+                        </select>
+                    </div>
+
                     <button type="submit" class="btn btn-info">Thêm phòng</button>
                 </form>
             </div>

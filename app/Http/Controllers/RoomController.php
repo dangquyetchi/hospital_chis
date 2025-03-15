@@ -22,7 +22,7 @@ class RoomController extends Controller
 
     public function listRoom(){
         $this->authLogin();
-        $list_room = DB::table('rooms')->get(); 
+        $list_room = DB::table('rooms')->paginate(5); 
         return view('admin.listroom')->with('list_room', $list_room); 
     }
 
@@ -40,10 +40,11 @@ class RoomController extends Controller
         $data = [
             'code' => $request->room_code,
             'name' => $request->room_name,
+            'room_type' => $request->room_type,
         ];
         DB::table('rooms')->insert($data);
         Session::put('message', 'Thêm phòng thành công');
-        return Redirect::to('add-room');
+        return Redirect::to('list-room');
     }
 
     public function editRoom($room_id){
@@ -63,6 +64,7 @@ class RoomController extends Controller
         $data = [
             'code' => $request->room_code,
             'name' => $request->room_name,
+            'room_type' => $request->room_type,
         ];
         DB::table('rooms')->where('id', $room_id)->update($data);
         Session::put('message', 'Cập nhật phòng thành công');
@@ -82,7 +84,7 @@ class RoomController extends Controller
         $search_room = DB::table('rooms')
         ->where('name', 'like', '%' . $keywords . '%')
         ->orWhere('code', 'like', '%' . $keywords . '%')
-        ->get();
+        ->paginate(5);
         return view('admin.listroom')->with('list_room', $search_room);
     }
 }

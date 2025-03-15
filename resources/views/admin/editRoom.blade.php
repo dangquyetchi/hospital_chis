@@ -32,6 +32,15 @@
                             <label for="NameRoom" class="form-label">Tên phòng</label>
                             <input type="text" value="{{ $edit_value->name }}" name="room_name" class="form-control" id="NameRoom">
                         </div>
+                        <div class="mb-3">
+                            <label for="TypeRoom" class="form-label">Loại phòng</label>
+                            <select name="room_type" class="form-control" id="TypeRoom">
+                                <option value="1" @if($edit_value->room_type == 1) selected @endif>Phòng khám</option>
+                                <option value="2" @if($edit_value->room_type == 2) selected @endif>Phòng bệnh loại 1</option>
+                                <option value="3" @if($edit_value->room_type == 3) selected @endif>Phòng vip</option>
+                                <option value="4" @if($edit_value->room_type == 4) selected @endif>Phòng chức năng</option>
+                            </select>
+                        </div>
                         <div class="text-center">
                             <button type="submit" class="btn btn-success">Cập nhật</button>
                         </div>
