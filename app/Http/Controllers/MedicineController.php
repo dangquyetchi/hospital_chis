@@ -23,7 +23,7 @@ class MedicineController extends Controller
 
     public function listMedicine(){
         $this->authLogin();
-        $list_medicine = DB::table('medicines')->get(); 
+        $list_medicine = DB::table('medicines')->paginate(5); 
         return view('admin.listmedicine')->with('list_medicine', $list_medicine); 
     }
 
@@ -96,7 +96,7 @@ class MedicineController extends Controller
         $keyword = $request->input('keyword');
         $search_medicine = DB::table('medicines')
         ->where('name', 'like', '%'.$keyword.'%')
-        ->orWhere('code', 'like', '%'.$keyword.'%')->get();
+        ->orWhere('code', 'like', '%'.$keyword.'%')->paginate(5);
         return view('admin.listmedicine')->with('list_medicine', $search_medicine);
     }
 }

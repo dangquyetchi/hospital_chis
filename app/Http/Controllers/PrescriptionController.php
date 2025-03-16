@@ -34,7 +34,7 @@ class PrescriptionController extends Controller
                            'doctors.name as doctor_name',
                            'patients.name as patient_name',
                            'patients.birth_date as patient_date') 
-        ->get();
+        ->paginate(5);
         return view('admin.listprescription')->with('list_prescription', $list_prescription);
     }
 
@@ -122,7 +122,7 @@ class PrescriptionController extends Controller
                 'patients.name as patient_name',
                 'patients.birth_date as patient_date')
             ->where('patients.name', 'like', '%' . $search . '%')
-            ->get();
+            ->paginate(5);
         return view('admin.listprescription')->with('list_prescription', $prescriptions);
     }
     public function printPrescription($id): mixed

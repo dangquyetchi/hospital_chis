@@ -79,6 +79,16 @@
         </table>
       </div>
       <footer class="panel-footer">
+        <div class="row">
+          <div class="col-sm-5 text-center">
+            <small class="text-muted inline m-t-sm m-b-sm">Tổng {{ $list_prescription->count() }} đơn thuốc</small>
+          </div>
+          <div class="col-sm-7 text-right text-center-xs" style="font-size: 10px;  padding: 3px 8px;">                
+            <div class="pagination">
+              {{ $list_prescription->links('pagination::bootstrap-4') }}
+            </div>           
+          </div>
+        </div>
       </footer>
     </div>
   </div>

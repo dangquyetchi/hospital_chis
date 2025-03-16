@@ -22,7 +22,7 @@ class PatientController extends Controller
     }
     public function listPatient() {
         $this->authLogin();
-        $list_patient = DB::table('patients')->get();
+        $list_patient = DB::table('patients')->paginate(5);
         return view('admin.listpatient')->with('list_patient', $list_patient);
     }
     public function addPatient(){
@@ -155,7 +155,7 @@ class PatientController extends Controller
         $list_patient = DB::table('patients')
                         ->where('name', 'LIKE', "%$keyword%")
                         ->orWhere('id', 'LIKE', "%$keyword%")
-                        ->get();
+                        ->paginate(5);
         return view('admin.listpatient', compact('list_patient'));
     }
 }

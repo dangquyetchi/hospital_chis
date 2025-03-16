@@ -25,7 +25,7 @@ class DoctorController extends Controller
         $list_doctor = DB::table('doctors')
             ->leftJoin('rooms', 'doctors.room_id', '=', 'rooms.id')
             ->select('doctors.*', 'rooms.name as room_name') 
-            ->get();
+            ->paginate(5);
     
         return view('admin.listdoctor')->with('list_doctor', $list_doctor);
     }
@@ -86,7 +86,7 @@ class DoctorController extends Controller
            ->leftJoin('rooms', 'doctors.room_id', '=', 'rooms.id')
            ->select('doctors.*', 'rooms.name as room_name') 
            ->where('doctors.name', 'like', '%'.$keyword.'%')
-           ->get();
+           ->paginate(5);
        return view('admin.listdoctor')->with('list_doctor', $list_doctor)->with('keyword', $keyword);
    }
     

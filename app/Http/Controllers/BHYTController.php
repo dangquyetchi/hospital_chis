@@ -22,7 +22,7 @@ class BHYTController extends Controller
 
     public function listBhyt() {
         $this->authLogin();
-        $list_bhyt = DB::table('health_insurances')->get();
+        $list_bhyt = DB::table('health_insurances')->paginate(5);
         return view ('admin.listbhyt')->with('list_bhyt', $list_bhyt);
     }
 
@@ -64,7 +64,7 @@ class BHYTController extends Controller
         $list_bhyt = DB::table('health_insurances')
                         ->where('card_number', 'LIKE', "%$keyword%")
                         ->orWhere('patient_name', 'LIKE', "%$keyword%")
-                        ->get();
+                        ->paginate(5);
 
         return view('admin.listbhyt', compact('list_bhyt'));
     }

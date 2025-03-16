@@ -53,7 +53,7 @@
               <tr>
                   <td >{{ $loop->iteration }}</td>
                   <td>{{ $service->patient_name }}</td>
-                  <td>{{ $service->patient_date }}</td>
+                  <td>{{ date('d-m-Y', strtotime($service->patient_date)) }}</td>
                   <td>{{ $service->doctor_name }}</td>
                   <td>{{ $service->room_name }}</td>
                   <td> 
@@ -70,7 +70,7 @@
                       <span class="badge bg-success">Đã thanh toán</span>
                     @endif
                   </td>
-                  <td>{{ date('d-m-Y', strtotime($service->created_at))}}</td>
+                  <td>{{ date('d-m-Y', strtotime($service->created_at)) }}</td>
                   <td>
                       <a href="{{ url('/edit-record-service/' . $service->id) }}" class="btn btn-sm btn-info">Sửa</a>
                       <a href="javascript:void(0);" onclick="confirmDelete({{ $service->id }})" class="btn btn-sm btn-danger">Xóa</a>
