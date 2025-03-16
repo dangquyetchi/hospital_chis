@@ -23,7 +23,7 @@
         <div class="col-sm-4">
         </div>
         <div class="col-sm-3">
-          <form action="{{ url('/search-service-record') }}" method="GET">
+          <form action="{{ url('/search-record-service') }}" method="GET">
             <div class="input-group">
                 <input type="text" name="keyword" class="input-sm form-control" placeholder="Tìm kiếm theo tên">
                 <span class="input-group-btn">
@@ -87,6 +87,16 @@
         </table>
       </div>
       <footer class="panel-footer">
+        <div class="row">
+          <div class="col-sm-5 text-center">
+            <small class="text-muted inline m-t-sm m-b-sm">Hiển thị {{ $list_record_service->count() }} phiếu</small>
+          </div>
+          <div class="col-sm-7 text-right text-center-xs" style="font-size: 10px;  padding: 3px 8px;">                
+            <div class="pagination">
+              {{ $list_record_service->links('pagination::bootstrap-4') }}
+            </div>           
+          </div>
+        </div>
       </footer>
     </div>
   </div>

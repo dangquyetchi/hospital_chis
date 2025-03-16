@@ -67,7 +67,7 @@ class PrescriptionController extends Controller
         $data = [
             'doctor_id' => $request->doctor_room,
             'patient_id' => $request->name_id,
-            'total_medicine' => 0,
+            'price' => 0,
             'status' => 0,
             'created_at' => date('Y-m-d H:i:s'),
         ];

@@ -29,19 +29,6 @@ class DetailController extends Controller
         return response()->json($detail);
     }
 
-    public function deletePrescriptionDetail($detail_id) {
-        $this->authLogin();
-        $prescription_detail = DB::table('prescription_medicines')->where('id', $detail_id)->first();
-        if ($prescription_detail) {
-            DB::table('medicines')->where('id', $prescription_detail->medicine_id)
-                ->increment('quantity', $prescription_detail->quantity);
-    
-            DB::table('prescription_medicines')->where('id', $detail_id)->delete();
-            return redirect()->back()->with('message', 'Xóa thuốc thành công');
-        }
-        return redirect()->back()->with('error', 'Không tìm thấy thuốc cần xóa!');
-    }
-
     public function saveDetailPrescription(Request $request)
     {
         $medicine = DB::table('medicines')->where('id', $request->input('medicine_id'))->first();
@@ -99,11 +86,31 @@ class DetailController extends Controller
             ->sum('price');
 
         DB::table('prescriptions')->where('id', $prescription_id)
-            ->update(['total_medicine' => $total_medicine]);
+            ->update(['price' => $total_medicine]);
 
         return redirect()->back()->with('message', $id ? 'Cập nhật thành công!' : 'Thêm mới thành công!');
     }
 
+    public function deletePrescriptionDetail($detail_id) {
+        $this->authLogin();
+        $prescription_detail = DB::table('prescription_medicines')->where('id', $detail_id)->first();
+        
+        if ($prescription_detail) {
+            DB::table('medicines')->where('id', $prescription_detail->medicine_id)
+                ->increment('quantity', $prescription_detail->quantity);
+    
+            DB::table('prescription_medicines')->where('id', $detail_id)->delete();
+            
+            DB::table('prescriptions')->where('id', $prescription_detail->prescription_id)
+                ->decrement('price', $prescription_detail->price);
+
+            return redirect()->back()->with('message', 'Xóa thuốc thành công');
+        }
+        
+        return redirect()->back()->with('error', 'Không tìm thấy thuốc cần xóa!');
+    }
+
+    // chi tiết dịch vụ
     public function saveDetailRecordService(Request $request) {
         $this->authLogin();
         $id = $request->input('id');
@@ -112,7 +119,6 @@ class DetailController extends Controller
             'service_id' => $request->service_id,
             'room_id' => $request->room_id,
         ];
-    
         if ($id) { 
             // Nếu có ID -> Cập nhật
             DB::table('service_detail')->where('id', $id)->update($data);
@@ -126,7 +132,6 @@ class DetailController extends Controller
             ]);
             $message = 'Thêm mới thành công!';
         }
-    
         Session::put('message', $message);
         return redirect()->back()->with('message', $message);
     }

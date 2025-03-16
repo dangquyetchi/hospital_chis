@@ -54,7 +54,7 @@
                   <td>{{ $prescription->patient_name }}</td>
                   <td>{{ $prescription->patient_date }}</td>
                   <td>{{ $prescription->doctor_name }}</td>
-                  <td>{{ number_format($prescription->total_medicine) }} VNĐ</td>
+                  <td>{{ number_format($prescription->price) }} VNĐ</td>
                   <td>
                     @if ($prescription->status == 0)
                       <span class="badge bg-warning">Chưa thanh toán</span>

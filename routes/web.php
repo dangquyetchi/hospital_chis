@@ -83,6 +83,7 @@ Route::get('/delete-record-service/{service_record_id}', [ServiceRecordControlle
     Route::get('/edit-service-detail/{id}', [DetailController::class, 'editDetailRecordService']);
     Route::get('/delete-service-detail/{id}', [DetailController::class, 'deleteDetailRecordService']);
     Route::get('/print-service/{id}', [ServiceRecordController::class, 'printService']);
+    Route::get('/search-record-service', [ServiceRecordController::class, 'searchRecordService']);
 
 
 //medicine

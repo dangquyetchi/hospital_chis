@@ -96,7 +96,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <a href="{{ url('/list-service')}}"  class="{{ Request::is('list-service') ? 'active' : '' }}">Dịch vụ khám</a>
                 </li>
                 <li>
-                    <a href="{{ url('/list-room')}}" class="{{ Request::is('list-room') ? 'active' : '' }}">Phòng khám</a>
+                    <a href="{{ url('/list-room')}}" class="{{ Request::is('list-room') ? 'active' : '' }}">Phòng</a>
                 </li>
                 <li>
                     <a href="{{ url('/list-medicine')}}" class="{{ Request::is('list-medicine') ? 'active' : '' }}">Kho thuốc</a>

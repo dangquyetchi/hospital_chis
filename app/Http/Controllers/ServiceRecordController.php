@@ -34,7 +34,7 @@ class ServiceRecordController extends Controller
                             'rooms.name as room_name',
                            'patients.name as patient_name',
                            'patients.birth_date as patient_date') 
-        ->get();                
+        ->paginate(5);                
         return view('admin.servicerecord')->with('list_record_service', $list_record_service);
     }
 
@@ -49,11 +49,12 @@ class ServiceRecordController extends Controller
 
     public function saveServiceRecord(Request $request) {
         $this->authLogin();
+        $sevice_price = DB::table('services')->where('id', $request->price)->first();
         $data = [
             'patient_id' => $request->patient_id,
             'doctor_id' => $request->doctor_id,
             'room_id' => $request->room_id,
-            'price' => 0,
+            'price' => $sevice_price->price,
             'payment_status' => 0,
             'created_at' => date('Y-m-d H:i:s'),
         ];
@@ -135,5 +136,24 @@ class ServiceRecordController extends Controller
 
         $pdf = PDF::loadView('admin.printservicerecord', compact( 'service_detail', 'service_record'));
         return $pdf->stream('phieu-dich-vu.pdf'); 
+    }
+
+    public function searchRecordService(Request $request) {
+        $this->authLogin();
+        $keywords = $request->input('keyword');
+        $list_record_service = DB::table('service_records')
+        ->leftJoin('doctors', 'service_records.doctor_id', '=', 'doctors.id')
+        ->leftJoin('rooms', 'service_records.room_id', '=', 'rooms.id')
+        ->leftJoin('patients', 'service_records.patient_id', '=', 'patients.id')
+        ->select('service_records.*',
+                           'doctors.name as doctor_name',
+                            'rooms.name as room_name',
+                           'patients.name as patient_name',
+                           'patients.birth_date as patient_date') 
+        ->where('patients.name', 'like', '%'.$keywords.'%')
+        ->orWhere('doctors.name', 'like', '%'.$keywords.'%')
+        ->orWhere('rooms.name', 'like', '%'.$keywords.'%')
+        ->paginate(5);                
+        return view('admin.servicerecord')->with('list_record_service', $list_record_service);
     }
 }   
