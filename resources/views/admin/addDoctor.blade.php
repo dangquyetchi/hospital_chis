@@ -51,7 +51,7 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-info">Thêm thuốc</button>
+                    <button type="submit" class="btn btn-info">Thêm </button>
                 </form>
             </div>
         </div>

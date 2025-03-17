@@ -35,11 +35,28 @@
                             <label for="examination_date" class="form-label">Ngày khám</label>
                             <input type="date" value="{{ $edit_clinic->examination_date }}" name="examination_date" class="form-control" id="examination_date">
                         </div>
-                        
+
+                        {{-- <div class="mb-3">
+                            <label for="room_name" class="form-label">Phòng khám</label>
+                            <input type="text" value="{{ $edit_clinic->room_name }}" name="room_name" class="form-control" id="room_name">
+                        </div>
+                         --}}
+                         <div class="mb-3">
+                            <label class="form-label">Phòng</label>
+                            <select name="doctor_room" class="form-control" required>
+                                @foreach ($rooms as $room)
+                                    <option value="{{ $room->id }}" {{ $edit_clinic->room_id == $room->id ? 'selected' : '' }}>
+                                        {{ $room->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <div class="mb-3">
                             <label for="price_exam" class="form-label">Giá khám</label>
                             <input type="number" value="{{ $edit_clinic->price_exam }}" name="price_exam" class="form-control" id="price_exam" min="1">
                         </div>
+
                         <div class="mb-3">
                             <label for="diagnosis" class="form-label">Triệu chứng</label>
                             <input type="text" value="{{ $edit_clinic->diagnosis }}" name="diagnosis" class="form-control" id="diagnosis">

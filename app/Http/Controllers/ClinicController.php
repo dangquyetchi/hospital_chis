@@ -69,8 +69,13 @@ class ClinicController extends Controller
     }
     public function editClinic($clinic_id) {
         $this->authLogin();
-        $edit_clinic = DB::table('medical_records')->where('id', $clinic_id)->first();
-        return view('admin.editclinic', compact('edit_clinic'));
+        $rooms = DB::table('rooms')->get(); 
+        $edit_clinic = DB::table('medical_records')
+        ->where('medical_records.id', $clinic_id)
+        ->leftJoin('rooms', 'medical_records.room_id' , '=', 'rooms.id')
+        ->select('medical_records.*', 'rooms.name as room_name')
+        ->first();
+        return view('admin.editclinic', compact('edit_clinic', 'rooms'));
     }
     public function updateClinic(Request $request, $clinic_id) {
         $this->authLogin();
@@ -80,6 +85,7 @@ class ClinicController extends Controller
             'examination_date' => $request->examination_date,
             'price_exam' => $request->price_exam,
             'diagnosis' => $request->diagnosis,
+            'room_id' => $request->doctor_room,
         ];
 
         DB::table('medical_records')->where('id', $clinic_id)->update($data);

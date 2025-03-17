@@ -71,7 +71,7 @@
       <footer class="panel-footer">
         <div class="row">
           <div class="col-sm-5 text-center">
-            {{-- <small class="text-muted inline m-t-sm m-b-sm">Hiển thị {{ $list_clinic->count() }} giấy</small> --}}
+            <small class="text-muted inline m-t-sm m-b-sm"> </small>
           </div>
           <div class="col-sm-7 text-right text-center-xs" style="font-size: 10px;  padding: 3px 8px;">                
             <div class="pagination">
