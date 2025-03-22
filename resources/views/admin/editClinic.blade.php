@@ -32,6 +32,11 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="birth_date" class="form-label">Ngày sinh</label>
+                            <input type="date" value="{{ $edit_clinic->birth_date }}" name="birth_date" class="form-control" id="birth_date">
+                        </div>
+
+                        <div class="mb-3">
                             <label for="examination_date" class="form-label">Ngày khám</label>
                             <input type="date" value="{{ $edit_clinic->examination_date }}" name="examination_date" class="form-control" id="examination_date">
                         </div>

@@ -21,13 +21,13 @@
 
                         <div class="mb-3">
                             <label>Tên bệnh nhân</label>
-                            <select name="patient_id" id="patient_select" class="form-control" required>
+                            <select name="medical_id" id="patient_select" class="form-control" required>
                                 <option value="">Chọn bệnh nhân</option>
                                 @foreach($patients as $patient)
                                     <option value="{{ $patient->id }}" 
-                                        {{ $patient->id == $edit_service_record->patient_id ? 'selected' : '' }}
+                                        {{ $patient->id == $edit_service_record->medical_id ? 'selected' : '' }}
                                         data-birth="{{ $patient->birth_date }}">
-                                        {{ $patient->name }}
+                                        {{ $patient->patient_name }}
                                     </option>
                                 @endforeach
                             </select>

@@ -121,7 +121,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </a>
                     <ul class="sub">
 						<li><a href="{{ url('/add-category')}}">Thu ngân</a></li>
-						<li><a href="{{ url('/list-category')}}">Báo cáo - Thống kê</a></li>
+						{{-- <li><a href="{{ url('/list-category')}}">Báo cáo - Thống kê</a></li> --}}
                     </ul>
                 </li>
             </ul>            

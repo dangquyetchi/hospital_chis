@@ -30,6 +30,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Ngày sinh</label>
+                        <input type="date" name="birth_date" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
                         <label>Ngày khám</label>
                         <input type="date" name="examination_date" class="form-control" required>
                     </div>

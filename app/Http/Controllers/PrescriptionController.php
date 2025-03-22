@@ -29,11 +29,11 @@ class PrescriptionController extends Controller
         $this->authLogin();
         $list_prescription = DB::table('prescriptions')
         ->leftJoin('doctors', 'prescriptions.doctor_id', '=', 'doctors.id')
-        ->leftJoin('patients', 'prescriptions.patient_id', '=', 'patients.id')
+        ->leftJoin('medical_records', 'prescriptions.medical_id', '=', 'medical_records.id')
         ->select('prescriptions.*',
                            'doctors.name as doctor_name',
-                           'patients.name as patient_name',
-                           'patients.birth_date as patient_date') 
+                           'medical_records.patient_name as patient_name',
+                           'medical_records.birth_date as birth_date') 
         ->paginate(5);
         return view('admin.listprescription')->with('list_prescription', $list_prescription);
     }
@@ -54,24 +54,29 @@ class PrescriptionController extends Controller
     public function addPrescription() {
         $this->authLogin();
         $doctors = DB::table('doctors')->get();
-        $patients = DB::table('patients')->get();
+        $patients = DB::table('medical_records')
+                    ->where('payment_status', 1)
+                    ->get();
         return view('admin.addprescription', compact('doctors', 'patients'));
     }
 
     public function savePrescription(Request $request) {
         $this->authLogin();
-        $prescription = DB::table('prescriptions')->where('patient_id', $request->name_id)->first();
+        $prescription = DB::table('prescriptions')->where('medical_id', $request->name_id)->first();
         if($prescription) {
             return redirect()->back()->with('error', 'Bệnh nhân đã có đơn thuốc!');
         }
         $data = [
             'doctor_id' => $request->doctor_room,
-            'patient_id' => $request->name_id,
+            'medical_id' => $request->name_id,
             'price' => 0,
             'status' => 0,
             'created_at' => date('Y-m-d H:i:s'),
         ];
         DB::table('prescriptions')->insert($data);
+        DB::table('service_records')
+        ->where('id', $request->medical_id)
+        ->update(['status' => 1]);
         Session::put('message', 'Thêm đơn thuốc thành công');
         return Redirect::to('list-prescription');
     }
@@ -80,7 +85,9 @@ class PrescriptionController extends Controller
         $this->authLogin();
         $edit_prescription = DB::table('prescriptions')->where('id', $prescription_id)->first();
         $doctors = DB::table('doctors')->get();
-        $patients = DB::table('patients')->get();
+        $patients = DB::table('medical_records')
+                    ->where('payment_status', 1)
+                    ->get();
         if (!$edit_prescription) {
             return redirect()->back()->with('message', 'Không tìm thấy đơn thuốc.');
         }
@@ -91,7 +98,7 @@ class PrescriptionController extends Controller
         $this->authLogin();
         $data = [
             'doctor_id' => $request->doctor_id,
-            'patient_id' => $request->patient_id,
+            'medical_id' => $request->medical_id,
             'status' => 0,
         ];
         DB::table('prescriptions')->where('id', $precription_id)->update($data);

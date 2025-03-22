@@ -68,6 +68,7 @@
               {{-- <th>Mã</th> --}}
               <th>Tên bệnh nhân</th>
               <th>Giới tính</th>
+              <th>Ngày sinh</th>
               <th>Triệu trứng</th>
               <th>Phòng khám</th>
               <th>Ngày khám</th>
@@ -86,6 +87,7 @@
                   {{-- <td>{{ $record->id }}</td> --}}
                   <td>{{ $record->patient_name }}</td>
                   <td>{{ $record->gender }}</td>
+                  <td>{{ date('d-m-Y', strtotime($record->birth_date)) }}</td>
                   <td>{{ $record->diagnosis }}</td>
                   <td>{{ $record->room_name ?? 'Chưa có' }}</td>
                   <td>{{ date('d-m-Y', strtotime($record->examination_date ))}}</td>

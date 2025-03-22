@@ -23,10 +23,10 @@
                     @csrf
                     <div class="form-group">
                         <label>Tên bệnh nhân</label>
-                        <select name="patient_id" id="patient_select" class="form-control" required>
+                        <select name="medical_id" id="patient_select" class="form-control" required>
                             <option value="">Chọn bệnh nhân</option>
                             @foreach($patients as $patient)
-                                <option value="{{ $patient->id }}" data-birth="{{ $patient->birth_date }}">{{ $patient->name }}</option>
+                                <option value="{{ $patient->id }}" data-birth="{{ $patient->birth_date }}">{{ $patient->patient_name }}</option>
                             @endforeach
                         </select>
                     </div>

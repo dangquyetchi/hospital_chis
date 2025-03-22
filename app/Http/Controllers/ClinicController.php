@@ -53,6 +53,7 @@ class ClinicController extends Controller
         $data = [
             'patient_name' => $request->patient_name,
             'gender' => $request->patient_gender,
+            'birth_date' => $request->birth_date,
             'examination_date' => $request->examination_date,
             'diagnosis' => $request->diagnosis,
             'price_exam' => $request->price_exam,
@@ -82,6 +83,7 @@ class ClinicController extends Controller
         $data = [
             'patient_name' => $request->patient_name,
             'gender' => $request->patient_gender,
+            'birth_date' => $request->birth_date,
             'examination_date' => $request->examination_date,
             'price_exam' => $request->price_exam,
             'diagnosis' => $request->diagnosis,
@@ -150,9 +152,7 @@ class ClinicController extends Controller
         } elseif ($searchType == "payment_status") {
             $list_clinic->where('medical_records.payment_status', $query);
         }
-
         $list_clinic = $list_clinic->paginate(5);
-
         return view('admin.listclinic', compact('list_clinic'));
     }
 

@@ -44,6 +44,7 @@
               <th>Phòng khám</th>
               <th>Giá tiền</th>
               <th>Trạng thái</th>
+              <th>Thanh toán</th>
               <th>Ngày tạo phiếu</th>
               <th>Hành động</th>
             </tr>
@@ -53,7 +54,7 @@
               <tr>
                   <td >{{ $loop->iteration }}</td>
                   <td>{{ $service->patient_name }}</td>
-                  <td>{{ date('d-m-Y', strtotime($service->patient_date)) }}</td>
+                  <td>{{ date('d-m-Y', strtotime($service->birth_date)) }}</td>
                   <td>{{ $service->doctor_name }}</td>
                   <td>{{ $service->room_name }}</td>
                   <td> 
@@ -61,6 +62,14 @@
                       <span>Chưa có dịch vụ khám</span>
                     @else
                       {{ number_format($service->price) }} VNĐ
+                    @endif
+                  </td>
+                  <td> 
+                    @if ($service->status == 0)
+                      <span>Chưa khám</span>
+                    @else
+                    <span>Đã khám</span>
+                      
                     @endif
                   </td>
                   <td>

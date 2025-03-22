@@ -52,9 +52,15 @@
               <tr>
                   <td >{{ $loop->iteration }}</td>
                   <td>{{ $prescription->patient_name }}</td>
-                  <td>{{ $prescription->patient_date }}</td>
+                  <td>{{ $prescription->birth_date }}</td>
                   <td>{{ $prescription->doctor_name }}</td>
-                  <td>{{ number_format($prescription->price) }} VNĐ</td>
+                  <td>
+                    @if ($prescription->price == 0)
+                      <span class="">Chưa có thuốc</span>
+                    @else
+                      {{ number_format($prescription->price) }} VNĐ 
+                    @endif
+                  </td>
                   <td>
                     @if ($prescription->status == 0)
                       <span class="badge bg-warning">Chưa thanh toán</span>
