@@ -34,7 +34,9 @@
                 <img src="{{ asset('images/nenlaptop_chis.jpg') }}" alt="Logo Bệnh Viện">
                 <div class="name_hospital">Hospital - Chis</div>
             </div>
-            
+            <p>Địa chỉ: 41A Đ. Phú Diễn, Phú Diễn, Bắc Từ Liêm, Hà Nội</p>
+            <p>SĐT: 0000000000</p>
+            <hr>
             <h2 class="text-center">Thông Tin Giấy Khám Bệnh</h2>
             <p><strong>Mã:</strong> {{ $clinic->id }}</p>
             <p><strong>Tên bệnh nhân:</strong> {{ $clinic->patient_name }}</p>

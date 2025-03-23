@@ -22,7 +22,9 @@ class BHYTController extends Controller
 
     public function listBhyt() {
         $this->authLogin();
-        $list_bhyt = DB::table('health_insurances')->paginate(5);
+        $list_bhyt = DB::table('health_insurances')
+        ->orderBy('health_insurances.id', 'desc')  
+        ->paginate(5);
         return view ('admin.listbhyt')->with('list_bhyt', $list_bhyt);
     }
 

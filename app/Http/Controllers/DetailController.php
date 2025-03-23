@@ -88,6 +88,13 @@ class DetailController extends Controller
         DB::table('prescriptions')->where('id', $prescription_id)
             ->update(['price' => $total_medicine]);
 
+        $medical_id = DB::table('prescriptions')
+            ->where('id', $prescription_id)
+            ->value('medical_id'); 
+        
+        DB::table('payments')->where('medical_id', $medical_id)
+            ->update(['price_prescription' => $total_medicine]);
+            
         return redirect()->back()->with('message', $id ? 'Cập nhật thành công!' : 'Thêm mới thành công!');
     }
 
@@ -104,6 +111,11 @@ class DetailController extends Controller
             DB::table('prescriptions')->where('id', $prescription_detail->prescription_id)
                 ->decrement('price', $prescription_detail->price);
 
+            $medical_id = DB::table('prescriptions')
+                ->where('id', $prescription_detail->prescription_id)
+                ->value('medical_id'); 
+            DB::table('payments')->where('medical_id', $medical_id)
+                ->decrement('price_prescription' , $prescription_detail->price);
             return redirect()->back()->with('message', 'Xóa thuốc thành công');
         }
         
@@ -139,6 +151,13 @@ class DetailController extends Controller
 
         DB::table('service_records')->where('id', $service_record_id)
         ->update(['price' => $total_service_price]);
+
+        $medical_id = DB::table('service_records')
+        ->where('id', $service_record_id)
+        ->value('medical_id'); 
+        DB::table('payments')->where('medical_id', $medical_id)
+        ->update(['price_service' => $total_service_price]);
+    
         Session::put('message', $message);
         return redirect()->back()->with('message', $message);
     }
@@ -153,41 +172,26 @@ class DetailController extends Controller
         ->first();
         return response()->json($detail);
     }
-
-    // public function deleteDetailRecordService($id) {
-    //     $this->authLogin();
-    //     $service_detail = DB::table('service_detail')->where('id', $id)->first();
-    //     if ($service_detail) {
-    //         $service_price = DB::table('services')
-    //         ->where('id', $service_detail->service_id)
-    //         ->value('price');
-
-    //         DB::table('service_detail')->where('id', $id)->delete();
-    //         return redirect()->back()->with('message', 'Xóa chi tiết dịch vụ thành công');
-
-    //         DB::table('service_records')->where('id', $service_detail->id)
-    //         ->decrement('price', $service_price);
-    //     }
-    //     return redirect()->back()->with('error', 'Không tìm thấy chi tiết dịch vụ cần xóa!');
-    // }
     
     public function deleteDetailRecordService($id) {
         $this->authLogin();
         $service_detail = DB::table('service_detail')->where('id', $id)->first();
     
         if ($service_detail) {
-            // Lấy thông tin giá của dịch vụ trước khi xóa
             $service_price = DB::table('services')
                 ->where('id', $service_detail->service_id)
                 ->value('price');
-    
-            // Xóa chi tiết dịch vụ
             DB::table('service_detail')->where('id', $id)->delete();
-    
-            // ✅ Cập nhật lại tổng giá trị dịch vụ trong bảng service_records
+
             DB::table('service_records')->where('id', $service_detail->service_record_id)
                 ->decrement('price', $service_price);
-    
+
+            $medical_id = DB::table('service_records')
+            ->where('id', $service_detail->service_record_id)
+            ->value('medical_id'); 
+
+            DB::table('payments')->where('medical_id', $medical_id)
+            ->decrement('price_service' , $service_price);
             return redirect()->back()->with('message', 'Xóa chi tiết dịch vụ thành công');
         }
     

@@ -120,7 +120,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <span>Thu ngân</span>
                     </a>
                     <ul class="sub">
-						<li><a href="{{ url('/add-category')}}">Thu ngân</a></li>
+						<li><a href="{{ url('/payment')}}" class="{{ Request::is('payment') ? 'active' : '' }}">Thu phí khám</a></li>
+						<li><a href="{{ url('/payment-service')}}" class="{{ Request::is('payment') ? 'active' : '' }}">Thu phí dịch vụ</a></li>
+						<li><a href="{{ url('/payment-medicine')}}" class="{{ Request::is('payment') ? 'active' : '' }}">Nhà thuốc</a></li>
+						<li><a href="{{ url('/payment-patient')}}" class="{{ Request::is('payment') ? 'active' : '' }}">Thu phí nội trú</a></li>
+
 						{{-- <li><a href="{{ url('/list-category')}}">Báo cáo - Thống kê</a></li> --}}
                     </ul>
                 </li>

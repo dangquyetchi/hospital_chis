@@ -33,7 +33,8 @@ class PrescriptionController extends Controller
         ->select('prescriptions.*',
                            'doctors.name as doctor_name',
                            'medical_records.patient_name as patient_name',
-                           'medical_records.birth_date as birth_date') 
+                           'medical_records.birth_date as birth_date')
+        ->orderBy('prescriptions.id', 'desc')  
         ->paginate(5);
         return view('admin.listprescription')->with('list_prescription', $list_prescription);
     }
@@ -138,9 +139,9 @@ class PrescriptionController extends Controller
 
         $pres = DB::table('prescriptions')
         ->join('doctors', 'prescriptions.doctor_id', '=', 'doctors.id')
-        ->join('patients', 'prescriptions.patient_id', '=', 'patients.id')
+        ->join('medical_records', 'prescriptions.medical_id', '=', 'medical_records.id')
         ->where('prescriptions.id', $id)
-        ->select('prescriptions.*', 'doctors.name as doctor_name', 'patients.name as patient_name')
+        ->select('prescriptions.*', 'doctors.name as doctor_name', 'medical_records.patient_name as patient_name')
         ->first();
 
         $details = DB::table('prescription_medicines')

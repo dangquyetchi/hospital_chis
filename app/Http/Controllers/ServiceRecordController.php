@@ -34,6 +34,7 @@ class ServiceRecordController extends Controller
                             'rooms.name as room_name',
                            'medical_records.patient_name as patient_name',
                            'medical_records.birth_date as birth_date') 
+        ->orderBy('service_records.id', 'desc')  
         ->paginate(5);                
         return view('admin.servicerecord')->with('list_record_service', $list_record_service);
     }
@@ -104,7 +105,7 @@ class ServiceRecordController extends Controller
 
     public function detailService ($id) {
         $this->authLogin();
-        $services = DB::table('services')->where('id', $id)->first();
+        $services = DB::table('service_records')->where('id', $id)->first();
         $servicess = DB::table('services')->get();
         $rooms = DB::table('rooms')->get();
         $service_records = DB::table('service_detail')
@@ -125,12 +126,12 @@ class ServiceRecordController extends Controller
         $service_record = DB::table('service_records')
         ->leftJoin('doctors', 'service_records.doctor_id', '=', 'doctors.id')
         ->leftJoin('rooms', 'service_records.room_id', '=', 'rooms.id')
-        ->leftJoin('patients', 'service_records.patient_id', '=', 'patients.id')
+        ->leftJoin('medical_records', 'service_records.medical_id', '=', 'medical_records.id')
         ->select('service_records.*',
                            'doctors.name as doctor_name',
                             'rooms.name as room_name',
-                           'patients.name as patient_name',
-                           'patients.birth_date as patient_date') 
+                           'medical_records.patient_name as patient_name',
+                           'medical_records.birth_date as patient_date') 
         ->where('service_records.id', $service_record_id)
         ->first();
         

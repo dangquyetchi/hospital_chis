@@ -25,6 +25,7 @@ class DoctorController extends Controller
         $list_doctor = DB::table('doctors')
             ->leftJoin('rooms', 'doctors.room_id', '=', 'rooms.id')
             ->select('doctors.*', 'rooms.name as room_name') 
+            ->orderBy('doctors.id', 'desc')  
             ->paginate(5);
     
         return view('admin.listdoctor')->with('list_doctor', $list_doctor);

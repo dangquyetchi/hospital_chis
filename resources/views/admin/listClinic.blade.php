@@ -80,7 +80,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($list_clinic as $key => $record)
+            @foreach ($list_clinic->sortByDesc('id') as $key => $record)
               <tr>
                   {{-- <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td> --}}
                   <td>{{ $loop->iteration }}</td>
@@ -122,6 +122,7 @@
                     </a>                    
                 </td>
               </tr>
+              
             @endforeach
 
             
@@ -154,6 +155,7 @@
 
 @endsection
   <script>
+
     let currentClinicId, currentStatus;
     function confirmPaymentPopup(clinicId, newStatus) {
         currentClinicId = clinicId;

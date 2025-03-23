@@ -35,22 +35,14 @@ class ClinicController extends Controller
         $this->authLogin();
         $list_clinic = DB::table('medical_records') 
         ->leftJoin('rooms', 'medical_records.room_id', '=', 'rooms.id')
-        ->select('medical_records.*', 'rooms.name as room_name') 
+        ->select('medical_records.*', 'rooms.name as room_name')
+        ->orderBy('medical_records.id', 'desc')  
         ->paginate(5); 
         return view('admin.listclinic')->with('list_clinic', $list_clinic); 
     }
     public function saveClinic(Request $request){
         $this->authLogin();
-
-            // $latestPatient = DB::table('patients')->orderBy('id', 'desc')->first();
-
-            // if ($latestPatient) {
-            //     $latestId = intval(substr($latestPatient->patient_id, 2)); // Cắt bỏ "BN"
-            //     $newId = 'BN' . str_pad($latestId + 1, 2, '0', STR_PAD_LEFT); // Tăng lên 1
-            // } else {
-            //     $newId = 'BN01';    
-            // }
-        $data = [
+        $medical_id = DB::table('medical_records')->insertGetId([
             'patient_name' => $request->patient_name,
             'gender' => $request->patient_gender,
             'birth_date' => $request->birth_date,
@@ -61,9 +53,17 @@ class ClinicController extends Controller
             'doctor_id' => $request->doctor_id,
             'status' => 0,
             'payment_status' => 0, 
-        ];
-
-        DB::table('medical_records')->insert($data);
+        ]);
+    
+        DB::table('payments')->insert([
+            'medical_id' => $medical_id,
+            'price_medical' => $request->price_exam,
+            'price_service' => 0,
+            'price_prescription' => 0,
+            'status' => 0, 
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
         Session::put('message', 'Thêm giấy khám bệnh thành công');
         return Redirect::to('list-clinic');
 

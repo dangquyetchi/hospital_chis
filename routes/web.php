@@ -32,7 +32,7 @@ use App\Http\Controllers\ServiceRecordController;
 // Route::get('/home', [HomeController::class, 'index']);
 //admin
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\PaymentController;
 
 Route::get('/admin', [AdminController::class, 'index'])->name('login');
 
@@ -140,3 +140,9 @@ Route::get('/edit-bhyt/{bhyt_id}', [BHYTController::class, 'editBhyt']);
 Route::post('/update-bhyt/{bhyt_id}', [BHYTController::class, 'updateBhyt']);
 Route::get('/delete-bhyt/{bhyt_id}', [BHYTController::class, 'deleteBhyt']);
 Route::get('/search-bhyt', [BHYTController::class, 'searchBHYT']);
+
+// thanh toán
+Route::get('/payment', [PaymentController::class, 'listPayment']);
+Route::get('/get-payment-details/{id}', [PaymentController::class, 'getPaymentDetails']);
+Route::post('/process-payment', [PaymentController::class, 'ProcessPayment'])->name('process.payment');
+Route::get('/print-invoice/{id}', [PaymentController::class, 'printInvoice']);

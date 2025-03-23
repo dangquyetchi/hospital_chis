@@ -22,7 +22,9 @@ class PatientController extends Controller
     }
     public function listPatient() {
         $this->authLogin();
-        $list_patient = DB::table('patients')->paginate(5);
+        $list_patient = DB::table('patients')
+        ->orderBy('patients.id', 'desc')  
+        ->paginate(5);
         return view('admin.listpatient')->with('list_patient', $list_patient);
     }
     public function addPatient(){

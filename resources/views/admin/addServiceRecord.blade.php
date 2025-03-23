@@ -64,7 +64,7 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-info">Thêm thuốc</button>
+                    <button type="submit" class="btn btn-info">Lưu</button>
                 </form>
             </div>
         </div>

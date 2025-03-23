@@ -17,6 +17,10 @@
 
 <div class="container">
     <div class="header">
+        <h2>Bệnh viện Hospital Chis</h2>
+        <p>Địa chỉ: 41A Đ. Phú Diễn, Phú Diễn, Bắc Từ Liêm, Hà Nội</p>
+        <p>SĐT: 0000000000</p>
+        <hr>
         <h2>Phiếu Dịch Vụ</h2>
         <p><strong>Mã Phiếu:</strong> {{ $service_record->id }}</p>
         <p><strong>Bệnh nhân:</strong> {{ $service_record->patient_name }}</p>
