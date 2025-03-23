@@ -69,6 +69,7 @@
     </div>
 </div>
 
+
 <!-- Popup thanh toán -->
 <div id="paymentPopup" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
@@ -81,12 +82,12 @@
               <p><strong>Họ và Tên:</strong> <span id="popupPatientName"></span></p>
               <p><strong>Ngày Sinh:</strong> <span id="popupBirthDate"></span></p>
               <p><strong>Tiền khám:</strong> <span id="popupPriceMedical"></span></p>
-              <p><strong>Tiền dịch vụ khám:</strong> <span id="popupPriceService"></span></p>
+              {{-- <p><strong>Tiền dịch vụ khám:</strong> <span id="popupPriceService"></span></p> --}}
               <div class="form-group">
                 <label for="paymentMethod"><strong>Phương thức thanh toán:</strong></label>
                 <select id="paymentMethod" class="form-control">
                     <option value="Tiền mặt">Tiền mặt</option>
-                    <option value="VNPAY">VNPay</option>
+                    <option value="QRCODE">QRCODE</option>
                 </select>
             </div>
           </div>
@@ -99,11 +100,11 @@
 </div>
 
 <script>
-    function openPaymentPopup(paymentId, patientName, birthDate, priceMedical, priceService) {
+    function openPaymentPopup(paymentId, patientName, birthDate, priceMedical) {
         document.getElementById('popupPatientName').innerText = patientName;
         document.getElementById('popupBirthDate').innerText = birthDate;
         document.getElementById('popupPriceMedical').innerText = priceMedical;
-        document.getElementById('popupPriceService').innerText = priceService;
+        // document.getElementById('popupPriceService').innerText = priceService;
 
         document.getElementById('confirmPaymentBtn').setAttribute('onclick', 'processPayment(' + paymentId + ')');
         
@@ -128,6 +129,9 @@
             if (paymentMethod === 'Tiền mặt') {
                 confirmBtn.innerText = "In hóa đơn";
                 confirmBtn.setAttribute('onclick', `printInvoice(${paymentId})`);
+            } else if (paymentMethod === 'QRCODE') {
+                confirmBtn.innerText = "Tạo QR Code";
+                confirmBtn.setAttribute('onclick', `generateQrCode(${paymentId})`);
             } else {
                 $('#paymentPopup').modal('hide');
                 location.reload();
@@ -146,6 +150,10 @@
         location.reload(); 
     }, 1000); 
     }
+
+    function generateQrCode(paymentId) {
+    window.location.href = '/view-qrcode/' + paymentId;
+}
 
 </script>
 

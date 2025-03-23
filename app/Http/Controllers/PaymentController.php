@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\CssSelector\Node\FunctionNode;
 use Barryvdh\DomPDF\Facade\Pdf;
+use BaconQrCode\Writer;
+use BaconQrCode\Renderer\Image\Png;
 
 
 class PaymentController extends Controller
@@ -97,4 +99,14 @@ class PaymentController extends Controller
         $pdf = PDF::loadView('admin.printkhambenh', compact('payment', 'method'));
         return $pdf->stream('hoa_don.pdf');
     }
+
+    public function viewQrCode($paymentId)
+    {
+        $url = url('/payment-confirm/' . $paymentId); 
+
+        $qrCodeUrl = "https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=" . urlencode($url) . "&choe=UTF-8";
+
+        return view('admin.qrcode', compact('qrCodeUrl', 'paymentId'));
+    }
+
 }

@@ -146,3 +146,4 @@ Route::get('/payment', [PaymentController::class, 'listPayment']);
 Route::get('/get-payment-details/{id}', [PaymentController::class, 'getPaymentDetails']);
 Route::post('/process-payment', [PaymentController::class, 'ProcessPayment'])->name('process.payment');
 Route::get('/print-invoice/{id}', [PaymentController::class, 'printInvoice']);
+    Route::get('/view-qrcode/{paymentId}', [PaymentController::class, 'viewQrCode']);
