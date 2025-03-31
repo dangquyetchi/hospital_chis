@@ -13,6 +13,7 @@ use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ServiceRecordController;
+use App\Http\Controllers\PaymentPresController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,7 @@ use App\Http\Controllers\ServiceRecordController;
 //admin
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentServiceController;
 
 Route::get('/admin', [AdminController::class, 'index'])->name('login');
 
@@ -143,7 +145,11 @@ Route::get('/search-bhyt', [BHYTController::class, 'searchBHYT']);
 
 // thanh toán
 Route::get('/payment', [PaymentController::class, 'listPayment']);
+Route::get('/payment-service', [PaymentServiceController::class, 'listPaymentService']);
+Route::get('/payment-medicine', [PaymentPresController::class, 'listPaymentPrescription']);
 Route::get('/get-payment-details/{id}', [PaymentController::class, 'getPaymentDetails']);
 Route::post('/process-payment', [PaymentController::class, 'ProcessPayment'])->name('process.payment');
 Route::get('/print-invoice/{id}', [PaymentController::class, 'printInvoice']);
-    Route::get('/view-qrcode/{paymentId}', [PaymentController::class, 'viewQrCode']);
+Route::get('/view-qrcode/{paymentId}', [PaymentController::class, 'viewQrCode']);
+Route::post('/process-payment-service', [PaymentServiceController::class, 'ProcessPaymentService'])->name('process.payment.service');
+Route::post('/process-payment-prescription', [PaymentPresController::class, 'ProcessPaymentPrescription'])->name('process.payment.prescription');

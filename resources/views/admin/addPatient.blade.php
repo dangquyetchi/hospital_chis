@@ -230,40 +230,14 @@
         return true;
     }
 
-    // function validateDateExpiry() {
-    //     let issue_date = document.getElementById("issue_date").value;
-    //     let expiry_date = document.getElementById("expiry_date").value;
-    //     let today = getFormattedDate();
-    //     let errorElement = document.getElementById("expiry_date_error");
-    //     let submitButton = document.getElementById("submitBtn");
-
-    //     if (expiry_date < today) {
-    //         errorElement.innerText = "Ngày hết hạn phải lớn hơn ngày hiện tại.";
-    //         submitButton.disabled = true;
-    //         return false;
-    //     }
-        
-    //     if (issue_date > expiry_date) {
-    //         errorElement.innerText = "Ngày hết hạn phải lớn hơn ngày cấp.";
-    //         submitButton.disabled = true;
-    //         return false;
-    //     }
-
-
-    //     errorElement.innerText = "";
-    //     submitButton.disabled = false;
-    //     return true;
-    // }
-
     function validateForm() {
         let cardInput = document.getElementById("card_number");
         let errorElement = document.getElementById("card_error");
-        // Kiểm tra số thẻ BHYT trước khi gửi
         if (!validateCardNumber(cardInput)) {
             errorElement.innerText = "Vui lòng nhập số thẻ BHYT hợp lệ.";
-            return false; // Chặn form submit
+            return false; 
         }
-        return true; // Cho phép submit nếu hợp lệ
+        return true; 
     }
 </script>
 @endsection
