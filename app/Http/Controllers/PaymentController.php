@@ -31,14 +31,14 @@ class PaymentController extends Controller
             ->leftJoin('medical_records', 'payments.medical_id', '=', 'medical_records.id')
             ->leftJoin('service_records', 'payments.medical_id', '=', 'service_records.id')
             ->leftJoin('prescriptions', 'payments.medical_id', '=', 'prescriptions.id')
-            ->leftJoin('health_insurance', 'payments.medical_id', '=', 'health_insurance.medical_id')
+            ->leftJoin('health_insurances', 'payments.medical_id', '=', 'health_insurances.medical_id')
             ->select(
                 'medical_records.patient_name', 
                 'medical_records.birth_date',
                 'medical_records.price_exam', 
                 'service_records.price as service_price', 
                 'prescriptions.price as medicine_price',
-                'health_insurance.coverage_rate as pecent_rate',
+                'health_insurances.coverage_rate as coverage_rate',
                 'payments.*'
             )
             ->orderBy('payments.id', 'desc') 
@@ -82,11 +82,13 @@ class PaymentController extends Controller
         // Lấy thông tin thanh toán
         $payment = DB::table('payments')
         ->leftJoin('medical_records', 'payments.medical_id', '=', 'medical_records.id')
+        ->leftJoin('health_insurances', 'payments.medical_id', '=', 'health_insurances.medical_id')
         ->where('payments.id', $request->id)
         ->select(
             'payments.*', 
             'medical_records.patient_name', 
-            'medical_records.birth_date'
+            'medical_records.birth_date',
+            'health_insurances.coverage_rate as coverage_rate',
         )
         ->first();
 

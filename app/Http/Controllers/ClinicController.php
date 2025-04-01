@@ -54,16 +54,7 @@ class ClinicController extends Controller
             'date_in.before_or_equal' => 'Ngày nhập viện phải nhỏ hơn hoặc bằng hôm nay.',
             'issue_date.before' => 'Ngày cấp phải nhỏ hơn ngày hết hạn.',
         ]);
-         // Kiểm tra số thẻ BHYT đã tồn tại chưa
-        if ($request->card_number) {
-            $exists = DB::table('health_insurances')
-                        ->where('card_number', $request->card_number)
-                        ->exists();
-            
-            if ($exists) {
-                return redirect()->back()->withInput()->withErrors(['card_number' => 'Số thẻ BHYT này đã tồn tại.']);
-            }
-        }
+        // bảng medical_records
         $medical_id = DB::table('medical_records')->insertGetId([
             'patient_name' => $request->patient_name,
             'gender' => $request->patient_gender,
@@ -76,7 +67,7 @@ class ClinicController extends Controller
             'status' => 0,
             'payment_status' => 0, 
         ]);
-    
+        // bảng payments
         DB::table('payments')->insert([
             'medical_id' => $medical_id,
             'price_medical' => $request->price_exam,
@@ -87,31 +78,28 @@ class ClinicController extends Controller
             'updated_at' => now()
         ]);
 
+        // bảng health_insurances
         if ($request->card_number) {
-            $first_digit = substr($request->card_number, 0, 1); 
-            $coverage_rate = 0; 
-    
-            if ($first_digit == '1') {
-                $coverage_rate = 100;
-            } elseif ($first_digit == '2') {
-                $coverage_rate = 80;
-            } elseif ($first_digit == '3') {
-                $coverage_rate = 60;
-            }
+            $exists = DB::table('health_insurances')
+                        ->where('card_number', $request->card_number)
+                        ->exists();
 
-            $status = (strtotime($request->expiry_date) < strtotime(date('Y-m-d'))) ? 0 : 1;
-            // bảng health_insurances
-            DB::table('health_insurances')->insert([
-                'medical_id' => $medical_id,
-                'patient_name' => $request->patient_name,
-                'card_number' => $request->card_number,
-                'issue_date' => $request->issue_date,
-                'expiry_date' => $request->expiry_date,
-                'insurance_type' => $request->insurance_type,
-                'coverage_rate' => $coverage_rate,
-                'status' =>  $status, 
-                
-            ]);
+            if (!$exists) { 
+                $first_digit = substr($request->card_number, 0, 1); 
+                $coverage_rate = ($first_digit == '1') ? 90 : (($first_digit == '2') ? 80 : 60);
+                $status = (strtotime($request->expiry_date) < strtotime(date('Y-m-d'))) ? 0 : 1;
+
+                DB::table('health_insurances')->insert([
+                    'medical_id' => $medical_id,
+                    'patient_name' => $request->patient_name,
+                    'card_number' => $request->card_number,
+                    'issue_date' => $request->issue_date,
+                    'expiry_date' => $request->expiry_date,
+                    'insurance_type' => $request->insurance_type,
+                    'coverage_rate' => $coverage_rate,
+                    'status' => $status, 
+                ]);
+            }
         }
         Session::put('message', 'Thêm giấy khám bệnh thành công');
         return Redirect::to('list-clinic');
@@ -210,6 +198,32 @@ class ClinicController extends Controller
         }
         $list_clinic = $list_clinic->paginate(5);
         return view('admin.listclinic', compact('list_clinic'));
+    }
+    public function checkCardNumber(Request $request)
+    {
+        $card_number = $request->query('card_number');
+    
+        $insurance = DB::table('health_insurances')
+            ->where('health_insurances.card_number', $card_number)
+            ->join('medical_records', 'health_insurances.medical_id', '=', 'medical_records.id')
+            ->select('health_insurances.patient_name', 'medical_records.birth_date', 
+                            'health_insurances.expiry_date', 'health_insurances.issue_date', 
+                            'health_insurances.insurance_type', 'medical_records.gender',)
+            ->first();
+
+        if ($insurance) {
+            return response()->json([
+                'status' => 'exists',
+                'patient_name' => $insurance->patient_name,
+                'birth_date' => $insurance->birth_date,
+                'gender'  => $insurance->gender,
+                'expiry_date' => $insurance->expiry_date,
+                'issue_date' => $insurance->issue_date,
+                'insurance_type' => $insurance->insurance_type,
+            ]);
+        } else {
+            return response()->json(['status' => 'not_found']);
+        }
     }
 
 }

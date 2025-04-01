@@ -30,12 +30,14 @@ class PaymentServiceController extends Controller
             ->leftJoin('medical_records', 'payments.medical_id', '=', 'medical_records.id')
             ->leftJoin('service_records', 'payments.medical_id', '=', 'service_records.id')
             ->leftJoin('prescriptions', 'payments.medical_id', '=', 'prescriptions.id')
+            ->leftJoin('health_insurances', 'payments.medical_id', '=', 'health_insurances.medical_id')
             ->select(
                 'medical_records.patient_name', 
                 'medical_records.birth_date',
                 'medical_records.price_exam', 
                 'service_records.price as service_price', 
                 'prescriptions.price as medicine_price',
+                'health_insurances.coverage_rate as coverage_rate',
                 'payments.*'
             )
             ->where('payments.price_service','>', 0)

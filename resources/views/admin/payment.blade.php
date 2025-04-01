@@ -39,9 +39,13 @@
                                 {{ $payment->id }}, 
                                 '{{ $payment->patient_name }}', 
                                 '{{ date('d-m-Y', strtotime($payment->birth_date)) }}', 
-                                '{{ number_format($payment->price_medical, 0, ',', '.') }} VNĐ', 
-                                '{{ number_format($payment->price_service, 0, ',', '.') }} VNĐ'
-                            )" class="btn btn-success btn-sm">
+                               @if($payment->coverage_rate > 0)
+                                    '{{ number_format($payment->price_medical * ($payment->coverage_rate/100), 0, ',', '.') }} VNĐ'
+                                @else
+                                    '{{ number_format($payment->price_medical, 0, ',', '.') }} VNĐ'
+                                @endif
+                                )" 
+                                class="btn btn-success btn-sm">
                                 Thanh Toán
                             </button>
                             @else
@@ -82,7 +86,6 @@
               <p><strong>Họ và Tên:</strong> <span id="popupPatientName"></span></p>
               <p><strong>Ngày Sinh:</strong> <span id="popupBirthDate"></span></p>
               <p><strong>Tiền khám:</strong> <span id="popupPriceMedical"></span></p>
-              {{-- <p><strong>Tiền dịch vụ khám:</strong> <span id="popupPriceService"></span></p> --}}
               <div class="form-group">
                 <label for="paymentMethod"><strong>Phương thức thanh toán:</strong></label>
                 <select id="paymentMethod" class="form-control">
@@ -104,8 +107,6 @@
         document.getElementById('popupPatientName').innerText = patientName;
         document.getElementById('popupBirthDate').innerText = birthDate;
         document.getElementById('popupPriceMedical').innerText = priceMedical;
-        // document.getElementById('popupPriceService').innerText = priceService;
-
         document.getElementById('confirmPaymentBtn').setAttribute('onclick', 'processPayment(' + paymentId + ')');
         
         $('#paymentPopup').modal('show'); // Hiển thị popup Bootstrap

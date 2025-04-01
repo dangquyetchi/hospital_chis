@@ -54,6 +54,8 @@ Route::get('/delete-clinic/{clinic_id}', [ClinicController::class, 'deleteClinic
 Route::get('/print-clinic/{clinic_id}', [ClinicController::class, 'printClinic']);
 Route::get('/clinic/payment/{clinic_id}/{status}', [ClinicController::class, 'updatePaymentStatus']);
 Route::get('/search-clinic', [ClinicController::class, 'searchClinic']);
+Route::get('/check-card', [ClinicController::class, 'checkCardNumber']);
+ 
 
 //Rooms
 Route::get('/add-room', [RoomController::class, 'addRoom']);

@@ -39,8 +39,13 @@
                                 {{ $payment->id }}, 
                                 '{{ $payment->patient_name }}', 
                                 '{{ date('d-m-Y', strtotime($payment->birth_date)) }}', 
-                                '{{ number_format($payment->price_service, 0, ',', '.') }} VNĐ'
-                            )" class="btn btn-success btn-sm">
+                                 @if($payment->coverage_rate > 0)
+                                    '{{ number_format($payment->price_service * ($payment->coverage_rate/100), 0, ',', '.') }} VNĐ'
+                                @else
+                                    '{{ number_format($payment->price_service, 0, ',', '.') }} VNĐ'
+                                @endif
+                                )" 
+                            class="btn btn-success btn-sm">
                                 Thanh Toán
                             </button>
                             @else
@@ -105,7 +110,7 @@
 
         document.getElementById('confirmPaymentBtn').setAttribute('onclick', 'processPayment(' + paymentId + ')');
         
-        $('#paymentPopup').modal('show'); // Hiển thị popup Bootstrap
+        $('#paymentPopup').modal('show'); 
     }
 
     function processPayment(paymentId) {
@@ -140,7 +145,6 @@
     });
 }
 
-    // Hàm in hóa đơn
     function printInvoice(paymentId) {
         window.open('/print-invoice/' + paymentId, '_blank');
         setTimeout(function() {

@@ -33,7 +33,8 @@
         @elseif($payment->price_prescription > 0)
             <p><strong>Tiền thuốc:</strong> {{ number_format($payment->price_prescription, 0, ',', '.') }} VNĐ</p>
         @endif
-        <p><strong>Số tiền phải thanh toán: </strong>{{ number_format($payment->price_medical + $payment->price_service, 0, ',', '.') }} VNĐ</p>    
+        <p>Tiền giảm BHYT: {{ number_format($payment->price_medical * $payment->coverage_rate, 0, ',', '.') }} VNĐ</p>
+        <p><strong>Số tiền phải thanh toán: </strong>{{ number_format($payment->price_medical - ($payment->price_medical * $payment->coverage_rate), 0, ',', '.') }} VNĐ</p>    
         <p><strong>Phương thức thanh toán:</strong> {{ $method->payment_method == 'Tiền mặt' ? 'Tiền mặt' : 'VNPay' }}</p>
 
         <div class="footer">

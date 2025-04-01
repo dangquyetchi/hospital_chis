@@ -39,8 +39,13 @@
                                 {{ $payment->id }}, 
                                 '{{ $payment->patient_name }}', 
                                 '{{ date('d-m-Y', strtotime($payment->birth_date)) }}', 
-                                '{{ number_format($payment->price_prescription, 0, ',', '.') }} VNĐ'
-                            )" class="btn btn-success btn-sm">
+                                @if($payment->coverage_rate > 0)
+                                    '{{ number_format($payment->price_prescription * ($payment->coverage_rate/100), 0, ',', '.') }} VNĐ'
+                                @else
+                                    '{{ number_format($payment->price_prescription, 0, ',', '.') }} VNĐ'
+                                @endif
+                                )" 
+                            class="btn btn-success btn-sm">
                                 Thanh Toán
                             </button>
                             @else

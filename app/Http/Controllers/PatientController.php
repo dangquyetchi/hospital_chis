@@ -72,7 +72,7 @@ class PatientController extends Controller
             $coverage_rate = 0; 
     
             if ($first_digit == '1') {
-                $coverage_rate = 100;
+                $coverage_rate = 90;
             } elseif ($first_digit == '2') {
                 $coverage_rate = 80;
             } elseif ($first_digit == '3') {

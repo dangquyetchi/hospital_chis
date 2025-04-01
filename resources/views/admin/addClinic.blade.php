@@ -18,7 +18,8 @@
                             <label>Số thẻ BHYT</label>
                             <input type="text" name="card_number" id="card_number" class="form-control"
                                     placeholder="Nhập số thẻ BHYT" maxlength="15"
-                                    oninput="validateCardNumber(this)">
+                                   >
+                                   {{-- oninput="validateCardNumber(this)" --}}
                                 <small id="card_error" class="text-danger d-block mt-1"></small>
                         </div>
     
@@ -39,7 +40,7 @@
     
                             <div class="form-group">
                                 <label>Loại bảo hiểm</label>
-                                <select name="insurance_type" class="form-control"  >
+                                <select name="insurance_type" id="insurance_type" class="form-control"  >
                                     <option value="">Chọn loại bảo hiểm</option>
                                     <option value="Bảo hiểm tự nguyện">Bảo hiểm tự nguyện</option>
                                     <option value="Bảo hiểm bắt buộc">Bảo hiểm bắt buộc</option>
@@ -49,12 +50,12 @@
 
                         <div class="form-group">
                             <label>Họ và Tên</label>
-                            <input type="text" name="patient_name" class="form-control" placeholder="Nhập tên bệnh nhân" required>
+                            <input type="text" name="patient_name" id="patient_name" class="form-control" placeholder="Nhập tên bệnh nhân" required>
                         </div>
 
                         <div class="form-group">
                             <label>Giới tính</label>
-                            <select name="patient_gender" class="form-control" required>
+                            <select name="patient_gender" id="patient_gender" class="form-control" required>
                                 <option value="">Chọn giới tính</option>
                                 <option value="Nam">Nam</option>
                                 <option value="Nữ">Nữ</option>
@@ -64,7 +65,7 @@
 
                         <div class="form-group">
                             <label>Ngày sinh</label>
-                            <input type="date" name="birth_date" class="form-control" required>
+                            <input type="date" name="birth_date" id="birth_date" class="form-control" required>
                         </div>
 
                         <div class="form-group">
@@ -217,5 +218,52 @@
         }
         return true; 
     }
+</script>
+
+<script>
+    document.getElementById('card_number').addEventListener('input', function () {
+    let cardNumber = this.value.trim();
+
+    if (cardNumber.length === 15) { 
+        fetch(`/check-card?card_number=${cardNumber}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'exists') {
+                    document.getElementById('patient_name').value = data.patient_name;
+                    document.getElementById('birth_date').value = data.birth_date;
+                    document.getElementById('patient_gender').value = data.gender;
+                    document.getElementById('expiry_date').value = data.expiry_date;
+                    document.getElementById('issue_date').value = data.issue_date;
+                    document.getElementById('insurance_type').value = data.insurance_type;
+
+                    document.getElementById('patient_name').readOnly = true;
+                    document.getElementById('patient_gender').readOnly = true;
+                    document.getElementById('birth_date').readOnly = true;
+                    document.getElementById('expiry_date').readOnly = true;
+                    document.getElementById('issue_date').readOnly = true;
+                    document.getElementById('insurance_type').readOnly = true;
+
+                } else {
+                    document.getElementById('patient_name').value = '';
+                    document.getElementById('birth_date').value = '';
+                    document.getElementById('patient_gender').value = '';
+                    document.getElementById('expiry_date').value = '';
+                    document.getElementById('issue_date').value = '';
+                    document.getElementById('insurance_type').value = '';
+                    
+                    document.getElementById('patient_name').readOnly = false;
+                    document.getElementById('birth_date').readOnly = false;
+                    document.getElementById('patient_gender').readOnly = false;
+                    document.getElementById('expiry_date').readOnly = false;
+                    document.getElementById('issue_date').readOnly = false;
+                    document.getElementById('insurance_type').readOnly = false;
+
+                }
+            })
+            .catch(error => console.error('Lỗi:', error));
+    }
+});
+
+
 </script>
 @endsection
