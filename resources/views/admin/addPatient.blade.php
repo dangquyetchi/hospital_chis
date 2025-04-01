@@ -20,14 +20,18 @@
             <div class="position-center">
                 <form id="patientForm" onsubmit="return validateForm()" role="form" action="{{ url('/save-patient') }}" method="POST">
                     @csrf
-
                     <div class="form-group">
-                        <label>Họ và Tên</label>
-                        <input type="text" name="patient_name" class="form-control" placeholder="Nhập Tên bệnh nhân" required>
+                        <label>Chọn Bệnh Nhân</label>
+                        <select name="medical_id" class="form-control" required ">
+                            <option value="">-- Chọn bệnh nhân--</option>
+                            @foreach($medicalRecords as $record)
+                                <option value="{{ $record->id }}">{{ $record->patient_name }} (ID: {{ $record->id }})</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Giới tính</label>
-                        <select name="patient_gender" class="form-control" required>
+                        <select name="patient_gender" id="patient_gender" class="form-control" required>
                             <option value="">Chọn giới tính</option>
                             <option value="Nam">Nam</option>
                             <option value="Nữ">Nữ</option>
@@ -52,6 +56,16 @@
                         <label>Ngày vào viện</label>
                         <input type="date" name="patient_datein" id="patient_datein" class="form-control" required oninput="validateDate_in()">
                         <small id="patient_datein_error" class="text-danger d-block mt-1"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phòng bệnh</label>
+                        <select name="room_id" class="form-control">
+                            <option value="">Chọn phòng bệnh</option>
+                            @foreach ($rooms as $room)
+                                <option value="{{ $room->id }}">{{ $room->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                   {{-- thông tin thẻ BHYT --}}
@@ -240,4 +254,23 @@
         return true; 
     }
 </script>
+{{-- <script>
+    function fillPatientInfo() {
+        var select = document.getElementById("medical_id");
+        var selectedOption = select.options[select.selectedIndex];
+    
+        if (selectedOption.value === "") {
+            document.getElementById("patient_gender").value = "";
+            document.getElementById("patient_birth").value = "";
+            return;
+        }
+    
+        var gender = selectedOption.getAttribute("data-gender");
+        var birthDate = selectedOption.getAttribute("data-birth");
+    
+        document.getElementById("patient_gender").value = gender || "";
+        document.getElementById("patient_birth").value = birthDate || "";
+    }
+</script>
+     --}}
 @endsection

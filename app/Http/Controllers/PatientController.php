@@ -29,7 +29,9 @@ class PatientController extends Controller
     }
     public function addPatient(){
         $this->authLogin();
-        return view('admin.addpatient');
+        $medicalRecords = DB::table('medical_records')->select( 'id', 'patient_name', 'gender', 'birth_date')->get();
+        $rooms = DB::table('rooms')->orderBy('id', 'desc')->get();
+        return view('admin.addpatient', compact('medicalRecords', 'rooms'));
     }
     public function savePatient(Request $request) {
         $this->authLogin();
@@ -56,14 +58,17 @@ class PatientController extends Controller
                 return redirect()->back()->withInput()->withErrors(['card_number' => 'Số thẻ BHYT này đã tồn tại.']);
             }
         }
+        $medicalRecord = DB::table('medical_records')->where('id', $request->medical_id)->first();
         // bảng patients
         $patient_id = DB::table('patients')->insertGetId([
-            'name' => $request->patient_name,
+            'medical_id' => $request->medical_id,
+            'name' => $medicalRecord->patient_name,
             'gender' => $request->patient_gender,
             'birth_date' => $request->patient_birth,
             'address' => $request->patient_address,
             'patient_condition' => $request->patient_condition,
             'date_in' => $request->patient_datein,
+            'room_id' => $request->room_id,
             'status' => 1,
         ]);
     
@@ -124,7 +129,7 @@ class PatientController extends Controller
         return Redirect::to('list-patient');
     }
     //cập nhật trạng thái bệnh nhân ra viện hay chưa
-    public function outPatient($patient_update_id){
+    public function outPatient($patient_update_id) {
         $this->authLogin();
     
         DB::table('patients')
@@ -134,6 +139,44 @@ class PatientController extends Controller
                 'date_out' => Carbon::now()->toDateString()
             ]);
     
+        $coverage_rate = DB::table('health_insurances')
+            ->where('medical_id', $patient_update_id)
+            ->value('coverage_rate');
+    
+        $room_data = DB::table('patients')
+            ->join('rooms', 'patients.room_id', '=', 'rooms.id')
+            ->where('patients.id', $patient_update_id)
+            ->select('rooms.room_type', 'patients.date_in')
+            ->first(); 
+    
+        if (!$room_data) {
+            Session::put('message', 'Không tìm thấy thông tin phòng của bệnh nhân.');
+            return Redirect::to('list-patient');
+        }
+        $room_price = 0;
+        if ($room_data->room_type == '2') {
+            $room_price = 100000;
+        } else if ($room_data->room_type == '3') {
+            $room_price = 200000;
+        }
+    
+        $date_in = Carbon::parse($room_data->date_in);
+        $date_out = Carbon::parse(Carbon::now()->toDateString());
+        $days_in_hospital = $date_out->diffInDays($date_in);
+    
+        if ($coverage_rate === null) {
+            $total_amount = $room_price * $days_in_hospital;
+        } else {
+            $total_amount = $room_price * (1 - $coverage_rate / 100) * $days_in_hospital;
+        }
+        DB::table('payment_inpatient')->insert([
+            'patient_id' => $patient_update_id,
+            'total_amount' => $total_amount, 
+            'payment_status' => 0,
+            'payment_method' => 'Tiền mặt',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
         Session::put('message', 'Cập nhật trạng thái thành công');
         return Redirect::to('list-patient');
     }
