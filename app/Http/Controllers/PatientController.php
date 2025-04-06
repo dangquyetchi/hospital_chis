@@ -31,7 +31,8 @@ class PatientController extends Controller
         $this->authLogin();
         $medicalRecords = DB::table('medical_records')->select( 'id', 'patient_name', 'gender', 'birth_date')->get();
         $rooms = DB::table('rooms')->orderBy('id', 'desc')->get();
-        return view('admin.addpatient', compact('medicalRecords', 'rooms'));
+        $beds = DB::table('bed_patient')->orderBy('id', 'desc')->get();
+        return view('admin.addpatient', compact('medicalRecords', 'rooms', 'beds'));
     }
     public function savePatient(Request $request) {
         $this->authLogin();
@@ -69,9 +70,16 @@ class PatientController extends Controller
             'patient_condition' => $request->patient_condition,
             'date_in' => $request->patient_datein,
             'room_id' => $request->room_id,
+            'bed_id' => $request->bed_id,
             'status' => 1,
         ]);
-    
+
+        if ($request->bed_id) {
+            DB::table('bed_patient')->where('id', $request->bed_id)->update([
+                'status' => 1,
+            ]);
+        }
+        
         if ($request->card_number) {
             $first_digit = substr($request->card_number, 0, 1); 
             $coverage_rate = 0; 
@@ -97,6 +105,7 @@ class PatientController extends Controller
                 'status' =>  $status, 
                 
             ]);
+
         }
         Session::put('message', 'Thêm bệnh nhân thành công');
         return Redirect::to('list-patient');

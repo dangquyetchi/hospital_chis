@@ -33,6 +33,7 @@ use App\Http\Controllers\PaymentPresController;
 // Route::get('/home', [HomeController::class, 'index']);
 //admin
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BedController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentServiceController;
 
@@ -43,7 +44,8 @@ Route::post('/admin-dashboard', [AdminController::class, 'dashboard']);
 // dang xuat 
 Route::get('/logout', [AdminController::class, 'logout']);
 // trang chu
-Route::get('/dashboard', [AdminController::class, 'show_dashboard'])->middleware('auth');
+Route::get('/dashboard', [AdminController::class, 'show_dashboard']);
+// ->middleware('auth')
 //Clinic
 Route::get('/add-clinic', [ClinicController::class, 'addClinic']);
 Route::get('/list-clinic', [ClinicController::class, 'listClinic']);
@@ -66,6 +68,14 @@ Route::post('/update-room/{room_id}', [RoomController::class, 'updateRoom']);
 Route::get('/delete-room/{room_id}', [RoomController::class, 'deleteRoom']);
 Route::get('/search-room', [RoomController::class, 'searchRoom']);
 
+//beds
+Route::get('/add-bed', [BedController::class, 'addBed']);
+Route::get('/list-bed', [BedController::class, 'listBed']);
+Route::post('/save-bed', [BedController::class, 'saveBed']);
+Route::get('/edit-bed/{bed_id}', [BedController::class, 'editBed']);
+Route::post('/update-bed/{bed_id}', [BedController::class, 'updateBed']);
+Route::get('/delete-bed/{bed_id}', [BedController::class, 'deleteBed']);
+Route::get('/search-bed', [BedController::class, 'searchBed']);
 //service
 Route::get('/add-service', [ServiceController::class, 'addService']);
 Route::get('/list-service', [ServiceController::class, 'listService']);

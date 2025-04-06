@@ -68,6 +68,16 @@
                         </select>
                     </div>
 
+                    <div class="form-group">
+                        <label>Giường bệnh</label>
+                        <select name="bed_id" class="form-control">
+                            <option value="">Chọn giường bệnh</option>
+                            @foreach ($beds as $bed)
+                                <option value="{{ $bed->id }}">{{ $bed->name_bed }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                   {{-- thông tin thẻ BHYT --}}
                     <div class="form-group">
                     <label>Số thẻ BHYT</label>

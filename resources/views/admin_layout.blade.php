@@ -57,7 +57,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <!-- user login dropdown start-->
         <li class="dropdown">
             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <img alt="" src="images/2.png">
+                <img src="{{ asset('images/2.png') }}" alt="Ảnh">
                 <span class="username">John Doe</span>
                 <b class="caret"></b>
             </a>
@@ -81,7 +81,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="leftside-navigation">
             <ul class="sidebar-menu" id="nav-accordion">
                 <li>
-                    <a href="{{url('/admin-dashboard')}}" class="{{ Request::is('dashboard') ? 'active' : '' }}">
+                    <a href="{{url('/dashboard')}}" class="{{ Request::is('dashboard') ? 'active' : '' }}">
                         <i class="fa fa-dashboard"></i>
                         <span>Tổng quan</span>
                     </a>
@@ -97,6 +97,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </li>
                 <li>
                     <a href="{{ url('/list-room')}}" class="{{ Request::is('list-room') ? 'active' : '' }}">Phòng</a>
+                </li>
+                <li>
+                    <a href="{{ url('/list-bed')}}" class="{{ Request::is('list-bed') ? 'active' : '' }}">Giường</a>
                 </li>
                 <li>
                     <a href="{{ url('/list-medicine')}}" class="{{ Request::is('list-medicine') ? 'active' : '' }}">Kho thuốc</a>

@@ -26,8 +26,54 @@ class AdminController extends Controller {
 
     public function show_dashboard() {
         $this->authLogin();
-        return view('admin.dashboard');
+    
+        // Doanh thu theo ngày
+        $dailyRevenue = DB::table('payments')
+            ->selectRaw('DATE(created_at) as date, SUM(price_medical + price_service + price_prescription) as total')
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderByDesc('date')
+            ->get();
+    
+        // Số lượng bệnh nhân theo ngày
+        $patientCount = DB::table('medical_records')
+            ->selectRaw('DATE(examination_date	) as date, COUNT(*) as count')
+            ->groupBy(DB::raw('DATE(examination_date	)'))
+            ->orderByDesc('date')
+            ->get();
+    
+        // Doanh thu theo tháng
+        $monthlyRevenue = DB::table('payments')
+            ->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, SUM(price_medical + price_service + price_prescription) as total')
+            ->groupBy(DB::raw('YEAR(created_at), MONTH(created_at)'))
+            ->orderByDesc('year')
+            ->orderByDesc('month')
+            ->get();
+    
+        // Số lượng bệnh nhân theo tháng
+        $monthlyPatientCount = DB::table('medical_records')
+            ->selectRaw('YEAR(examination_date	) as year, MONTH(examination_date) as month, COUNT(*) as count')
+            ->groupBy(DB::raw('YEAR(examination_date	), MONTH(examination_date	)'))
+            ->orderByDesc('year')
+            ->orderByDesc('month')
+            ->get();
+    
+        // Doanh thu theo năm
+        $yearlyRevenue = DB::table('payments')
+            ->selectRaw('YEAR(created_at) as year, SUM(price_medical + price_service + price_prescription) as total')
+            ->groupBy(DB::raw('YEAR(created_at)'))
+            ->orderByDesc('year')
+            ->get();
+    
+        // Số lượng bệnh nhân theo năm
+        $yearlyPatientCount = DB::table('medical_records')
+            ->selectRaw('YEAR(examination_date) as year, COUNT(*) as count')
+            ->groupBy(DB::raw('YEAR(examination_date	)'))
+            ->orderByDesc('year')
+            ->get();
+    
+        return view('admin.dashboard', compact('dailyRevenue', 'patientCount', 'monthlyRevenue', 'monthlyPatientCount', 'yearlyRevenue', 'yearlyPatientCount'));
     }
+    
     // trang chu admin
     public function dashboard(Request $request) {
         $email = $request->input('admin_email');
