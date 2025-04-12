@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\PaymentPatientController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
@@ -14,6 +15,10 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ServiceRecordController;
 use App\Http\Controllers\PaymentPresController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BedController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentServiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,10 +37,6 @@ use App\Http\Controllers\PaymentPresController;
 // Route::get('/', [HomeController::class, 'index']);
 // Route::get('/home', [HomeController::class, 'index']);
 //admin
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BedController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\PaymentServiceController;
 
 Route::get('/admin', [AdminController::class, 'index'])->name('login');
 
@@ -57,7 +58,6 @@ Route::get('/print-clinic/{clinic_id}', [ClinicController::class, 'printClinic']
 Route::get('/clinic/payment/{clinic_id}/{status}', [ClinicController::class, 'updatePaymentStatus']);
 Route::get('/search-clinic', [ClinicController::class, 'searchClinic']);
 Route::get('/check-card', [ClinicController::class, 'checkCardNumber']);
- 
 
 //Rooms
 Route::get('/add-room', [RoomController::class, 'addRoom']);
@@ -159,9 +159,15 @@ Route::get('/search-bhyt', [BHYTController::class, 'searchBHYT']);
 Route::get('/payment', [PaymentController::class, 'listPayment']);
 Route::get('/payment-service', [PaymentServiceController::class, 'listPaymentService']);
 Route::get('/payment-medicine', [PaymentPresController::class, 'listPaymentPrescription']);
+Route::get('/payment-patient', [PaymentPatientController::class, 'listPaymentPatient']);
+
 Route::get('/get-payment-details/{id}', [PaymentController::class, 'getPaymentDetails']);
 Route::post('/process-payment', [PaymentController::class, 'ProcessPayment'])->name('process.payment');
 Route::get('/print-invoice/{id}', [PaymentController::class, 'printInvoice']);
 Route::get('/view-qrcode/{paymentId}', [PaymentController::class, 'viewQrCode']);
 Route::post('/process-payment-service', [PaymentServiceController::class, 'ProcessPaymentService'])->name('process.payment.service');
 Route::post('/process-payment-prescription', [PaymentPresController::class, 'ProcessPaymentPrescription'])->name('process.payment.prescription');
+Route::post('/process-payment-patient', [PaymentPatientController::class, 'ProcessPaymentPatient'])->name('process.payment.patient');
+Route::get('/print-invoice-prescription/{id}', [PaymentPresController::class, 'printInvoice']);
+Route::get('/print-invoice-service/{id}', [PaymentServiceController::class, 'printInvoice']);
+Route::get('/print-invoice-patient/{id}', [PaymentPatientController::class, 'printInvoice']);

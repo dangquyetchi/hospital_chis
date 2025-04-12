@@ -59,7 +59,8 @@
                   <td>{{ $patient->address }}</td>
                   <td>{{ $patient->patient_condition }}</td>
                   <td>{{ date('d-m-Y', strtotime($patient->date_in)) }}</td>
-                  <td>{{ date('d-m-Y', strtotime($patient->date_out)) }}</td>
+                  <td>{{ $patient->date_out ? date('d-m-Y', strtotime($patient->date_out)) : '' }}</td>
+
                   <td>
                     <span class="text-ellipsis">
                         @if($patient->status == 1)

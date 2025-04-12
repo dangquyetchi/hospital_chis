@@ -83,7 +83,7 @@ class AdminController extends Controller {
         if ($admin && Hash::check($password, $admin->password)) {
             Session::put('admin_id', $admin->id);
             Session::put('admin_role', $admin->role);
-            return view('admin.dashboard');
+            return redirect('/dashboard');
         } else {
             return redirect()->back()->with('error', 'Email hoặc mật khẩu không chính xác!');
         }

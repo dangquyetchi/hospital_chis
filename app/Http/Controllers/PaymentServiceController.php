@@ -75,4 +75,28 @@ class PaymentServiceController extends Controller
         return response()->json(['message' => 'Thanh toán thành công!']);
 
     }
+
+    public function printInvoice(Request $request)
+    {
+        // Lấy thông tin thanh toán
+        $payment_service = DB::table('payments')
+        ->leftJoin('medical_records', 'medical_records.id', '=', 'payments.medical_id')
+        ->leftJoin('payment_history', 'payment_history.payment_id', '=', 'payments.id')
+        ->leftJoin('health_insurances', 'medical_records.id', '=', 'health_insurances.medical_id')
+        ->where('payments.id', $request->id)
+        ->select(
+            'payments.*', 
+            'medical_records.patient_name as patient_name', 
+            'medical_records.birth_date as birth_date',
+            'payment_history.payment_method as payment_method',
+            'health_insurances.coverage_rate as coverage_rate',
+        )
+        ->first();
+
+        if (!$payment_service) {
+            return redirect()->back()->with('error', 'Không tìm thấy hóa đơn');
+        }
+        $pdf = PDF::loadView('admin.printservice', compact('payment_service'));
+        return $pdf->stream('hoa_don_dich_vu.pdf');
+    }
 }

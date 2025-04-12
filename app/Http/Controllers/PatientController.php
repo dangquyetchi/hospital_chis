@@ -76,7 +76,7 @@ class PatientController extends Controller
 
         if ($request->bed_id) {
             DB::table('bed_patient')->where('id', $request->bed_id)->update([
-                'status' => 1,
+                'tinhtrang' => 1,
             ]);
         }
         

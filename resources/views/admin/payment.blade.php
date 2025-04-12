@@ -4,7 +4,7 @@
 <div class="table-agile-info">
     <div class="panel panel-default">
         <div class="panel-heading">
-            Thanh toán
+            Thu phí khám bệnh
         </div>
 
         <div class="table-responsive">
@@ -40,7 +40,7 @@
                                 '{{ $payment->patient_name }}', 
                                 '{{ date('d-m-Y', strtotime($payment->birth_date)) }}', 
                                @if($payment->coverage_rate > 0)
-                                    '{{ number_format($payment->price_medical * ($payment->coverage_rate/100), 0, ',', '.') }} VNĐ'
+                                    '{{ number_format($payment->price_medical - ($payment->price_medical * ($payment->coverage_rate/100)), 0, ',', '.') }} VNĐ'
                                 @else
                                     '{{ number_format($payment->price_medical, 0, ',', '.') }} VNĐ'
                                 @endif

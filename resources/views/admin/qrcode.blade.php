@@ -9,6 +9,6 @@
     <h2>Mã QR Code cho Thanh Toán #{{ $paymentId }}</h2>
     <img src="{{ $qrCodeUrl }}" alt="QR Code">
     <br>
-    <a href="/">Quay lại trang chủ</a>
+    <a href="/admin">Quay lại trang chủ</a>
 </body>
 </html>

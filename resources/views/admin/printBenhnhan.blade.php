@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hóa đơn thanh toán</title>
+    <title>Hóa đơn thanh toán viện phí </title>
     <style>
         body { font-family: DejaVu Sans, sans-serif; }
         .invoice-container { width: 100%; max-width: 600px; margin: auto; }
@@ -26,16 +26,10 @@
 
         <p><strong>Họ và Tên:</strong> {{ $payment->patient_name }}</p>
         <p><strong>Ngày Sinh:</strong> {{ date('d-m-Y', strtotime($payment->birth_date)) }}</p>
-        @if($payment->price_medical > 0)
-            <p><strong>Tiền khám:</strong> {{ number_format($payment->price_medical, 0, ',', '.') }} VNĐ</p>
-        @elseif($payment->price_service > 0)
-            <p><strong>Tiền dịch vụ:</strong> {{ number_format($payment->price_service, 0, ',', '.') }} VNĐ</p>
-        @elseif($payment->price_prescription > 0)
-            <p><strong>Tiền thuốc:</strong> {{ number_format($payment->price_prescription, 0, ',', '.') }} VNĐ</p>
-        @endif
-        <p>Tiền giảm BHYT: {{ number_format($payment->price_medical * $payment->coverage_rate, 0, ',', '.') }} VNĐ</p>
-        <p><strong>Số tiền phải thanh toán: </strong>{{ number_format($payment->price_medical - ($payment->price_medical * $payment->coverage_rate), 0, ',', '.') }} VNĐ</p>    
-        <p><strong>Phương thức thanh toán:</strong> {{ $method->payment_method == 'Tiền mặt' ? 'Tiền mặt' : 'QRCODE' }}</p>
+        <p><strong>Tiền nội trú:</strong> {{ number_format($payment->total_amount, 0, ',', '.') }} VNĐ</p>
+        <p>Tiền giảm BHYT: {{ number_format($payment->total_amount * $payment->coverage_rate, 0, ',', '.') }} VNĐ</p>
+        <p><strong>Số tiền phải thanh toán: </strong>{{ number_format($payment->total_amount - ($payment->total_amount * $payment->coverage_rate), 0, ',', '.') }} VNĐ</p>    
+        <p><strong>Phương thức thanh toán:</strong> {{ $payment->payment_method == 'tiền mặt' ? 'Tiền mặt' : 'QRCODE' }}</p>
 
         <div class="footer">
             <p>Cảm ơn quý khách đã sử dụng dịch vụ!</p>

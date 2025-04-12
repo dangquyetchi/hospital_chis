@@ -40,7 +40,7 @@
                                 '{{ $payment->patient_name }}', 
                                 '{{ date('d-m-Y', strtotime($payment->birth_date)) }}', 
                                  @if($payment->coverage_rate > 0)
-                                    '{{ number_format($payment->price_service * ($payment->coverage_rate/100), 0, ',', '.') }} VNĐ'
+                                    '{{ number_format($payment->price_service - ($payment->price_service * ($payment->coverage_rate/100)), 0, ',', '.') }} VNĐ'
                                 @else
                                     '{{ number_format($payment->price_service, 0, ',', '.') }} VNĐ'
                                 @endif
@@ -146,7 +146,7 @@
 }
 
     function printInvoice(paymentId) {
-        window.open('/print-invoice/' + paymentId, '_blank');
+        window.open('/print-invoice-service/' + paymentId, '_blank');
         setTimeout(function() {
         location.reload(); 
     }, 1000); 

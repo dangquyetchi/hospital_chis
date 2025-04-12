@@ -13,8 +13,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use BaconQrCode\Writer;
 use BaconQrCode\Renderer\Image\Png;
 
-
-
 class PaymentPresController extends Controller
 {
     public function authLogin(){
@@ -77,5 +75,29 @@ class PaymentPresController extends Controller
             'status' => 1,
         ]);
         return response()->json(['message' => 'Thanh toán thành công!']);
+    }
+
+    public function printInvoice(Request $request)
+    {
+        // Lấy thông tin thanh toán
+        $payment_pres = DB::table('payments')
+        ->leftJoin('medical_records', 'medical_records.id', '=', 'payments.medical_id')
+        ->leftJoin('payment_history', 'payment_history.payment_id', '=', 'payments.id')
+        ->leftJoin('health_insurances', 'medical_records.id', '=', 'health_insurances.medical_id')
+        ->where('payments.id', $request->id)
+        ->select(
+            'payments.*', 
+            'medical_records.patient_name as patient_name', 
+            'medical_records.birth_date as birth_date',
+            'payment_history.payment_method as payment_method',
+            'health_insurances.coverage_rate as coverage_rate',
+        )
+        ->first();
+
+        if (!$payment_pres) {
+            return redirect()->back()->with('error', 'Không tìm thấy hóa đơn');
+        }
+        $pdf = PDF::loadView('admin.printpres', compact('payment_pres'));
+        return $pdf->stream('hoa_don_thuoc.pdf');
     }
 }
