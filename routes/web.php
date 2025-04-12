@@ -146,6 +146,10 @@ Route::get('/delete-patient/{patient_id}', [PatientController::class, 'deletePat
 Route::get('/out-patient/{patient_id}', [PatientController::class, 'outPatient']);
 Route::get('/in-patient/{patient_id}', [PatientController::class, 'inPatient']);
 Route::get('/search-patient', [PatientController::class, 'searchPatient']);
+Route::get('/lock-patient/{id}', [PatientController::class, 'lockPatient']);
+Route::get('/print-benhan/{id}', [PatientController::class, 'printfBenhAn']);
+
+
 
 //bhyt
 Route::get('/list-bhyt', [BHYTController::class, 'listBhyt']);

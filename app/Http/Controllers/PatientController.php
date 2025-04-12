@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Barryvdh\DomPDF\Facade\Pdf;
+use BaconQrCode\Writer;
+use BaconQrCode\Renderer\Image\Png;
 use Carbon\Carbon;
 
 class PatientController extends Controller
@@ -122,6 +125,7 @@ class PatientController extends Controller
             'gender' => $request->patient_gender,
             'birth_date' => $request->patient_birth,
             'address' => $request->patient_address,
+            'out_hospital' => $request->out_hospital,
             'status' => 1,
         ];
         DB::table('patients')->where('id', $patient_id)->update($data);
@@ -149,7 +153,7 @@ class PatientController extends Controller
             ]);
     
         $coverage_rate = DB::table('health_insurances')
-            ->where('medical_id', $patient_update_id)
+            ->where('patient_id', $patient_update_id)
             ->value('coverage_rate');
     
         $room_data = DB::table('patients')
@@ -172,12 +176,15 @@ class PatientController extends Controller
         $date_in = Carbon::parse($room_data->date_in);
         $date_out = Carbon::parse(Carbon::now()->toDateString());
         $days_in_hospital = $date_out->diffInDays($date_in);
-    
         if ($coverage_rate === null) {
             $total_amount = $room_price * $days_in_hospital;
+        
+
         } else {
             $total_amount = $room_price * (1 - $coverage_rate / 100) * $days_in_hospital;
+            dd($total_amount);
         }
+
         DB::table('payment_inpatient')->insert([
             'patient_id' => $patient_update_id,
             'total_amount' => $total_amount, 
@@ -211,5 +218,34 @@ class PatientController extends Controller
                         ->orWhere('id', 'LIKE', "%$keyword%")
                         ->paginate(5);
         return view('admin.listpatient', compact('list_patient'));
+    }
+    // khóa hồ sơ bệnh nhân
+    public function lockPatient($patient_id) {
+        $this->authLogin();
+        DB::table('patients')->where('id', $patient_id)->update(['lock_hoso' => 1]);
+        Session::put('message', 'Khóa hồ sơ bệnh nhân thành công');
+        return Redirect::to('list-patient');
+    }
+    // in bệnh án
+    public function printfBenhAn(Request $request) {
+        $this->authLogin();
+        $patient = DB::table('patients')
+            ->join('rooms', 'patients.room_id', '=', 'rooms.id')
+            ->join('bed_patient', 'patients.bed_id', '=', 'bed_patient.id')
+            ->select(
+                'patients.*',
+                'rooms.name as room_name',
+                'bed_patient.name_bed as bed_name',
+            )
+            ->where('patients.id', $request->id)
+            ->first();
+            $birthDate = Carbon::parse($patient->birth_date); 
+            $formattedBirthDate = $birthDate->format('d-m-Y'); 
+            $age = $birthDate->age; 
+            if (!$patient) {
+                return redirect()->back()->with('error', 'Không tìm thấy hóa đơn');
+            }
+            $pdf = PDF::loadView('admin.printbenhan', compact('patient', 'age', 'formattedBirthDate'));
+            return $pdf->stream('benh_an.pdf');
     }
 }

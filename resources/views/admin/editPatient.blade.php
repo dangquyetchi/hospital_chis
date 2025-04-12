@@ -42,11 +42,17 @@
                             <label for="patient_address" class="form-label">Địa chỉ</label>
                             <input type="text" value="{{ $edit_patient->address }}" name="patient_address" class="form-control" id="patient_address">
                         </div>
+
                         <div class="mb-3">
-                            <label for="patient_condition" class="form-label">Tình trạng</label>
+                            <label for="patient_condition" class="form-label">Tình trạng vào viện</label>
                             <input type="text" value="{{ $edit_patient->patient_condition }}" name="patient_condition" class="form-control" id="patient_condition">
                         </div>  
 
+                        <div class="mb-3">
+                            <label for="out_hospital" class="form-label">Tình trạng ra viện</label>
+                            <textarea name="out_hospital" class="form-control" id="out_hospital" rows="4">{{ old('out_hospital', $edit_patient->out_hospital ?? '') }}</textarea>
+                        </div>
+                        
                         <div class="text-center">
                             <button type="submit" class="btn btn-success" id="submitBtn" >Cập nhật</button>
                         </div>

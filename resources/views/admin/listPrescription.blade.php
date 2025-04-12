@@ -72,10 +72,10 @@
                   <td>
                       <a href="{{ url('/edit-prescription/' . $prescription->id) }}" class="btn btn-sm btn-info">Sửa</a>
                       <a href="javascript:void(0);" onclick="confirmDelete({{ $prescription->id }})" class="btn btn-sm btn-danger">Xóa</a>
-                      <a href="{{ url('/detail-prescription/' . $prescription->id) }}">
+                      <a href="{{ url('/detail-prescription/' . $prescription->id) }}"  class="btn btn-sm btn-warning" title="Xem chi tiết">
                         <i class="fa-solid fa-circle-info" style="font-size: 20px;"></i>
                       </a>
-                      <a href="{{ url('/print-prescription/' . $prescription->id) }}">
+                      <a href="{{ url('/print-prescription/' . $prescription->id) }}" class="btn btn-sm btn-info" title="In đơn thuốc" target="_blank">
                         <i class="fa-solid fa-print" style="font-size: 20px;"></i>
                       </a> 
                   </td>

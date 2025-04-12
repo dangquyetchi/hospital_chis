@@ -117,7 +117,7 @@
                 <td>
                     <a href="{{ url('/edit-clinic/' . $record->id) }}" class="btn btn-sm btn-info">Sửa</a>
                     <a href="javascript:void(0);" onclick="confirmDelete({{ $record->id }})" class="btn btn-sm btn-danger">Xóa</a>
-                    <a href="{{ url('/print-clinic/' . $record->id) }}">
+                    <a href="{{ url('/print-clinic/' . $record->id) }}" class="btn btn-sm btn-info" title="In giấy khám" target="_blank">
                       <i class="fa-solid fa-print" style="font-size: 20px;"></i>
                     </a>                    
                 </td>

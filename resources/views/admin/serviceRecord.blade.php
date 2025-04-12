@@ -83,10 +83,10 @@
                   <td>
                       <a href="{{ url('/edit-record-service/' . $service->id) }}" class="btn btn-sm btn-info">Sửa</a>
                       <a href="javascript:void(0);" onclick="confirmDelete({{ $service->id }})" class="btn btn-sm btn-danger">Xóa</a>
-                      <a href="{{ url('/detail-record-service/' . $service->id) }}">
+                      <a href="{{ url('/detail-record-service/' . $service->id) }}"  class="btn btn-sm btn-warning" title="Xem chi tiết phiếu ">
                         <i class="fa-solid fa-circle-info" style="font-size: 20px;"></i>
                       </a>
-                      <a href="{{ url('/print-service/' . $service->id) }}">
+                      <a href="{{ url('/print-service/' . $service->id) }}" class="btn btn-sm btn-info" title="In phiếu dịch vụ" target="_blank">
                         <i class="fa-solid fa-print" style="font-size: 20px;"></i>
                       </a> 
                   </td>

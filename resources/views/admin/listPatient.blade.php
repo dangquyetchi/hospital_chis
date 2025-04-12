@@ -60,10 +60,11 @@
                   <td>{{ $patient->patient_condition }}</td>
                   <td>{{ date('d-m-Y', strtotime($patient->date_in)) }}</td>
                   <td>{{ $patient->date_out ? date('d-m-Y', strtotime($patient->date_out)) : '' }}</td>
-
                   <td>
                     <span class="text-ellipsis">
-                        @if($patient->status == 1)
+                        @if($patient->lock_hoso == 1)
+                              <span class="badge bg-success">Đã xuất viện</span>
+                        @elseif($patient->status == 1)
                             <a href="{{ url('/out-patient/' . $patient->id) }}" class="update-status text-warning fw-bold">
                                 <span class="badge bg-warning">Chưa xuất viện</span>
                             </a>
@@ -73,10 +74,22 @@
                             </a>
                         @endif
                     </span>
-                </td>
+                  </td>
                   <td>
-                      <a href="{{ url('/edit-patient/' . $patient->id) }}" class="btn btn-sm btn-info">Sửa</a>
-                      <a href="javascript:void(0);" onclick="confirmDelete({{ $patient->id }})" class="btn btn-sm btn-danger">Xóa</a>
+                    @if($patient->lock_hoso == 0)
+                    <a href="{{ url('/edit-patient/' . $patient->id) }}" class="btn btn-sm btn-info">Sửa</a>
+                    <a href="javascript:void(0);" onclick="confirmDelete({{ $patient->id }})" class="btn btn-sm btn-danger">Xóa</a>
+                      @if($patient->status == 0)
+                      <a href="{{ url('/lock-patient/' . $patient->id) }}" class="btn btn-sm btn-warning" title="Khóa hồ sơ">
+                        <i style="font-size: 18px" class="fa-solid fa-lock-open"></i>
+                      </a>
+                      @endif                  
+                    @else
+                        <span class="text-muted">Đã khóa</span>
+                        <a href="{{ url('/print-benhan/' . $patient->id) }}" class="btn btn-sm btn-info" title="In bệnh án">
+                            <i style="font-size: 18px" class="fa-solid fa-print"></i>
+                        </a>
+                    @endif
                   </td>
               </tr>
             @endforeach
