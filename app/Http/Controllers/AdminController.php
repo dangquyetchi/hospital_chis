@@ -73,16 +73,23 @@ class AdminController extends Controller {
     
         return view('admin.dashboard', compact('dailyRevenue', 'patientCount', 'monthlyRevenue', 'monthlyPatientCount', 'yearlyRevenue', 'yearlyPatientCount'));
     }
-    
-    // trang chu admin
-    public function dashboard(Request $request) {
+    // trang chủ admin
+    public function dashboard(Request $request)
+    {
+        $request->validate([
+            'admin_email' => 'required|email',
+            'admin_password' => 'required'
+        ]);
+
         $email = $request->input('admin_email');
         $password = $request->input('admin_password');
 
         $admin = DB::table('users')->where('email', $email)->first();
+
         if ($admin && Hash::check($password, $admin->password)) {
             Session::put('admin_id', $admin->id);
-            Session::put('admin_role', $admin->role);
+            Session::put('role', $admin->role);
+            Session::put('admin_name', $admin->username); 
             return redirect('/dashboard');
         } else {
             return redirect()->back()->with('error', 'Email hoặc mật khẩu không chính xác!');
@@ -92,6 +99,7 @@ class AdminController extends Controller {
     public function logout()
     {
         $this->authLogin();
+        Session::flush();
         Auth::logout();
         return redirect('/admin')->with('success', 'Đăng xuất thành công!');
     }

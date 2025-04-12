@@ -41,7 +41,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!--logo start-->
 <div class="brand">
     <a href="{{url('/dashboard')}}" class="logo">
-        ADMIN
+        Hospital
     </a>
     <div class="sidebar-toggle-box">
         <div class="fa fa-bars"></div>
@@ -54,11 +54,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <li>
             <input type="text" class="form-control search" placeholder=" Search">
         </li>
-        <!-- user login dropdown start-->
         <li class="dropdown">
             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <img src="{{ asset('images/2.png') }}" alt="Ảnh">
-                <span class="username">John Doe</span>
+                <img src="{{ asset('images/logo.png') }}" alt="Ảnh">
+                @if(Session::has('admin_name'))
+                    <span class="username">{{ Session::get('admin_name') }}</span>
+                @else
+                    <span class="username">Khách</span>
+                @endif
+    
+            
                 <b class="caret"></b>
             </a>
             <ul class="dropdown-menu extended logout">
@@ -67,102 +72,134 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <li><a href="{{ url('/logout')}}"><i class="fa fa-key"></i> Đăng xuất</a></li>
             </ul>
         </li>
-        <!-- user login dropdown end -->
-       
     </ul>
-    <!--search & user info end-->
 </div>
 </header>
-<!--header end-->
-<!--sidebar start-->
 <aside>
     <div id="sidebar" class="nav-collapse">
-        <!-- sidebar menu start-->
         <div class="leftside-navigation">
+            @php
+                $role = Session::get('role');
+            @endphp
             <ul class="sidebar-menu" id="nav-accordion">
-                <li>
-                    <a href="{{url('/dashboard')}}" class="{{ Request::is('dashboard') ? 'active' : '' }}">
-                        <i class="fa fa-dashboard"></i>
-                        <span>Tổng quan</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url('/list-clinic') }}" class="{{ Request::is('list-clinic') ? 'active' : '' }}">Giấy khám bệnh</a>
-                </li>
-                <li>
-                    <a href="{{ url('/list-record-service')}}"  class="{{ Request::is('list-record-service') ? 'active' : '' }}">Phiếu dịch vụ</a>
-                </li>
-                <li>
-                    <a href="{{ url('/list-service')}}"  class="{{ Request::is('list-service') ? 'active' : '' }}">Dịch vụ khám</a>
-                </li>
-                <li>
-                    <a href="{{ url('/list-room')}}" class="{{ Request::is('list-room') ? 'active' : '' }}">Phòng</a>
-                </li>
-                <li>
-                    <a href="{{ url('/list-bed')}}" class="{{ Request::is('list-bed') ? 'active' : '' }}">Giường</a>
-                </li>
-                <li>
-                    <a href="{{ url('/list-medicine')}}" class="{{ Request::is('list-medicine') ? 'active' : '' }}">Kho thuốc</a>
-                </li>
-                <li>
-                    <a href="{{ url('/list-prescription')}}" class="{{ Request::is('list-prescription') ? 'active' : '' }}">Đơn thuốc</a>
-                </li>
-                <li>
-                    <a href="{{ url('/list-doctor')}}" class="{{ Request::is('list-doctor') ? 'active' : '' }}">Bác sĩ</a>
-                </li>
-                <li>
-                    <a href="{{ url('/list-patient')}}" class="{{ Request::is('list-patient') ? 'active' : '' }}">Bệnh nhân</a>
-                </li>
-                <li>
-                    <a href="{{ url('/list-bhyt')}}" class="{{ Request::is('list-bhyt') ? 'active' : '' }}">Thẻ BHYT</a>
-                </li>
-
-                <li class="sub-menu">
-                    <a href="javascript:;">
-                        <i class="fa fa-book"></i>
-                        <span>Thu ngân</span>
-                    </a>
-                    <ul class="sub">
-						<li><a href="{{ url('/payment')}}" class="{{ Request::is('payment') ? 'active' : '' }}">Thu phí khám</a></li>
-						<li><a href="{{ url('/payment-service')}}" class="{{ Request::is('payment') ? 'active' : '' }}">Thu phí dịch vụ</a></li>
-						<li><a href="{{ url('/payment-medicine')}}" class="{{ Request::is('payment') ? 'active' : '' }}">Nhà thuốc</a></li>
-						<li><a href="{{ url('/payment-patient')}}" class="{{ Request::is('payment') ? 'active' : '' }}">Thu phí nội trú</a></li>
-
-						{{-- <li><a href="{{ url('/list-category')}}">Báo cáo - Thống kê</a></li> --}}
-                    </ul>
-                </li>
+                <!-- Mục Tổng quan chỉ hiển thị cho Admin -->
+                @if($role == 'admin')
+                    <li>
+                        <a href="{{ url('/dashboard') }}" class="{{ Request::is('dashboard') ? 'active' : '' }}">
+                            <i class="fa fa-dashboard"></i>
+                            <span>Tổng quan</span>
+                        </a>
+                    </li>
+                @endif
+    
+                <!-- Giấy khám bệnh - Cho cả Admin, Cashier -->
+                @if($role == 'admin' || $role == 'cashier')
+                    <li>
+                        <a href="{{ url('/list-clinic') }}" class="{{ Request::is('list-clinic') ? 'active' : '' }}">Giấy khám bệnh</a>
+                    </li>
+                @endif
+    
+                <!-- Phiếu dịch vụ - Cho tất cả các role, trừ Drugist -->
+                @if($role == 'admin' || $role == 'doctor' || $role == 'cashier')
+                    <li>
+                        <a href="{{ url('/list-record-service') }}" class="{{ Request::is('list-record-service') ? 'active' : '' }}">Phiếu dịch vụ</a>
+                    </li>
+                @endif
+    
+                <!-- Dịch vụ khám - Chỉ dành cho Admin -->
+                @if($role == 'admin')
+                    <li>
+                        <a href="{{ url('/list-service') }}" class="{{ Request::is('list-service') ? 'active' : '' }}">Dịch vụ khám</a>
+                    </li>
+                @endif
+    
+                <!-- Phòng - Chỉ dành cho Admin -->
+                @if($role == 'admin')
+                    <li>
+                        <a href="{{ url('/list-room') }}" class="{{ Request::is('list-room') ? 'active' : '' }}">Phòng</a>
+                    </li>
+                @endif
+    
+                <!-- Giường - Chỉ dành cho Admin -->
+                @if($role == 'admin')
+                    <li>
+                        <a href="{{ url('/list-bed') }}" class="{{ Request::is('list-bed') ? 'active' : '' }}">Giường</a>
+                    </li>
+                @endif
+    
+                <!-- Kho thuốc - Dành cho Drugist -->
+                @if($role == 'admin' || $role == 'druggist')
+                    <li>
+                        <a href="{{ url('/list-medicine') }}" class="{{ Request::is('list-medicine') ? 'active' : '' }}">Kho thuốc</a>
+                    </li>
+                @endif
+    
+                <!-- Đơn thuốc - Dành cho tất cả các role ngoài Drugist -->
+                @if($role == 'admin' || $role == 'doctor' || $role == 'cashier')
+                    <li>
+                        <a href="{{ url('/list-prescription') }}" class="{{ Request::is('list-prescription') ? 'active' : '' }}">Đơn thuốc</a>
+                    </li>
+                @endif
+    
+                <!-- Bác sĩ - Dành cho Admin -->
+                @if($role == 'admin')
+                    <li>
+                        <a href="{{ url('/list-doctor') }}" class="{{ Request::is('list-doctor') ? 'active' : '' }}">Bác sĩ</a>
+                    </li>
+                @endif
+    
+                <!-- Bệnh nhân - Dành cho tất cả các role -->
+                @if($role == 'admin' || $role == 'doctor' || $role == 'cashier')
+                    <li>
+                        <a href="{{ url('/list-patient') }}" class="{{ Request::is('list-patient') ? 'active' : '' }}">Bệnh nhân</a>
+                    </li>
+                @endif
+    
+                <!-- Thẻ BHYT - Dành cho Admin, Cashier -->
+                @if($role == 'admin' || $role == 'cashier')
+                    <li>
+                        <a href="{{ url('/list-bhyt') }}" class="{{ Request::is('list-bhyt') ? 'active' : '' }}">Thẻ BHYT</a>
+                    </li>
+                @endif
+    
+                <!-- Thu ngân - Dành cho Cashier -->
+                @if($role == 'admin' || $role == 'cashier')
+                    <li class="sub-menu">
+                        <a href="javascript:;">
+                            <i class="fa fa-book"></i>
+                            <span>Thu ngân</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a href="{{ url('/payment') }}" class="{{ Request::is('payment') ? 'active' : '' }}">Thu phí khám</a></li>
+                            <li><a href="{{ url('/payment-service') }}" class="{{ Request::is('payment-service') ? 'active' : '' }}">Thu phí dịch vụ</a></li>
+                            <li><a href="{{ url('/payment-medicine') }}" class="{{ Request::is('payment-medicine') ? 'active' : '' }}">Nhà thuốc</a></li>
+                            <li><a href="{{ url('/payment-patient') }}" class="{{ Request::is('payment-patient') ? 'active' : '' }}">Thu phí nội trú</a></li>
+                        </ul>
+                    </li>
+                @endif
+    
             </ul>            
         </div>
-        <!-- sidebar menu end-->
     </div>
 </aside>
-<!--sidebar end-->
-<!--main content start-->
 <section id="main-content">
 	<section class="wrapper">
 		@yield('admin_content')
     </section>
- <!-- footer -->
 		  <div class="footer">
 			<div class="wthree-copyright">
-			  {{-- <p>© 2017 Visitors. All rights reserved | Design by <a href="http://w3layouts.com">W3layouts</a></p> --}}
 			</div>
 		  </div>
-  <!-- / footer -->
 </section>
-<!--main content end-->
 </section>
 <script src="{{ asset('js/bootstrap.js')}}"></script>
 <script src="{{ asset('js/jquery.dcjqaccordion.2.7.js')}}"></script>
 <script src="{{ asset('js/scripts.js')}}"></script>
 <script src="{{ asset('js/jquery.slimscroll.js')}}"></script>
 <script src="{{ asset('js/jquery.nicescroll.js')}}"></script>
-<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/flot-chart/excanvas.min.js"></script><![endif]-->
 <script src="{{ asset('js/jquery.scrollTo.js')}}"></script>
-<!-- morris JavaScript -->	
 <script>
 	$(document).ready(function() {
-		//BOX BUTTON SHOW AND CLOSE
 	   jQuery('.small-graph-box').hover(function() {
 		  jQuery(this).find('.box-button').fadeIn('fast');
 	   }, function() {
@@ -215,7 +252,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	   
 	});
 	</script>
-<!-- calendar -->
 	<script type="text/javascript" src="{{asset('js/monthly.js')}}"></script>
 	<script type="text/javascript">
 		$(window).load( function() {
@@ -238,7 +274,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		switch(window.location.protocol) {
 		case 'http:':
 		case 'https:':
-		// running on a server, should be good.
 		break;
 		case 'file:':
 		alert('Just a heads-up, events will not work when run locally.');
@@ -246,6 +281,5 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 		});
 	</script>
-	<!-- //calendar -->
 </body>
 </html>

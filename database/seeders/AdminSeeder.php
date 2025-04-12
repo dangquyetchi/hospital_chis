@@ -14,9 +14,9 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')->insert([
-            'username' => 'admin',
-            'password' => Hash::make('admin123'), // Mật khẩu mã hóa
-            'email' => 'admin@example.com',
+            'username' => 'Tuấn Anh',
+            'password' => Hash::make('admin123'), 
+            'email' => 'tuananh123@gmail.com',
             'role' => 'admin',
             'created_at' => now(),
             'updated_at' => now(),
