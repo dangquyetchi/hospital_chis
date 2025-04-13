@@ -26,15 +26,9 @@
 
         <p><strong>Họ và Tên:</strong> {{ $payment->patient_name }}</p>
         <p><strong>Ngày Sinh:</strong> {{ date('d-m-Y', strtotime($payment->birth_date)) }}</p>
-        @if($payment->price_medical > 0)
-            <p><strong>Tiền khám:</strong> {{ number_format($payment->price_medical, 0, ',', '.') }} VNĐ</p>
-        @elseif($payment->price_service > 0)
-            <p><strong>Tiền dịch vụ:</strong> {{ number_format($payment->price_service, 0, ',', '.') }} VNĐ</p>
-        @elseif($payment->price_prescription > 0)
-            <p><strong>Tiền thuốc:</strong> {{ number_format($payment->price_prescription, 0, ',', '.') }} VNĐ</p>
-        @endif
-        <p>Tiền giảm BHYT: {{ number_format($payment->price_medical * $payment->coverage_rate, 0, ',', '.') }} VNĐ</p>
-        <p><strong>Số tiền phải thanh toán: </strong>{{ number_format($payment->price_medical - ($payment->price_medical * $payment->coverage_rate), 0, ',', '.') }} VNĐ</p>    
+        <p><strong>Tiền khám:</strong> {{ number_format($payment->price_medical, 0, ',', '.') }} VNĐ</p>
+        <p>Tiền giảm BHYT: {{ number_format($payment->price_medical * ($payment->coverage_rate/100), 0, ',', '.') }} VNĐ</p>
+        <p><strong>Số tiền phải thanh toán: </strong>{{ number_format($payment->price_medical - ($payment->price_medical * ($payment->coverage_rate/100)), 0, ',', '.') }} VNĐ</p>    
         <p><strong>Phương thức thanh toán:</strong> {{ $method->payment_method == 'Tiền mặt' ? 'Tiền mặt' : 'QRCODE' }}</p>
 
         <div class="footer">

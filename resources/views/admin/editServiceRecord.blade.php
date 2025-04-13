@@ -73,6 +73,11 @@
                             </select>
                         </div>
 
+                        <div class="mb-3">
+                            <label for="examination_results" class="form-label">Chẩn đoán</label>
+                            <textarea name="examination_results" id="examination_results" class="form-control" rows="4">{{ old('examination_results', $patient->examination_results ?? '') }}</textarea>
+                        </div>                        
+
                         <div class="text-center">
                             <button type="submit" class="btn btn-success">Cập nhật</button>
                             <a href="{{ url('/list-record-service') }}" class="btn btn-secondary">Quay lại</a>

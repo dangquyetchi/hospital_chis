@@ -27,8 +27,8 @@
         <p><strong>Họ và Tên:</strong> {{ $payment->patient_name }}</p>
         <p><strong>Ngày Sinh:</strong> {{ date('d-m-Y', strtotime($payment->birth_date)) }}</p>
         <p><strong>Tiền nội trú:</strong> {{ number_format($payment->total_amount, 0, ',', '.') }} VNĐ</p>
-        <p>Tiền giảm BHYT: {{ number_format($payment->total_amount * $payment->coverage_rate, 0, ',', '.') }} VNĐ</p>
-        <p><strong>Số tiền phải thanh toán: </strong>{{ number_format($payment->total_amount - ($payment->total_amount * $payment->coverage_rate), 0, ',', '.') }} VNĐ</p>    
+        <p>Tiền giảm BHYT: {{ number_format($payment->total_amount * ($payment->coverage_rate/100), 0, ',', '.') }} VNĐ</p>
+        <p><strong>Số tiền phải thanh toán: </strong>{{ number_format($payment->total_amount - ($payment->total_amount * ($payment->coverage_rate/100)), 0, ',', '.') }} VNĐ</p>    
         <p><strong>Phương thức thanh toán:</strong> {{ $payment->payment_method == 'tiền mặt' ? 'Tiền mặt' : 'QRCODE' }}</p>
 
         <div class="footer">

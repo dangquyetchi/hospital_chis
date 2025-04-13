@@ -85,8 +85,8 @@
                       </a>
                       @endif                  
                     @else
-                        <span class="text-muted">Đã khóa</span>
-                        <a href="{{ url('/print-benhan/' . $patient->id) }}" class="btn btn-sm btn-info" title="In bệnh án">
+                        <span class="btn btn-sm btn-danger" title="Hồ sơ đã khóa" ><i style="font-size: 18px" class="fa-solid fa-lock"></i></span>
+                        <a href="{{ url('/print-benhan/' . $patient->id) }}" class="btn btn-sm btn-info" title="In bệnh án" target="_blank">
                             <i style="font-size: 18px" class="fa-solid fa-print"></i>
                         </a>
                     @endif

@@ -92,6 +92,8 @@ class ClinicController extends Controller
                 DB::table('health_insurances')->insert([
                     'medical_id' => $medical_id,
                     'patient_name' => $request->patient_name,
+                    'gender' => $request->patient_gender,
+                    'birth_date' => $request->birth_date,
                     'card_number' => $request->card_number,
                     'issue_date' => $request->issue_date,
                     'expiry_date' => $request->expiry_date,
@@ -142,6 +144,7 @@ class ClinicController extends Controller
         }
     
         DB::table('medical_records')->where('id', $clinic_id)->delete();
+        DB::table('payments')->where('medical_id', $clinic_id)->delete();
         Session::put('message', 'Xóa giấy khám thành công');
         return Redirect::to('list-clinic');
     }
@@ -202,14 +205,12 @@ class ClinicController extends Controller
     public function checkCardNumber(Request $request)
     {
         $card_number = $request->query('card_number');
-    
         $insurance = DB::table('health_insurances')
-            ->where('health_insurances.card_number', $card_number)
-            ->join('medical_records', 'health_insurances.medical_id', '=', 'medical_records.id')
-            ->select('health_insurances.patient_name', 'medical_records.birth_date', 
-                            'health_insurances.expiry_date', 'health_insurances.issue_date', 
-                            'health_insurances.insurance_type', 'medical_records.gender',)
-            ->first();
+        ->where('health_insurances.card_number', $card_number)
+        ->select('health_insurances.patient_name', 'health_insurances.birth_date', 
+        'health_insurances.expiry_date', 'health_insurances.issue_date', 
+        'health_insurances.insurance_type', 'health_insurances.gender',)
+        ->first();
 
         if ($insurance) {
             return response()->json([

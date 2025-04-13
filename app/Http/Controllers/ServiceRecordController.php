@@ -88,9 +88,11 @@ class ServiceRecordController extends Controller
             'medical_id' => $request->medical_id,
             'doctor_id' => $request->doctor_id,
             'room_id' => $request->room_id,
-            'price' => 0,
-            'payment_status' => 0,
+            'examination_results' => $request->examination_results,
         ];
+        if (!empty($request->examination_results)) {
+            $data['status'] = 1;
+        }
         DB::table('service_records')->where('id', $service_record_id)->update($data);
         Session::put('message', 'Cập nhật phiếu dịch vụ thành công');
         return Redirect::to('list-record-service');

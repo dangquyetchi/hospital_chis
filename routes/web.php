@@ -142,6 +142,8 @@ Route::post('/save-patient', [PatientController::class, 'savePatient']);
 Route::get('/edit-patient/{patient_id}', [PatientController::class, 'editPatient']);
 Route::post('/update-patient/{patient_id}', [PatientController::class, 'updatePatient']);
 Route::get('/delete-patient/{patient_id}', [PatientController::class, 'deletePatient']);
+Route::get('/get-beds/{room_id}', [PatientController::class, 'getBedsByRoom']);
+
 // statusPatient
 Route::get('/out-patient/{patient_id}', [PatientController::class, 'outPatient']);
 Route::get('/in-patient/{patient_id}', [PatientController::class, 'inPatient']);

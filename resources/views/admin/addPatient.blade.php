@@ -22,13 +22,20 @@
                     @csrf
                     <div class="form-group">
                         <label>Chọn Bệnh Nhân</label>
-                        <select name="medical_id" class="form-control" required ">
-                            <option value="">-- Chọn bệnh nhân--</option>
+                        <select name="medical_id" id="medical_id" class="form-control" required onchange="fillPatientInfo()">
+                            <option value="">-- Chọn bệnh nhân --</option>
                             @foreach($medicalRecords as $record)
-                                <option value="{{ $record->id }}">{{ $record->patient_name }} (ID: {{ $record->id }})</option>
+                                <option 
+                                    value="{{ $record->id }}"
+                                    data-gender="{{ $record->gender }}"
+                                    data-birth="{{ $record->birth_date }}"
+                                >
+                                    {{ $record->patient_name }} (ID: {{ $record->id }})
+                                </option>
                             @endforeach
                         </select>
                     </div>
+                
                     <div class="form-group">
                         <label>Giới tính</label>
                         <select name="patient_gender" id="patient_gender" class="form-control" required>
@@ -38,12 +45,13 @@
                             <option value="Khác">Khác</option>
                         </select>
                     </div>
+                
                     <div class="form-group">
                         <label>Ngày sinh</label>
-                        <input type="date" name="patient_birth" id="patient_birth" class="form-control" required 
-                        oninput="validateDate_birth()">
+                        <input type="date" name="patient_birth" id="patient_birth" class="form-control" required oninput="validateDate_birth()">
                         <small id="patient_birth_error" class="text-danger d-block mt-1"></small>
                     </div>
+                    
                     <div class="form-group">
                         <label>Địa chỉ</label>
                         <input type="text" name="patient_address" class="form-control" placeholder="Nhập địa chỉ" required>
@@ -58,59 +66,19 @@
                         <small id="patient_datein_error" class="text-danger d-block mt-1"></small>
                     </div>
 
-                    <div class="form-group">
-                        <label>Phòng bệnh</label>
-                        <select name="room_id" class="form-control">
-                            <option value="">Chọn phòng bệnh</option>
-                            @foreach ($rooms as $room)
+                    <label for="room_id">Chọn phòng</label>
+                        <select name="room_id" id="room-select" class="form-control">
+                            <option value="">-- Chọn phòng --</option>
+                            @foreach($rooms as $room)
                                 <option value="{{ $room->id }}">{{ $room->name }}</option>
                             @endforeach
                         </select>
-                    </div>
 
-                    <div class="form-group">
-                        <label>Giường bệnh</label>
-                        <select name="bed_id" class="form-control">
-                            <option value="">Chọn giường bệnh</option>
-                            @foreach ($beds as $bed)
-                                <option value="{{ $bed->id }}">{{ $bed->name_bed }}</option>
-                            @endforeach
+                        <label for="bed_id">Chọn giường</label>
+                        <select name="bed_id" id="bed-select" class="form-control">
+                            <option value="">-- Chọn giường --</option>
                         </select>
-                    </div>
 
-                  {{-- thông tin thẻ BHYT --}}
-                    <div class="form-group">
-                    <label>Số thẻ BHYT</label>
-                    <input type="text" name="card_number" id="card_number" class="form-control"
-                            placeholder="Nhập số thẻ BHYT" maxlength="15"
-                            oninput="validateCardNumber(this)">
-                         <small id="card_error" class="text-danger d-block mt-1"></small>
-                    </div>
-
-                    <div id="bhyt-details" style="display: none;">
-                        <div class="form-group">
-                            <label>Ngày cấp</label>
-                            <input type="date" name="issue_date" id="issue_date" class="form-control"  
-                            oninput="validateDateIssue()">
-                        <small id="issue_date_error" class="text-danger d-block mt-1"></small>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Ngày hết hạn</label>
-                            <input type="date" name="expiry_date" id="expiry_date" class="form-control" min="{{ date('Y-m-d') }}"
-                             oninput="validateDateExpiry()">
-                            <small id="expiry_date_error" class="text-danger d-block mt-1"></small>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Loại bảo hiểm</label>
-                            <select name="insurance_type" class="form-control"  >
-                                <option value="">Chọn loại bảo hiểm</option>
-                                <option value="Bảo hiểm tự nguyện">Bảo hiểm tự nguyện</option>
-                                <option value="Bảo hiểm bắt buộc">Bảo hiểm bắt buộc</option>
-                            </select>
-                        </div>
-                    </div>
                     <button type="submit" id="submitBtn" class="btn btn-info" >Thêm bệnh nhân</button>
                 </form>
             </div>
@@ -119,33 +87,6 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-{{-- ẩn hiện mục nhập thẻ bhyt nếu có --}}
-<script>
-    $(document).ready(function () {
-        $("#card_number").focus(function () {
-            $("#bhyt-details").slideDown();
-        });
-
-        $("#card_number").blur(function () {
-            if ($(this).val().trim() === "") {
-                $("#bhyt-details").slideUp();
-            }
-        });
-    });
-</script>
-<script>
-    $(document).ready(function () {
-    $("#card_number").on("input", function () {
-        let value = $(this).val().trim();
-        
-        if (value.length > 0) {
-            $("input[name='issue_date'], input[name='expiry_date'], select[name='insurance_type']").attr("required", true);
-        } else {
-            $("input[name='issue_date'], input[name='expiry_date'], select[name='insurance_type']").removeAttr("required");
-        }
-    }); 
-});
-</script>
 
 <script>
     function validateCardNumber(input) {
@@ -264,7 +205,7 @@
         return true; 
     }
 </script>
-{{-- <script>
+<script>
     function fillPatientInfo() {
         var select = document.getElementById("medical_id");
         var selectedOption = select.options[select.selectedIndex];
@@ -282,5 +223,26 @@
         document.getElementById("patient_birth").value = birthDate || "";
     }
 </script>
-     --}}
+<script>
+    document.getElementById('room-select').addEventListener('change', function () {
+        const roomId = this.value;
+        const bedSelect = document.getElementById('bed-select');
+        bedSelect.innerHTML = '<option value="">Đang tải...</option>';
+
+        if (roomId) {
+            fetch(`/get-beds/${roomId}`)
+                .then(response => response.json())
+                .then(data => {
+                    let options = '<option value="">-- Chọn giường --</option>';
+                    data.forEach(bed => {
+                        options += `<option value="${bed.id}">${bed.name_bed}</option>`;
+                    });
+                    bedSelect.innerHTML = options;
+                });
+        } else {
+            bedSelect.innerHTML = '<option value="">-- Chọn giường --</option>';
+        }
+    });
+</script>
+   
 @endsection

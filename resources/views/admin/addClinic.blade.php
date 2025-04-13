@@ -18,8 +18,8 @@
                             <label>Số thẻ BHYT</label>
                             <input type="text" name="card_number" id="card_number" class="form-control"
                                     placeholder="Nhập số thẻ BHYT" maxlength="15"
-                                   >
-                                   {{-- oninput="validateCardNumber(this)" --}}
+                                    oninput="validateCardNumber(this)">
+                                   
                                 <small id="card_error" class="text-danger d-block mt-1"></small>
                         </div>
     
@@ -263,7 +263,5 @@
             .catch(error => console.error('Lỗi:', error));
     }
 });
-
-
 </script>
 @endsection
